@@ -1,0 +1,997 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>El Gran Reacomodo</title>
+<meta name="description" content="El Gran Reacomodo: cambios en la población de Colombia según proyecciones del DANE.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@500;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mozilla+Headline:wght@500;700&display=swap">
+<style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style>
+</head>
+<body>
+<style>
+/* Layout: brand sidebar + one view at a time; every view is a stack of full-width "scenes" that become slides in presentation mode. */
+:root{
+  color-scheme:light;
+  --bg:#F3F2EE; --bg-deep:#012B2D; --surface:#FFFFFF; --surface-2:#EAE8E3;
+  --line:rgba(1,43,45,.11); --line-2:rgba(1,43,45,.22);
+  --fg:#0B2A2C; --fg-2:#3C5452; --muted:#687C79;
+  --brand:#047A57; --glow:#0A7C88; --sand:#E3E1DE; --ref:#9AA7A4;
+  --dane:#00A06E; --tgi:#3A87E0; --own:#BC7F17;
+  --display:"Mozilla Headline","Zilla Slab",Rockwell,"Roboto Slab",Georgia,serif;
+  --body:Manrope,"Segoe UI",system-ui,-apple-system,sans-serif;
+  --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --side:248px;
+}
+/* Navigation, lens and the dramatic beats stay in the brand's dark green. */
+.on-dark,aside,.lens,.beat,.gap-scene,#hud{
+  color-scheme:dark;
+  --bg:#012B2D; --bg-deep:#011E20; --surface:#0A3638; --surface-2:#0F4244;
+  --line:rgba(227,225,222,.13); --line-2:rgba(227,225,222,.24);
+  --fg:#EEEDEA; --fg-2:#C3D1CE; --muted:#8EA9A5;
+  --brand:#07BE83; --glow:#7FFDFF; --ref:#E3E1DE;
+  color:var(--fg);
+}
+.on-dark{background:var(--bg)}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.55 var(--body);-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--bg)}
+a{color:inherit}
+button,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--glow);outline-offset:2px}
+h1,h2,h3{font-family:var(--display);font-weight:700;text-wrap:balance;margin:0;letter-spacing:-.01em}
+p{margin:0}
+.num{font-variant-numeric:tabular-nums}
+
+/* ---------- sidebar ---------- */
+aside{position:fixed;inset:0 auto 0 0;width:var(--side);padding:28px 20px calc(24px + env(safe-area-inset-bottom,0px)) max(20px,env(safe-area-inset-left,0px));background:var(--bg-deep);border-right:1px solid var(--line);display:flex;flex-direction:column;gap:22px;overflow-y:auto;z-index:20}
+.logo{font-family:var(--display);font-weight:700;font-size:26px;color:var(--brand);letter-spacing:-.02em}
+.logo small{display:block;font:600 10px/1.4 var(--body);letter-spacing:.16em;color:var(--glow);margin-top:6px;text-transform:uppercase}
+nav{display:grid;gap:2px}
+nav .grp{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin:14px 10px 6px}
+nav a{display:flex;gap:10px;align-items:baseline;text-decoration:none;color:var(--fg-2);padding:8px 10px;border-radius:6px;font-size:13.5px}
+nav a b{font-family:var(--display);color:var(--brand);font-size:14px;min-width:14px}
+nav a:hover{background:var(--surface)}
+nav a[aria-current="page"]{background:var(--surface-2);color:var(--fg)}
+.present-btn{margin-top:auto;display:flex;align-items:center;justify-content:center;gap:8px;background:var(--brand);color:var(--bg-deep);border:0;border-radius:8px;padding:11px 14px;font-weight:700;cursor:pointer}
+.present-btn:hover{filter:brightness(1.08)}
+.aside-note{font-size:11px;color:var(--muted);line-height:1.5}
+
+/* ---------- main ---------- */
+main{margin-left:var(--side);min-width:0}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(32px,env(safe-area-inset-left,0px));padding-right:max(32px,env(safe-area-inset-right,0px))}
+.scene{padding-block:64px;border-bottom:1px solid var(--line);position:relative}
+.eyebrow{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--brand)}
+.eyebrow.c{color:var(--glow)}
+.lede{font-size:17px;color:var(--fg-2);max-width:62ch;margin-top:14px}
+.h-xl{font-size:clamp(34px,5.2vw,68px);line-height:1.04}
+.h-l{font-size:clamp(26px,3.4vw,42px);line-height:1.1;margin-top:10px}
+.h-m{font-size:clamp(20px,2.2vw,26px);line-height:1.2}
+.hl{color:var(--glow)}
+.demo-banner{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;padding:10px 14px;border:1px dashed var(--line-2);border-radius:8px;font-size:12.5px;color:var(--fg-2);margin-top:24px}
+.demo-banner b{letter-spacing:.14em;font-size:10.5px;color:var(--fg)}
+
+/* source chip */
+.src{flex:none;display:inline-flex;align-items:center;gap:7px;font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--fg-2);border:1px solid var(--line-2);border-radius:99px;padding:4px 10px 4px 8px;white-space:nowrap}
+.src i{width:9px;height:9px;border-radius:2px;display:inline-block}
+.src.dane i{background:var(--dane)} .src.tgi i{background:var(--tgi)} .src.own i{background:var(--own)} .src.gap i{background:var(--glow)}
+.src.sim::after{content:"Simulado";margin-left:4px;padding:1px 6px;border-radius:4px;font-size:9.5px;letter-spacing:.1em;color:#012B2D;background:repeating-linear-gradient(135deg,#E3E1DE 0 4px,#C9C6BF 4px 8px)}
+.src.real::after{content:"Dato real";margin-left:4px;padding:1px 6px;border-radius:4px;font-size:9.5px;letter-spacing:.1em;color:#fff;background:var(--brand)}
+
+/* panels */
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:22px;min-width:0;box-shadow:0 1px 2px rgba(1,43,45,.04)}
+.panel-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:6px}
+.panel h3{font-size:19px;line-height:1.25}
+.panel .sub{font-size:13px;color:var(--muted);margin-top:4px}
+.read{font-size:16px;line-height:1.5;margin-top:14px;max-width:60ch}
+.read b{color:var(--fg);font-weight:800}
+.note{font-size:12px;color:var(--muted);margin-top:12px;max-width:70ch}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;margin-top:28px}
+.grid-main{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:20px;margin-top:28px;align-items:start}
+svg{display:block;width:100%;height:auto;overflow:visible}
+svg text{font-family:var(--body);fill:var(--muted);font-size:11px}
+svg .lbl{fill:var(--fg-2);font-size:12px}
+svg .val{fill:var(--fg);font-size:12px;font-weight:700}
+svg .grid line{stroke:var(--line);stroke-width:1}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12px;color:var(--fg-2);margin-top:10px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:14px;height:3px;border-radius:2px;display:inline-block}
+.legend i.box{height:10px;width:10px;border-radius:2px}
+
+/* ---------- nation ---------- */
+.hero-year{font-family:var(--display);font-weight:700;color:var(--glow);font-size:clamp(88px,16vw,210px);line-height:.85;letter-spacing:-.04em;text-shadow:0 0 60px rgba(127,253,255,.25)}
+.hero{display:grid;grid-template-columns:minmax(0,auto) minmax(0,1fr);gap:28px 44px;align-items:end;margin-top:28px}
+.hero h1{font-size:clamp(24px,3vw,38px);line-height:1.15;max-width:22ch}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-top:44px}
+.kpi{background:var(--bg);padding:18px 18px 20px;min-width:0}
+.kpi .k{font-size:12px;color:var(--muted)}
+.kpi .pair{display:flex;align-items:baseline;gap:10px;margin-top:8px;flex-wrap:wrap}
+.kpi .now{font-size:15px;color:var(--fg-2)}
+.kpi .arrow{color:var(--muted)}
+.kpi .fut{font-family:var(--display);font-size:clamp(26px,2.6vw,34px);color:var(--fg);font-weight:700}
+.kpi .yr{font-size:11px;color:var(--muted);margin-top:2px;letter-spacing:.06em}
+.year-ctrl{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:18px}
+.play{width:46px;height:46px;border-radius:50%;border:1px solid var(--brand);background:transparent;color:var(--brand);cursor:pointer;font-size:16px;display:grid;place-items:center;flex:none}
+.play:hover{background:rgba(7,190,131,.12)}
+.year-ctrl input[type=range]{flex:1;min-width:160px;accent-color:var(--brand)}
+.big-year{font-family:var(--display);font-size:46px;line-height:1;min-width:3.2ch;font-weight:700}
+.big-year.proj{color:var(--glow)}
+.status{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.counters{display:grid;gap:14px}
+.counter{border-top:1px solid var(--line);padding-top:12px}
+.counter .k{font-size:12px;color:var(--muted)}
+.counter .v{font-family:var(--display);font-size:30px;font-weight:700;line-height:1.1;margin-top:2px}
+.counter .d{font-size:12px;color:var(--fg-2)}
+.milestones{display:grid;gap:0;margin-top:6px}
+.ms{display:grid;grid-template-columns:64px minmax(0,1fr);gap:14px;padding:14px 0;border-top:1px solid var(--line)}
+.ms .y{font-family:var(--display);font-weight:700;font-size:24px;color:var(--glow);line-height:1}
+.ms p{font-size:14px;color:var(--fg-2)}
+.ms p b{color:var(--fg)}
+.motor{display:grid;gap:10px}
+.motor .big{font-family:var(--display);font-size:clamp(44px,5vw,64px);font-weight:700;line-height:1}
+.mini-bars{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;align-items:end;height:120px;margin-top:8px}
+.mini-bars div{display:flex;flex-direction:column;justify-content:flex-end;gap:6px;height:100%;min-width:0}
+.mini-bars span.bar{display:block;border-radius:4px 4px 0 0;background:var(--dane)}
+.mini-bars span.bar.p{background:repeating-linear-gradient(135deg,var(--dane) 0 5px,rgba(0,160,110,.45) 5px 9px)}
+.mini-bars small{font-size:11px;color:var(--muted);text-align:center}
+.mini-bars em{font-style:normal;font-size:12px;color:var(--fg);text-align:center;font-weight:700}
+.multiples{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px;margin-top:28px}
+.mult{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px;min-width:0;cursor:pointer;text-align:left}
+.mult:hover{border-color:var(--line-2)}
+.mult h4{margin:0;font:700 15px var(--display)}
+.mult .cross{font-size:12px;color:var(--fg-2);margin-top:2px}
+.mult .cross b{color:var(--glow);font-family:var(--display);font-size:20px}
+.doors{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:28px}
+.door{display:flex;flex-direction:column;gap:8px;text-decoration:none;background:var(--surface);color:var(--fg);border:1px solid var(--line);border-radius:12px;padding:18px;min-height:190px;transition:transform .2s}
+.door:hover{transform:translateY(-3px);border-color:var(--brand)}
+.door .n{font-family:var(--display);font-weight:700;color:var(--brand);font-size:22px;line-height:1}
+.door h4{margin:0;font:700 17px/1.2 var(--display)}
+.door .g{margin-top:auto;font-family:var(--display);font-weight:700;font-size:30px;line-height:1;color:var(--glow)}
+.door .gl{font-size:12px;color:var(--muted)}
+.door.dark{background:var(--surface-2);color:var(--fg)}
+.door.dark h4{color:var(--brand);font-size:20px}
+.door.dark p{font-size:13px;color:var(--fg-2)}
+
+/* ---------- beat (insight) ---------- */
+.beat{background:var(--bg-deep);border-bottom:1px solid var(--line)}
+.beat .wrap{padding-block:88px}
+.beat .code{font:600 11px var(--mono);letter-spacing:.08em;color:var(--muted)}
+.beat .say{font-family:var(--display);font-weight:700;font-size:clamp(28px,4.2vw,54px);line-height:1.12;max-width:24ch;margin-top:14px;text-wrap:balance}
+.beat .say b{color:var(--glow);font-weight:700}
+.beat .src-line{margin-top:22px;display:flex;gap:8px;flex-wrap:wrap}
+
+/* ---------- vida ---------- */
+.lens{position:sticky;top:env(safe-area-inset-top,0px);z-index:15;background:rgba(1,30,32,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.lens .wrap{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:end;padding-block:12px}
+.lens .t{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--brand);font-weight:700;align-self:center;margin-right:4px}
+.lens label{display:grid;gap:4px;font-size:11px;color:var(--muted);min-width:0}
+.lens select{background:var(--surface);border:1px solid var(--line-2);border-radius:7px;padding:7px 28px 7px 10px;font-size:13px;min-width:132px;max-width:100%}
+.lens .reset{background:none;border:0;color:var(--fg-2);font-size:12px;cursor:pointer;text-decoration:underline;text-underline-offset:3px;padding:8px 0}
+.lens .seg{flex-basis:100%;font-size:12.5px;color:var(--fg-2)}
+.lens .seg b{color:var(--fg)}
+.vida-cover{display:grid;grid-template-columns:minmax(0,auto) minmax(0,1fr);gap:20px 40px;align-items:start;margin-top:10px}
+.vida-n{font-family:var(--display);font-weight:700;color:var(--brand);font-size:clamp(110px,15vw,190px);line-height:.8}
+.vida-cover .desc{font-size:16px;color:var(--fg-2);margin-top:10px;max-width:52ch}
+.ask{margin-top:30px;padding:22px 24px;border-left:3px solid var(--glow);background:var(--surface);border-radius:0 12px 12px 0;max-width:780px}
+.ask .k{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--glow);font-weight:700}
+.ask q{display:block;font-family:var(--display);font-weight:700;font-size:clamp(22px,2.6vw,32px);line-height:1.2;margin-top:8px;quotes:none}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+.chip{font-size:12px;border:1px solid var(--line-2);border-radius:99px;padding:5px 12px;color:var(--fg-2)}
+.steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:30px}
+.step{border-top:2px solid var(--line-2);padding-top:10px;font-size:12.5px;color:var(--fg-2)}
+.step b{display:block;font-family:var(--display);font-size:16px;color:var(--fg)}
+.step.dane{border-color:var(--dane)} .step.tgi{border-color:var(--tgi)} .step.own{border-color:var(--own)} .step.gap{border-color:var(--glow)}
+
+.gap-scene{background:radial-gradient(1000px 500px at 20% 0%,rgba(127,253,255,.08),transparent 60%),var(--bg-deep)}
+.gap-hero{display:grid;grid-template-columns:minmax(0,auto) minmax(0,1fr);gap:20px 44px;align-items:center;margin-top:24px}
+.gap-num{font-family:var(--display);font-weight:700;color:var(--glow);font-size:clamp(96px,14vw,190px);line-height:.85;letter-spacing:-.04em;text-shadow:0 0 70px rgba(127,253,255,.28)}
+.gap-num small{display:block;font-size:.2em;letter-spacing:0;margin-top:14px;max-width:16ch;line-height:1.25;color:var(--fg-2);text-shadow:none;font-weight:500;font-family:var(--body)}
+.gap-say{font-family:var(--display);font-size:clamp(22px,2.8vw,34px);line-height:1.2;font-weight:700;max-width:26ch}
+.gap-say b{color:var(--glow)}
+.truths{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:40px}
+.truth{border:1px solid var(--line);border-radius:12px;padding:16px;background:var(--surface);min-width:0}
+.truth .k{display:flex;gap:8px;align-items:center;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--fg-2);font-weight:700}
+.truth .k i{width:10px;height:10px;border-radius:2px}
+.truth .v{font-family:var(--display);font-size:34px;font-weight:700;margin-top:8px;line-height:1}
+.truth p{font-size:13px;color:var(--fg-2);margin-top:6px}
+.heat{display:grid;grid-template-columns:120px repeat(5,minmax(52px,1fr));gap:4px;min-width:460px}
+.heat .h{font-size:11px;color:var(--muted);text-align:center;padding:4px 0}
+.heat .r{font-size:12.5px;color:var(--fg-2);display:flex;align-items:center}
+.heat .c{border-radius:6px;padding:12px 4px;text-align:center;font-weight:700;font-size:14px;font-variant-numeric:tabular-nums;color:var(--fg);border:1px solid transparent}
+.heat .c.na{color:var(--muted);font-weight:500;background:repeating-linear-gradient(135deg,transparent 0 6px,rgba(227,225,222,.06) 6px 12px)}
+.heat .c.focus{border-color:var(--glow)}
+.heat .r.focus,.heat .h.focus{color:var(--glow);font-weight:700}
+.scroll-x{overflow-x:auto}
+.cats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:28px}
+.cat{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.cat .k{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--brand);font-weight:700}
+.cat q{font-family:var(--display);font-weight:700;font-size:19px;line-height:1.25;quotes:none}
+.cat .lock{margin-top:auto;font-size:12px;color:var(--muted);display:flex;gap:6px;align-items:center}
+.closing{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:24px;align-items:end}
+.next{display:flex;flex-direction:column;gap:6px;text-decoration:none;background:var(--brand);color:var(--bg-deep);border-radius:12px;padding:20px}
+.next small{font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:700}
+.next b{font:700 24px/1.15 var(--display)}
+
+/* lectura */
+.read-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);gap:28px;margin-top:30px;align-items:start}
+.obs{display:grid;margin-top:10px}
+.ob{padding:14px 0;border-top:1px solid var(--line);font-size:15px;color:var(--fg-2)}
+.ob b{color:var(--fg)}
+.tagsrc{display:inline-block;margin-left:4px;font:600 10px var(--mono);letter-spacing:.06em;color:var(--muted);border:1px solid var(--line-2);border-radius:4px;padding:1px 5px;vertical-align:1px}
+.hyps{display:grid;gap:14px}
+.hyp{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--glow);border-radius:0 12px 12px 0;padding:18px 20px}
+.hyp .k{font:700 11px var(--mono);color:var(--glow);letter-spacing:.08em}
+.hyp p{font-family:var(--display);font-weight:700;font-size:19px;line-height:1.32;margin-top:6px}
+.hyp .test{margin-top:12px;font-size:12.5px;color:var(--fg-2)}
+.hyp .test b{color:var(--brand)}
+.ask-agent{justify-self:start;background:transparent;border:1px solid var(--glow);color:var(--glow);border-radius:8px;padding:10px 16px;cursor:pointer;font-weight:700;font-size:13px}
+.ask-agent:hover{background:var(--surface-2)}
+
+/* agent */
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+#agent-btn{position:fixed;right:max(20px,env(safe-area-inset-right,0px));bottom:calc(20px + env(safe-area-inset-bottom,0px));z-index:35;display:flex;align-items:center;gap:10px;background:#012B2D;color:#7FFDFF;border:0;border-radius:99px;padding:13px 20px;font-weight:800;cursor:pointer;box-shadow:0 10px 30px rgba(1,43,45,.35)}
+#agent-btn:hover{filter:brightness(1.05)}
+body.present #agent-btn{display:none}
+#agent{position:fixed;top:0;right:0;bottom:0;width:min(460px,100%);z-index:45;background:var(--bg);border-left:1px solid var(--line-2);display:flex;flex-direction:column;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);padding-right:env(safe-area-inset-right,0px);box-shadow:-20px 0 60px rgba(1,43,45,.18)}
+.ag-head{padding:18px 20px 14px;border-bottom:1px solid var(--line)}
+.ag-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.ag-x{background:none;border:1px solid var(--line-2);border-radius:8px;color:var(--fg-2);padding:6px 10px;cursor:pointer;font-size:12px}
+.ag-ctx{font-size:12px;color:var(--fg-2);margin-top:8px}
+.ag-ctx b{color:var(--glow)}
+.ag-body{flex:1;overflow-y:auto;padding:16px 20px;display:flex;flex-direction:column;gap:16px}
+.msg.u{align-self:flex-end;background:#012B2D;color:#EEEDEA;border-radius:12px 12px 2px 12px;padding:10px 13px;max-width:88%;font-size:14px}
+.msg.a{font-size:14.5px;line-height:1.6;color:var(--fg);min-width:0}
+.msg.a p{margin:0 0 8px}.msg.a ul{margin:4px 0 10px;padding-left:18px}.msg.a li{margin:3px 0}
+.msg.a strong{color:var(--fg);font-weight:800}
+.msg.a h4{margin:10px 0 4px;font:700 15px var(--display);color:var(--fg)}
+.msg .work{font-size:12px;color:var(--muted);display:flex;gap:8px;align-items:center}
+.msg .work::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--glow);animation:pulse 1s infinite alternate}
+@keyframes pulse{from{opacity:.25}to{opacity:1}}
+.msg .err{font-size:12.5px;color:var(--fg-2);border:1px dashed var(--line-2);border-radius:8px;padding:8px 10px;margin-top:6px}
+.sugs{display:grid;gap:8px}
+.sugs .k{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.sugs button{text-align:left;background:var(--surface);border:1px solid var(--line-2);border-radius:10px;padding:10px 12px;cursor:pointer;font-size:13.5px;color:var(--fg)}
+.sugs button:hover{border-color:var(--glow)}
+.ag-foot{border-top:1px solid var(--line);padding:12px 20px 14px;display:grid;gap:8px;margin:0}
+.ag-foot textarea{width:100%;resize:none;background:var(--surface);border:1px solid var(--line-2);border-radius:10px;padding:10px 12px;color:var(--fg);font:inherit;font-size:14px;min-height:46px}
+.ag-row{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;font-size:11.5px;color:var(--muted)}
+.ag-row label{display:flex;gap:6px;align-items:center;cursor:pointer}
+.ag-send{background:var(--brand);color:var(--bg-deep);border:0;border-radius:8px;padding:9px 16px;font-weight:800;cursor:pointer}
+.ag-send:disabled{opacity:.5;cursor:default}
+.ag-stop{background:none;border:1px solid var(--line-2);color:var(--fg-2);border-radius:8px;padding:8px 12px;cursor:pointer}
+@media (max-width:900px){.read-grid{grid-template-columns:minmax(0,1fr)}}
+
+/* tooltip */
+#tip{position:fixed;pointer-events:none;z-index:50;background:#012B2D;color:#EEEDEA;font-size:12.5px;padding:8px 10px;border-radius:8px;max-width:260px;box-shadow:0 8px 24px rgba(1,43,45,.25);opacity:0;transition:opacity .12s}
+#tip b{display:block;font-size:13px}
+
+/* entry motion: resting state is visible; .live replays the entrance */
+@keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@keyframes glowin{from{opacity:0;transform:scale(.92);filter:blur(6px)}to{opacity:1;transform:none;filter:none}}
+.live .rise{animation:rise .8s cubic-bezier(.2,.7,.2,1) both}
+.live .rise.d1{animation-delay:.15s}.live .rise.d2{animation-delay:.3s}.live .rise.d3{animation-delay:.45s}
+.live .glow-in{animation:glowin 1.1s cubic-bezier(.2,.7,.2,1) both}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+/* ---------- presentation mode ---------- */
+body.present aside,body.present .lens .seg{display:none}
+body.present main{margin-left:0}
+html.present{scroll-snap-type:y mandatory}
+body.present .scene,body.present .beat{min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;justify-content:center;scroll-snap-align:start;border-bottom:0}
+body.present .beat .say{font-size:clamp(34px,5.4vw,76px)}
+body.present .lens{position:fixed;left:0;right:0;opacity:.0;transition:opacity .2s}
+body.present .lens:hover{opacity:1}
+#hud{position:fixed;right:max(18px,env(safe-area-inset-right,0px));bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:40;display:none;gap:8px;align-items:center;background:var(--sand);color:var(--bg-deep);border-radius:99px;padding:6px 6px 6px 14px;font-size:12px;font-weight:700}
+#hud button{border:0;background:var(--bg);color:var(--fg);border-radius:99px;width:30px;height:30px;cursor:pointer}
+#hud .x{width:auto;padding:0 12px}
+body.present #hud{display:flex}
+
+/* ---------- responsive ---------- */
+@media (max-width:1100px){.multiples{grid-template-columns:repeat(3,minmax(0,1fr))}.doors{grid-template-columns:repeat(2,minmax(0,1fr))}.cats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:900px){
+  aside{position:sticky;top:env(safe-area-inset-top,0px);inset:auto;width:auto;flex-direction:row;align-items:center;padding:10px max(16px,env(safe-area-inset-right,0px)) 10px max(16px,env(safe-area-inset-left,0px));gap:14px;overflow-x:auto;border-right:0;border-bottom:1px solid var(--line)}
+  .logo{font-size:18px;flex:none}.logo small,.aside-note,nav .grp{display:none}
+  nav{display:flex;gap:2px;flex:none}
+  nav a{white-space:nowrap;padding:7px 9px;font-size:12.5px}
+  .present-btn{margin:0;flex:none;padding:8px 12px}
+  main{margin-left:0}
+  .lens{top:calc(env(safe-area-inset-top,0px) + 58px)}
+  .wrap{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+  .grid2,.grid-main,.hero,.vida-cover,.gap-hero,.closing{grid-template-columns:minmax(0,1fr)}
+  .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .steps,.truths{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .scene{padding-block:44px}.beat .wrap{padding-block:60px}
+}
+@media (max-width:560px){.multiples,.doors,.cats,.truths{grid-template-columns:minmax(0,1fr)}.lens select{min-width:0;width:100%}.lens label{flex:1 1 140px}}
+</style>
+
+<aside>
+  <div class="logo">Young Aurelius<small>El Gran Reacomodo · Estudio 01</small></div>
+  <nav id="nav" aria-label="Secciones"></nav>
+  <button class="present-btn" id="present" type="button" title="Tecla P">▶ Presentar</button>
+  <p class="aside-note">Demo gráfica. La población es proyección DANE real; TGI, fuentes oficiales por vida y estudio propio están simulados.</p>
+</aside>
+<main id="view"></main>
+<div id="tip" role="tooltip"></div>
+<button id="agent-btn" type="button" hidden aria-controls="agent"><span aria-hidden="true">✳</span> Pregúntale al estudio</button>
+<section id="agent" hidden role="dialog" aria-labelledby="ag-title">
+  <div class="ag-head on-dark"><div class="ag-top"><div><div class="eyebrow c">Agente del estudio</div><h2 id="ag-title" class="h-m" style="margin-top:4px">Pregúntale a los datos.</h2></div><button class="ag-x" id="ag-close" type="button">Cerrar ✕</button></div><div class="ag-ctx" id="ag-ctx"></div></div>
+  <div class="ag-body" id="ag-body" aria-live="polite"></div>
+  <form class="ag-foot" id="ag-form">
+    <label for="ag-in" class="sr">Tu pregunta</label>
+    <textarea id="ag-in" rows="2" placeholder="Pregunta sobre esta vida, otra vida o la nación…"></textarea>
+    <div class="ag-row"><label for="ag-deep"><input type="checkbox" id="ag-deep"> Análisis profundo (más lento)</label><span><button type="button" class="ag-stop" id="ag-stop" hidden>Detener</button> <button class="ag-send" id="ag-send" type="submit">Enviar</button></span></div>
+    <div class="ag-row"><span>Responde con tu cuenta de Claude. Población: DANE real. TGI, fuentes por vida y estudio propio: simulados.</span></div>
+  </form>
+</section>
+<div id="hud" aria-live="polite"><span id="hud-n">1 / 1</span><button id="hud-prev" aria-label="Escena anterior">↑</button><button id="hud-next" aria-label="Escena siguiente">↓</button><button class="x" id="hud-x">Salir</button></div>
+
+<script src="dane-population.js"></script>
+<script>
+/* ================= data helpers (DANE real) ================= */
+const P=DANE_POP, CO='Toda Colombia', REG=['Caribe','Central','Pacífica','Bogotá','Oriental'];
+const Y0=2018,Y1=2044,NOW=2026,YEARS=[];for(let y=Y0;y<=Y1;y++)YEARS.push(y);
+const pop=(r,y,lo,hi)=>{const a=P[r][y];let s=0;for(let i=lo;i<=hi;i++)s+=a[0][i]+a[1][i];return s};
+const median=(r,y)=>{const t=pop(r,y,0,100);let c=0;for(let i=0;i<=100;i++){c+=P[r][y][0][i]+P[r][y][1][i];if(c>=t/2)return i}};
+const share=(r,y,lo,hi)=>pop(r,y,lo,hi)/pop(r,y,0,100)*100;
+const crossYear=(r,lo=65)=>{for(const y of YEARS)if(pop(r,y,lo,100)>pop(r,y,0,14))return y;return null};
+const depRatio=(r,y)=>(pop(r,y,0,14)+pop(r,y,65,100))/pop(r,y,15,64)*100;
+const fmt=(n,d=0)=>Number(n).toLocaleString('es-CO',{minimumFractionDigits:d,maximumFractionDigits:d});
+const M=n=>fmt(n/1e6,1)+' M';
+const regName=r=>r===CO?'Colombia':r==='Bogotá'?'Bogotá':'la región '+r;
+
+/* ================= lens & synthetic engine ================= */
+const VAGES=['18–29','30–44','45–59','60–74','75+'], VRANGE=[[18,29],[30,44],[45,59],[60,74],[75,100]];
+const INC=['Bajo','Medio','Alto'];
+const INC_SH={Bajo:[45,35,32,38,42],Medio:[45,48,48,45,42]}; // supuestos v14 por grupo
+const HOME=['Unipersonal','Pareja sin hijos','Con hijos','Multigeneracional'];
+const HOME_SH=[[8,12,55,25],[12,16,52,20],[15,20,45,20],[22,32,25,21],[28,27,15,30]];
+const HOME_TXT={Unipersonal:'que viven solas','Pareja sin hijos':'que viven en pareja sin hijos','Con hijos':'que viven con hijos',Multigeneracional:'en hogares multigeneracionales'};
+const DEF_LENS={region:CO,inc:'Todos',age:3,home:'Todos'};
+let lens={...DEF_LENS};
+try{const s=JSON.parse(localStorage.getItem('egr-lens')||'null');if(s&&s.region)lens={...DEF_LENS,...s}}catch(e){}
+const saveLens=()=>{try{localStorage.setItem('egr-lens',JSON.stringify(lens))}catch(e){}};
+function hash(s){let x=2166136261;for(const c of s){x^=c.charCodeAt(0);x=Math.imul(x,16777619)}return ((x>>>0)%10000)/10000}
+const cellShare=(L,ai)=>{const inc=L.inc==='Todos'?1:(L.inc==='Alto'?100-INC_SH.Bajo[ai]-INC_SH.Medio[ai]:INC_SH[L.inc][ai])/100;const hm=L.home==='Todos'?1:HOME_SH[ai][HOME.indexOf(L.home)]/100;return inc*hm};
+function val(vid,key,m,ai,L,year=NOW){
+  let v=m.b[ai];
+  if(m.sl)v-=m.sl[ai]*(NOW-year);
+  const unit=m.u||'%', spread=unit==='%'?4:1.6;
+  if(L.inc!=='Todos')v+=(INC.indexOf(L.inc)-1)*(m.is||0);
+  if(L.region!==CO)v+=(hash(vid+key+L.region)-.5)*2*spread;
+  if(L.home!=='Todos')v+=(hash(vid+key+L.home)-.5)*2*spread;
+  if(m.sl&&year!==NOW)v+=(hash(vid+key+year+L.region+ai)-.5)*.8;
+  return unit==='%'?Math.max(1,Math.min(98,v)):Math.max(0,v);
+}
+const sampleN=(L,region,ai)=>{const adults=pop(CO,NOW,18,100);const p=pop(region,NOW,...VRANGE[ai]);return 2700*p/adults*cellShare(L,ai)};
+function segText(L,{cap=false}={}){
+  let s='personas de '+VAGES[L.age]+' años';
+  if(L.inc!=='Todos')s+=' de ingreso '+L.inc.toLowerCase();
+  if(L.home!=='Todos')s+=' '+HOME_TXT[L.home];
+  s+=' en '+regName(L.region);
+  return cap?'Las '+s:'las '+s;
+}
+
+/* ================= the seven lives ================= */
+const VIDAS=[
+ {id:'bolsillo',short:'Bolsillo',n:1,name:'La vida del bolsillo',desc:'Ingreso, ahorro, deuda, pensión y hasta cuándo alcanza.',q:'¿Hasta qué edad le alcanza la plata que tiene planeada? ¿Y hasta qué edad cree que va a vivir?',
+  cats:['Finanzas','Retail'],
+  dato:{t:'Cotiza o recibe pensión',src:'GEIH · PILA',b:[34,46,43,31,27],is:12,say:(v,s)=>`<b>${fmt(v)}%</b> de ${s} cotiza o recibe pensión.`},
+  hecho:{t:'Tiene un producto de ahorro o inversión',b:[37,44,44,39,28],sl:[2.2,1.2,.6,1.4,1.6],is:14},
+  dicho:{u:'años',a:{t:'Edad hasta la que espera vivir',b:[84,83,82,84,88],is:2},b:{t:'Edad hasta la que le alcanza lo planeado',b:[66,68,71,76,83],is:5},range:[60,95]},
+  gapLbl:'años de vida sin plan',beat:(a,b,s)=>`${s} esperan vivir hasta los <b>${a}</b>. Su plata les alcanza hasta los <b>${b}</b>.`,
+  sponsor:[['Finanzas','¿Pediría un crédito a los 70? ¿Para qué?'],['Retail','¿Qué deja de comprar cuando el ingreso tiene que durar 20 años más?'],['Finanzas','¿Quién le ayuda a decidir qué hacer con su pensión?']],
+  inter:'¿Quién sostiene a quién cuando la vida dura 100 años?'},
+ {id:'oficio',short:'Oficio y aprendizaje',n:2,name:'La vida del oficio y el aprendizaje',desc:'Trabajar, aprender, reinventarse y retirarse más de una vez.',q:'¿Hasta qué edad quiere trabajar? ¿Volvería a estudiar para cambiar de oficio?',
+  cats:['Academia','Tecnología'],
+  dato:{t:'Está ocupado',src:'GEIH · PILA · ECV',b:[52,74,70,38,9],is:6,say:(v,s)=>`<b>${fmt(v)}%</b> de ${s} trabaja.`},
+  hecho:{t:'Tomó un curso o formación en el último año',b:[38,30,21,11,4],sl:[1,1.4,1.6,1.1,.4],is:9},
+  dicho:{u:'%',a:{t:'Quiere seguir trabajando después de los 65',b:[22,31,44,63,41],is:-4},b:{t:'Cree que tendrá dónde hacerlo',b:[15,17,19,28,14],is:5}},
+  gapLbl:'puntos entre querer trabajar y poder hacerlo',beat:(a,b,s)=>`<b>${a}%</b> de ${s} quiere seguir trabajando después de los 65. Solo <b>${b}%</b> cree que tendrá dónde.`,
+  sponsor:[['Academia','¿Volvería a estudiar después de los 50? ¿Qué y para qué?'],['Tecnología','¿Qué herramienta le haría falta para seguir trabajando a los 70?'],['Academia','¿Quién le enseña a quién en un equipo de 25 y 65 años?']],
+  inter:'¿Qué aprende un equipo cuando trabajan juntos personas de 25 y de 65?'},
+ {id:'cuerpo',short:'Cuerpo',n:3,name:'La vida del cuerpo',desc:'Salud, energía, hábitos, prevención y cuidado de sí.',q:'¿Qué hace hoy pensando en cómo quiere estar a los 85?',
+  cats:['Salud','Farmacéutica','Alimentos','Belleza'],
+  dato:{t:'Años de vida que le quedan en promedio',src:'Tablas de vida · ECV',u:'años',b:[54,41,28,17,8],is:1.5,say:(v,s)=>`A ${s} les quedan, en promedio, <b>${fmt(v)} años</b> de vida.`},
+  hecho:{t:'Hace actividad física cada semana',b:[54,45,38,34,21],sl:[.4,.9,1.3,1.7,1],is:8},
+  dicho:{u:'%',a:{t:'Dice que se cuida pensando en los 85',b:[41,58,69,77,74],is:3},b:{t:'Hace algo concreto hoy por esa meta',b:[18,24,29,36,31],is:6}},
+  gapLbl:'puntos entre la intención y el hábito',beat:(a,b,s)=>`<b>${a}%</b> de ${s} dice cuidarse pensando en los 85. Apenas <b>${b}%</b> hace algo concreto hoy.`,
+  sponsor:[['Salud','¿Qué pagaría de su bolsillo para llegar bien a los 90?'],['Alimentos','¿Qué dejó de comer y qué empezó a comer pensando en la vejez?'],['Belleza','¿Qué significa verse bien a los 75?']],
+  inter:'¿Quién cuida la salud de quién en una familia de tres generaciones?'},
+ {id:'vinculos',short:'Vínculos',n:4,name:'La vida de los vínculos',desc:'Pareja, familia, amigos, soledad y el cuidado que se da y se recibe.',q:'¿Quién lo va a cuidar a usted? ¿Y a quién va a cuidar usted en los próximos diez años?',
+  cats:['Alimentos','Licores','Medios','Farmacéutica'],
+  dato:{t:'Horas semanales de cuidado no pago',src:'ENUT · ECV',u:'h',b:[14,24,21,17,9],is:-3,say:(v,s)=>`${s.charAt(0).toUpperCase()+s.slice(1)} dedican <b>${fmt(v)} horas</b> a la semana a cuidar sin pago.`},
+  hecho:{t:'Compra productos para cuidar a otra persona',b:[14,26,37,33,16],sl:[.5,.8,1.9,1.5,.6],is:6},
+  dicho:{u:'%',a:{t:'Espera que su familia lo cuide en la vejez',b:[61,57,54,58,66],is:-3},b:{t:'Cree que alguien podrá hacerlo',b:[38,31,27,30,41],is:4}},
+  gapLbl:'puntos entre esperar cuidado y tenerlo',beat:(a,b,s)=>`<b>${a}%</b> de ${s} espera que su familia lo cuide. Solo <b>${b}%</b> cree que alguien realmente podrá.`,
+  sponsor:[['Farmacéutica','¿Qué compra hoy para cuidar a sus papás? ¿Quién decide esa compra?'],['Medios','¿Con quién habla todos los días cuando vive solo?'],['Licores','¿Con quién celebra cuando los amigos empiezan a faltar?']],
+  inter:'¿Cómo se reparte el cuidado cuando hay menos hijos y más abuelos?'},
+ {id:'casa',short:'Casa',n:5,name:'La vida de la casa',desc:'Con quién se vive, la vivienda, el barrio y la canasta del hogar.',q:'¿Con quién va a vivir a los 75? ¿Su casa de hoy le sirve para esa edad?',
+  cats:['Vivienda','Retail','Alimentos'],
+  dato:{t:'Vive solo',src:'ECV · Censo 2018',b:[9,13,14,19,27],is:2,say:(v,s)=>`<b>${fmt(v)}%</b> de ${s} vive solo.`},
+  hecho:{t:'Compra formatos pequeños o individuales',b:[44,36,30,35,40],sl:[1.6,1.2,1,1.5,1.8],is:4},
+  dicho:{u:'%',a:{t:'Quiere envejecer en su casa actual',b:[44,52,63,74,86],is:2},b:{t:'Su casa actual le serviría a esa edad',b:[29,30,33,38,42],is:7}},
+  gapLbl:'puntos entre querer quedarse y poder hacerlo',beat:(a,b,s)=>`<b>${a}%</b> de ${s} quiere envejecer en su casa. Solo <b>${b}%</b> vive en una que le serviría.`,
+  sponsor:[['Vivienda','¿Qué le cambiaría a su casa para vivir en ella hasta los 90?'],['Alimentos','¿Cómo cambió lo que come desde que en su casa son dos, o uno?'],['Retail','¿Qué tamaño de empaque le sobra hoy?']],
+  inter:'¿Qué casa sirve para vivir con otra generación?'},
+ {id:'movimiento',short:'Movimiento',n:6,name:'La vida en movimiento',desc:'Moverse, decidir y valerse por sí mismo, en la ciudad y en lo digital.',q:'¿Qué tendría que pasar para que dejara de salir solo o de manejar?',
+  cats:['Movilidad','Tecnología'],
+  dato:{t:'Sale solo de su casa a diario',src:'ECV · ENUT',b:[83,85,79,64,38],is:3,say:(v,s)=>`<b>${fmt(v)}%</b> de ${s} sale solo de su casa a diario.`},
+  hecho:{t:'Usa apps de transporte o pagos digitales',b:[77,72,57,39,18],sl:[1.5,2.4,3.1,3.4,1.9],is:12},
+  dicho:{u:'%',a:{t:'Quiere moverse por su cuenta a los 80',b:[88,90,91,89,84],is:1},b:{t:'Cree que podrá hacerlo',b:[51,47,44,46,39],is:6}},
+  gapLbl:'puntos entre la autonomía deseada y la esperada',beat:(a,b,s)=>`<b>${a}%</b> de ${s} quiere moverse por su cuenta a los 80. <b>${b}%</b> cree que podrá.`,
+  sponsor:[['Movilidad','¿Qué servicio le permitiría seguir saliendo solo a los 80?'],['Tecnología','¿Qué trámite digital todavía le pide a otra persona que le haga?'],['Movilidad','¿Cuándo dejaría de manejar y quién se lo diría?']],
+  inter:'¿Quién lleva a quién cuando los mayores son mayoría?'},
+ {id:'disfrute',short:'Disfrute',n:7,name:'La vida del disfrute',desc:'Ocio, cultura, entretenimiento, viajes y aprender por gusto.',q:'Si tuviera 30 años más de vida sana, ¿en qué los usaría?',
+  cats:['Medios','Licores','Belleza','Academia'],
+  dato:{t:'Horas semanales de ocio',src:'ENUT · Consumo Cultural',u:'h',b:[24,17,16,21,29],is:2,say:(v,s)=>`${s.charAt(0).toUpperCase()+s.slice(1)} tienen <b>${fmt(v)} horas</b> de ocio a la semana.`},
+  hecho:{t:'Viajó o fue a un evento cultural este año',b:[51,44,41,39,21],sl:[.8,.6,1.2,2.1,1],is:13},
+  dicho:{u:'%',a:{t:'Usaría años extra de vida sana para aprender o viajar',b:[74,71,68,66,52],is:4},b:{t:'Tiene un plan concreto para ese tiempo',b:[22,19,18,21,17],is:6}},
+  gapLbl:'puntos entre el deseo y el plan',beat:(a,b,s)=>`Con 30 años más de vida sana, <b>${a}%</b> de ${s} los usaría para aprender o viajar. <b>${b}%</b> tiene un plan.`,
+  sponsor:[['Medios','¿Qué contenido busca hoy que antes no veía?'],['Academia','¿Qué aprendería solo por gusto si tuviera tiempo?'],['Belleza','¿Para quién se arregla cuando ya no va a la oficina?']],
+  inter:'¿Qué disfrutan juntos un nieto y su abuelo?'}
+];
+const unitOf=m=>m.u||'%';
+const fmtU=(v,u)=>u==='%'?fmt(v)+'%':u==='h'?fmt(v)+' h':fmt(v)+' años';
+function gapOf(V,L,ai=L.age,region=L.region){
+  const l={...L,region};
+  const a=Math.round(val(V.id,'da',V.dicho.a,ai,l)), b=Math.round(val(V.id,'db',V.dicho.b,ai,l));
+  return {a,b:Math.min(b,a-1),g:Math.max(1,a-Math.min(b,a-1))};
+}
+
+/* ================= tiny svg kit ================= */
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');
+const tipAttr=(t,b)=>` data-tip="${esc(t)}" data-tipb="${esc(b)}"`;
+const HATCH=`<defs><pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" fill="rgba(0,160,110,.35)"/><rect width="3" height="6" fill="#00A06E"/></pattern><pattern id="hatchbg" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="1" height="8" fill="var(--line)"/></pattern></defs>`;
+
+function lineChart({xs,series,yMin=0,yMax,yStep,yFmt=v=>v,w=640,h=280,today,marks=[],xLabel=x=>x,xTicks,mr=76}){
+  const m={l:44,r:mr,t:16,b:30},iw=w-m.l-m.r,ih=h-m.t-m.b;
+  const X=i=>m.l+i*(iw/(xs.length-1)),Yp=v=>m.t+ih-(v-yMin)/(yMax-yMin)*ih;
+  let s=`<svg viewBox="0 0 ${w} ${h}" role="img">${HATCH}<g class="grid">`;
+  for(let v=yMin;v<=yMax+1e-9;v+=yStep)s+=`<line x1="${m.l}" x2="${w-m.r}" y1="${Yp(v)}" y2="${Yp(v)}"/><text x="${m.l-8}" y="${Yp(v)+4}" text-anchor="end">${yFmt(v)}</text>`;
+  s+='</g>';
+  if(today!=null){const ti=xs.indexOf(today);if(ti>=0){s+=`<rect x="${X(ti)}" y="${m.t}" width="${X(xs.length-1)-X(ti)}" height="${ih}" fill="url(#hatchbg)"/><line x1="${X(ti)}" x2="${X(ti)}" y1="${m.t}" y2="${m.t+ih}" stroke="var(--line-2)" stroke-dasharray="3 3"/><text x="${X(ti)+6}" y="${m.t+12}" class="lbl">Hoy · ${today}</text><text x="${X(xs.length-1)-4}" y="${m.t+12}" text-anchor="end">Proyección</text>`}}
+  (xTicks||xs).forEach(x=>{const i=xs.indexOf(x);s+=`<text x="${X(i)}" y="${h-8}" text-anchor="middle">${xLabel(x)}</text>`});
+  const ends=[];
+  series.forEach(se=>{const d=se.values.map((v,i)=>(i?'L':'M')+X(i).toFixed(1)+','+Yp(v).toFixed(1)).join('');
+    s+=`<path d="${d}" fill="none" stroke="${se.color}" stroke-width="${se.width||2}" ${se.dash?`stroke-dasharray="${se.dash}"`:''} stroke-linecap="round" stroke-linejoin="round" opacity="${se.op||1}"/>`;
+    if(se.label){const i=se.values.length-1;ends.push({y:Yp(se.values[i]),se,v:se.values[i]})}
+    se.values.forEach((v,i)=>{s+=`<circle cx="${X(i)}" cy="${Yp(v)}" r="9" fill="transparent"${tipAttr(se.name+' · '+xs[i],se.fmt?se.fmt(v):yFmt(v))}/>`});
+  });
+  ends.sort((a,b)=>a.y-b.y);for(let i=1;i<ends.length;i++)if(ends[i].y-ends[i-1].y<14)ends[i].y=ends[i-1].y+14;
+  ends.forEach(e=>{s+=`<circle cx="${X(xs.length-1)}" cy="${Yp(e.v)}" r="4" fill="${e.se.color}" stroke="var(--surface)" stroke-width="2"/><text x="${X(xs.length-1)+10}" y="${e.y+4}" class="lbl">${e.se.label}</text>`});
+  marks.forEach(mk=>{const i=xs.indexOf(mk.x);s+=`<circle cx="${X(i)}" cy="${Yp(mk.y)}" r="7" fill="var(--glow)" stroke="var(--bg)" stroke-width="3"/><text x="${X(i)+(mk.dx||0)}" y="${Yp(mk.y)+(mk.dy||-14)}" text-anchor="${mk.anchor||'middle'}" style="fill:var(--glow);font-weight:700;font-size:13px">${mk.label}</text>`});
+  return s+'</svg>';
+}
+
+/* ================= tooltip ================= */
+const tip=document.getElementById('tip');
+document.addEventListener('pointermove',e=>{const t=e.target.closest('[data-tip]');if(!t){tip.style.opacity=0;return}
+  tip.innerHTML=`<b>${t.dataset.tipb}</b>${t.dataset.tip}`;tip.style.opacity=1;
+  const r=tip.getBoundingClientRect();let x=e.clientX+14,y=e.clientY+14;if(x+r.width>innerWidth-8)x=e.clientX-r.width-14;if(y+r.height>innerHeight-8)y=e.clientY-r.height-14;tip.style.left=x+'px';tip.style.top=y+'px'});
+
+/* ================= nav ================= */
+function renderNav(cur){
+  document.getElementById('nav').innerHTML=`<div class="grp">Panorama</div><a href="#nacion" ${cur==='nacion'?'aria-current="page"':''}><b>◎</b>Estado de la nación</a><div class="grp">Las siete vidas</div>`+
+   VIDAS.map(v=>`<a href="#${v.id}" ${cur===v.id?'aria-current="page"':''}><b>${v.n}</b>${v.short}</a>`).join('');
+}
+
+/* ================= NATION ================= */
+function pyramid(year){
+  const tot=pop(CO,year,0,100), base=pop(CO,Y0,0,100), w=640,h=400,mid=w/2,gap=26,maxP=5,bh=15,top=22;
+  const sx=v=>v/maxP*(mid-gap-10);
+  let s=`<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="Pirámide poblacional ${year}">${HATCH}`;
+  s+=`<text x="${mid-gap-8}" y="12" text-anchor="end" class="lbl">Hombres</text><text x="${mid+gap+8}" y="12" class="lbl">Mujeres</text>`;
+  const proj=year>NOW;
+  for(let b=20;b>=0;b--){const lo=b*5,hi=b===20?100:lo+4,y=top+(20-b)*(bh+2);
+    const lab=b===20?'100+':lo+'–'+hi;
+    const vals=[0,1].map(sx_=>{let s1=0,s0=0;for(let i=lo;i<=hi;i++){s1+=P[CO][year][sx_][i];s0+=P[CO][Y0][sx_][i]}return [s1/tot*100,s0/base*100,s1]});
+    s+=`<text x="${mid}" y="${y+bh-3}" text-anchor="middle" style="font-size:10px">${lab}</text>`;
+    vals.forEach((v,k)=>{const wv=sx(v[0]),w0=sx(v[1]),x=k?mid+gap:mid-gap-wv,x0=k?mid+gap:mid-gap-w0;
+      s+=`<rect x="${x}" y="${y}" width="${Math.max(.5,wv)}" height="${bh}" rx="2" fill="${proj?'url(#hatch)':'var(--dane)'}" ${k?'':'opacity=".82"'}${tipAttr((k?'Mujeres ':'Hombres ')+lab+' · '+year,fmt(v[0],2)+'% · '+fmt(v[2])+' personas')}/>`;
+      s+=`<rect x="${x0}" y="${y}" width="${Math.max(.5,w0)}" height="${bh}" rx="2" fill="none" stroke="var(--fg)" stroke-opacity=".45" stroke-width="1" pointer-events="none"/>`;
+    });
+  }
+  const axY=top+21*(bh+2)+6;[0,2.5,5].forEach(p=>{s+=`<text x="${mid-gap-sx(p)}" y="${axY+10}" text-anchor="middle">${fmt(p,1)}%</text><text x="${mid+gap+sx(p)}" y="${axY+10}" text-anchor="middle">${fmt(p,1)}%</text>`});
+  return s+'</svg>';
+}
+function nationCounters(y){
+  const t=pop(CO,y,0,100),u=share(CO,y,0,14),o=share(CO,y,65,100),md=median(CO,y);
+  const t0=pop(CO,Y0,0,100);
+  return `<div class="counter"><div class="k">Población</div><div class="v num">${M(t)}</div><div class="d">${t>=t0?'+':''}${fmt((t/t0-1)*100,1)}% frente a 2018</div></div>
+  <div class="counter"><div class="k">Edad mediana</div><div class="v num">${md} años</div><div class="d">${median(CO,Y0)} años en 2018</div></div>
+  <div class="counter"><div class="k">Menores de 15</div><div class="v num">${fmt(u,1)}%</div><div class="d">${fmt(share(CO,Y0,0,14),1)}% en 2018</div></div>
+  <div class="counter"><div class="k">65 años o más</div><div class="v num">${fmt(o,1)}%</div><div class="d">${fmt(share(CO,Y0,65,100),1)}% en 2018</div></div>`;
+}
+function renderNation(){
+  const c65=crossYear(CO,65),c60=crossYear(CO,60);
+  let peakY=Y0,peak=0;YEARS.forEach(y=>{const t=pop(CO,y,0,100);if(t>peak){peak=t;peakY=y}});
+  let depY=Y0,dmin=1e9;YEARS.forEach(y=>{const d=depRatio(CO,y);if(d<dmin){dmin=d;depY=y}});
+  const b0=pop(CO,Y0,0,0),bN=pop(CO,NOW,0,0),b1=pop(CO,Y1,0,0),o0=pop(CO,Y0,80,100),oN=pop(CO,NOW,80,100),o1=pop(CO,Y1,80,100);
+  const kpi=(k,now,fut)=>`<div class="kpi"><div class="k">${k}</div><div class="pair"><span class="now num">${now}</span><span class="arrow">→</span><span class="fut num">${fut}</span></div><div class="yr">HOY 2026 → 2044</div></div>`;
+  const regs=REG.map(r=>({r,c:crossYear(r,65),m0:median(r,NOW),m1:median(r,Y1),d:pop(r,Y1,0,100)/pop(r,NOW,0,100)-1}));
+  const fastest=regs.filter(x=>x.c).sort((a,b)=>a.c-b.c)[0];
+  const lineU=YEARS.map(y=>share(CO,y,0,14)),lineO=YEARS.map(y=>share(CO,y,65,100));
+  const mult=regs.map(x=>`<button class="mult" type="button" data-region="${x.r}" aria-label="Ver ${x.r}"><h4>${x.r}</h4><div class="cross">${x.c?`65+ supera a menores de 15 en <b>${x.c}</b>`:'Sin cruce antes de <b>2044</b>'}</div>
+     ${lineChart({xs:YEARS,w:300,h:170,yMax:30,yStep:10,yFmt:v=>v+'%',xTicks:[2018,2044],today:null,mr:14,series:[{name:'Menores de 15 · '+x.r,values:YEARS.map(y=>share(x.r,y,0,14)),color:'var(--ref)',width:1.6,fmt:v=>fmt(v,1)+'%'},{name:'65+ · '+x.r,values:YEARS.map(y=>share(x.r,y,65,100)),color:'var(--dane)',width:2.2,fmt:v=>fmt(v,1)+'%'}],marks:x.c?[{x:x.c,y:share(x.r,x.c,65,100),label:'',dy:0}]:[]})}
+     <div class="note" style="margin-top:6px">Mediana: ${x.m0} → ${x.m1} años · Población 2026–2044: ${x.d>=0?'+':''}${fmt(x.d*100,1)}%</div></button>`).join('');
+  const doors=VIDAS.map(V=>{const g=gapOf(V,{...DEF_LENS});return `<a class="door" href="#${V.id}"><span class="n">${V.n}</span><h4>${V.name}</h4><span class="g num">${g.g}${V.dicho.u==='años'?' años':' pts'}</span><span class="gl">${V.gapLbl} · 60–74 años</span></a>`}).join('')+
+   `<div class="door dark on-dark"><h4>Siete vidas, una brecha cada una.</h4><p>Cada vida cruza el dato oficial, lo que la gente hace (TGI) y lo que dice (estudio propio). La distancia entre esas tres verdades es el hallazgo.</p></div>`;
+
+  document.getElementById('view').innerHTML=`
+  <section class="scene on-dark" data-scene><div class="wrap">
+    <div class="eyebrow rise">Estado de la nación · Proyección DANE 2018–2044</div>
+    <div class="hero">
+      <div class="hero-year glow-in num" data-count="${c65}" data-plain>${c65}</div>
+      <h1 class="rise d1">El año en que Colombia tendrá, por primera vez, más personas de 65 años o más que menores de 15.</h1>
+    </div>
+    <div class="kpis rise d2">
+      ${kpi('Población',M(pop(CO,NOW,0,100)),M(pop(CO,Y1,0,100)))}
+      ${kpi('Edad mediana',median(CO,NOW)+' años',median(CO,Y1)+' años')}
+      ${kpi('Personas de 65+',fmt(share(CO,NOW,65,100),1)+'%',fmt(share(CO,Y1,65,100),1)+'%')}
+      ${kpi('Menores de 1 año',fmt(bN),fmt(b1))}
+    </div>
+    <div class="demo-banner rise d3"><b>FUENTE</b><span>${esc(DANE_META.source)}. 2018–2025: serie estimada · 2026: año de lectura · 2027–2044: proyección.</span></div>
+  </div></section>
+
+  <section class="scene" data-scene data-scene-id="pyr"><div class="wrap">
+    <div class="eyebrow">01 · La forma del país</div>
+    <h2 class="h-l">Un país que pierde la forma de pirámide.</h2>
+    <p class="lede">Dale play: cada barra es un grupo de cinco años. El contorno muestra 2018; desde 2027 las barras se rayan porque son proyección.</p>
+    <div class="grid-main">
+      <div class="panel"><div class="panel-head"><span class="src dane real"><i></i>DANE · proyección</span><span class="status" id="pyr-status">Año de lectura</span></div>
+        <div id="pyr">${pyramid(NOW)}</div>
+        <div class="legend"><span><i class="box" style="background:var(--dane)"></i>Estimado</span><span><i class="box" style="background:repeating-linear-gradient(135deg,#00A06E 0 3px,rgba(0,160,110,.35) 3px 6px)"></i>Proyectado</span><span><i class="box" style="border:1px solid var(--fg)"></i>2018</span></div>
+      </div>
+      <div>
+        <div class="year-ctrl"><button class="play" id="play" type="button" aria-label="Reproducir 2018 a 2044">▶</button><div class="big-year num" id="yr">${NOW}</div></div>
+        <input type="range" id="yr-range" min="${Y0}" max="${Y1}" value="${NOW}" step="1" aria-label="Año" style="width:100%;accent-color:var(--brand);margin:14px 0 18px">
+        <div class="counters" id="counters">${nationCounters(NOW)}</div>
+      </div>
+    </div>
+  </div></section>
+
+  <section class="beat" data-scene><div class="wrap">
+    <div class="code rise">EGR-N-01 · DANE</div>
+    <p class="say rise d1">En 2044 nacerán cerca de <b>${fmt((1-b1/b0)*100)}% menos</b> colombianos que en 2018. Y habrá <b>${fmt(o1/o0,1)} veces</b> más personas de 80 años o más.</p>
+    <div class="src-line rise d2"><span class="src dane real"><i></i>DANE · proyección</span></div>
+  </div></section>
+
+  <section class="scene" data-scene><div class="wrap">
+    <div class="eyebrow">02 · Los hitos</div>
+    <h2 class="h-l">Los años en que todo cambia.</h2>
+    <div class="grid-main">
+      <div class="panel"><div class="panel-head"><div><h3>Peso de cada extremo de la vida</h3><div class="sub">% de la población total</div></div><span class="src dane real"><i></i>DANE</span></div>
+        ${lineChart({xs:YEARS,yMax:30,yStep:5,yFmt:v=>v+'%',today:NOW,xTicks:[2018,2022,2026,2030,2034,2038,2044],series:[{name:'Menores de 15',values:lineU,color:'var(--ref)',label:'Menores de 15',fmt:v=>fmt(v,1)+'%'},{name:'65 años o más',values:lineO,color:'var(--dane)',width:2.5,label:'65 o más',fmt:v=>fmt(v,1)+'%'}],marks:[{x:c65,y:share(CO,c65,65,100),label:'Cruce · '+c65,dy:-16,anchor:'end',dx:-4}]})}
+      </div>
+      <div class="milestones">
+        <div class="ms"><span class="y">${c60}</span><p><b>Hay más personas de 60+ que niños.</b> El primer cruce generacional.</p></div>
+        <div class="ms"><span class="y">${depY}</span><p><b>Se cierra el bono demográfico.</b> La relación de dependencia toca su mínimo (${fmt(dmin,1)}) y empieza a subir.</p></div>
+        <div class="ms"><span class="y">${c65}</span><p><b>65+ supera a los menores de 15.</b> Por cada 100 niños habrá más de 100 mayores.</p></div>
+        <div class="ms"><span class="y">${peakY}</span><p><b>La población toca techo:</b> ${M(peak)}. Desde ahí, la proyección deja de crecer.</p></div>
+      </div>
+    </div>
+  </div></section>
+
+  <section class="scene" data-scene><div class="wrap">
+    <div class="eyebrow">03 · Los motores</div>
+    <h2 class="h-l">Nacen menos. Se vive más.</h2>
+    <div class="grid2">
+      <div class="panel motor"><div class="panel-head"><h3>Menores de 1 año</h3><span class="src dane real"><i></i>DANE</span></div>
+        <div class="big num">−${fmt((1-b1/b0)*100)}%</div><p class="sub">De ${fmt(b0)} en 2018 a ${fmt(b1)} en 2044.</p>
+        <div class="mini-bars">${[[Y0,b0],[NOW,bN],[Y1,b1]].map(([y,v],i)=>`<div><em class="num">${fmt(v/1000)} mil</em><span class="bar ${y>NOW?'p':''}" style="height:${v/b0*80}%"${tipAttr('Menores de 1 año · '+y,fmt(v))}></span><small>${y}</small></div>`).join('')}</div></div>
+      <div class="panel motor"><div class="panel-head"><h3>Personas de 80 años o más</h3><span class="src dane real"><i></i>DANE</span></div>
+        <div class="big num">×${fmt(o1/o0,1)}</div><p class="sub">De ${fmt(o0)} en 2018 a ${fmt(o1)} en 2044.</p>
+        <div class="mini-bars">${[[Y0,o0],[NOW,oN],[Y1,o1]].map(([y,v])=>`<div><em class="num">${fmt(v/1000)} mil</em><span class="bar ${y>NOW?'p':''}" style="height:${v/o1*80}%"${tipAttr('80+ · '+y,fmt(v))}></span><small>${y}</small></div>`).join('')}</div></div>
+    </div>
+    <p class="note">La migración es el tercer motor del reacomodo. Entra cuando se integre la fuente de Migración Colombia.</p>
+  </div></section>
+
+  <section class="scene" data-scene><div class="wrap">
+    <div class="eyebrow">04 · El territorio</div>
+    <h2 class="h-l">No todo el país envejece al mismo ritmo.</h2>
+    <p class="lede">Cada región cruza la línea en un año distinto. Haz clic en una región para abrir las siete vidas con ese lente.</p>
+    <div class="multiples">${mult}</div>
+    <div class="legend"><span><i style="background:var(--ref)"></i>Menores de 15</span><span><i style="background:var(--dane)"></i>65 años o más</span><span><i class="box" style="background:var(--glow);border-radius:50%"></i>Año de cruce</span></div>
+  </div></section>
+
+  <section class="beat" data-scene><div class="wrap">
+    <div class="code rise">EGR-N-02 · DANE</div>
+    <p class="say rise d1">${fastest.r} llega al cruce en <b>${fastest.c}</b>, ${c65-fastest.c} años antes que el país. El Caribe no llega antes de 2044.</p>
+    <div class="src-line rise d2"><span class="src dane real"><i></i>DANE · proyección</span></div>
+  </div></section>
+
+  <section class="scene" data-scene><div class="wrap">
+    <div class="eyebrow">05 · Las generaciones</div>
+    <h2 class="h-l">Menos manos para más años.</h2>
+    <div class="grid-main">
+      <div class="panel"><div class="panel-head"><div><h3>Relación de dependencia demográfica</h3><div class="sub">(menores de 15 + 65 o más) por cada 100 personas de 15–64</div></div><span class="src dane real"><i></i>DANE</span></div>
+        ${lineChart({xs:YEARS,yMin:40,yMax:56,yStep:4,today:NOW,xTicks:[2018,2022,2026,2030,2034,2038,2044],series:[{name:'Dependencia',values:YEARS.map(y=>depRatio(CO,y)),color:'var(--dane)',width:2.5,label:'Dependencia',fmt:v=>fmt(v,1)}],marks:[{x:depY,y:dmin,label:'Mínimo · '+depY,dy:22,anchor:'end',dx:-4}]})}
+      </div>
+      <div class="panel"><div class="panel-head"><div><h3>Hogares más pequeños</h3><div class="sub">Personas por hogar</div></div><span class="src own sim"><i></i>Censo · ECV</span></div>
+        <div class="mini-bars" style="height:150px">${[['2018',3.1],['2026',2.9],['2044',2.5]].map(([y,v])=>`<div><em class="num">${fmt(v,1)}</em><span class="bar" style="height:${v/3.1*80}%;background:var(--own)"${tipAttr('Tamaño del hogar · '+y,fmt(v,1)+' personas · simulado')}></span><small>${y}</small></div>`).join('')}</div>
+        <p class="note">Valores ilustrativos hasta conectar Censo 2018 y ECV. Lo que muestra es la dirección esperada, no una cifra.</p>
+      </div>
+    </div>
+  </div></section>
+
+  <section class="scene" data-scene><div class="wrap">
+    <div class="eyebrow c">Lo que esto le hace a la vida</div>
+    <h2 class="h-l">Este reacomodo cambia siete vidas.</h2>
+    <p class="lede">Cada puerta abre una vida con su brecha más grande para las personas de 60–74 años. Las cifras de brecha son simuladas.</p>
+    <div class="doors">${doors}</div>
+  </div></section>`;
+
+  // pyramid interactions
+  const rng=document.getElementById('yr-range'),yrEl=document.getElementById('yr'),play=document.getElementById('play');
+  const setYear=y=>{y=+y;document.getElementById('pyr').innerHTML=pyramid(y);document.getElementById('counters').innerHTML=nationCounters(y);yrEl.textContent=y;yrEl.classList.toggle('proj',y>NOW);rng.value=y;document.getElementById('pyr-status').textContent=y<NOW?'Serie estimada':y===NOW?'Año de lectura':'Proyección'};
+  rng.addEventListener('input',e=>{stopPlay();setYear(e.target.value)});
+  let timer=null;const stopPlay=()=>{clearInterval(timer);timer=null;play.textContent='▶'};
+  window.playPyramid=()=>{if(timer)return;let y=+rng.value>=Y1?Y0:+rng.value;setYear(y);play.textContent='❚❚';timer=setInterval(()=>{y++;if(y>Y1){stopPlay();return}setYear(y)},380)};
+  play.addEventListener('click',()=>timer?stopPlay():playPyramid());
+  document.querySelectorAll('.mult').forEach(b=>b.addEventListener('click',()=>{lens.region=b.dataset.region;saveLens();location.hash='bolsillo'}));
+}
+
+/* ================= VIDA ================= */
+function barsChart(V,L){
+  const m=V.dato,u=unitOf(m),vals=VAGES.map((_,i)=>val(V.id,'dato',m,i,L)),max=Math.max(...vals)*1.15,w=560,h=250,bl=210,bw=60,gp=(w-40-bw*5)/4;
+  let s=`<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="${esc(m.t)} por grupo de edad"><line x1="20" x2="${w-20}" y1="${bl}" y2="${bl}" stroke="var(--line-2)"/>`;
+  vals.forEach((v,i)=>{const x=20+i*(bw+gp),bh=v/max*(bl-30),f=i===L.age;
+    s+=`<path d="M${x},${bl}V${bl-bh+4}q0,-4 4,-4h${bw-8}q4,0 4,4V${bl}Z" fill="var(--dane)" opacity="${f?1:.38}"${tipAttr(m.t+' · '+VAGES[i],fmtU(v,u))}/>`;
+    s+=`<text x="${x+bw/2}" y="${bl-bh-8}" text-anchor="middle" class="val" ${f?'':'style="fill:var(--fg-2);font-weight:500"'}>${fmtU(v,u)}</text><text x="${x+bw/2}" y="${bl+18}" text-anchor="middle" class="${f?'lbl':''}" ${f?'style="fill:var(--fg);font-weight:700"':''}>${VAGES[i]}</text>`});
+  return s+'</svg>';
+}
+function trendChart(V,L){
+  const m=V.hecho,yrs=[2022,2023,2024,2025,2026];
+  const series=VAGES.map((a,i)=>({name:a+' años',values:yrs.map(y=>val(V.id,'hecho',m,i,L,y)),color:i===L.age?'var(--tgi)':'var(--muted)',width:i===L.age?3:1.4,op:i===L.age?1:.55,label:i===L.age?a:null,fmt:v=>fmt(v)+'%'}));
+  series.sort((a,b)=>(a.label?1:0)-(b.label?1:0));
+  const all=series.flatMap(s=>s.values),mx=Math.min(100,Math.ceil(Math.max(...all)/10)*10+10);
+  return lineChart({xs:yrs,yMax:mx,yStep:mx>60?20:10,yFmt:v=>v+'%',series,h:260});
+}
+function wfData(V,L){
+  const m=V.hecho,ai=L.age,sh=cellShare(L,ai),rg=VRANGE[ai];
+  const p22=pop(L.region,2022,...rg)*sh,p26=pop(L.region,2026,...rg)*sh;
+  const i22=val(V.id,'hecho',m,ai,L,2022)/100,i26=val(V.id,'hecho',m,ai,L,2026)/100;
+  const A=p22*i22,dp=(p26-p22)*i22,dc=p26*(i26-i22);return {A,dp,dc,B:A+dp+dc,i22,i26};
+}
+function waterfall(V,L){
+  const {A,dp,dc,B,i22,i26}=wfData(V,L);
+  const steps=[['2022',0,A,'var(--ref)','Personas con la conducta en 2022'],['Efecto población',A,A+dp,'var(--dane)','Cambio por más o menos personas en el grupo (DANE)'],['Efecto conducta',A+dp,B,'var(--tgi)','Cambio porque la conducta creció o cayó (TGI)'],['2026',0,B,'var(--ref)','Personas con la conducta en 2026']];
+  const mx=Math.max(A,B,A+dp)*1.12,w=560,h=260,bl=210,bw=86,gp=(w-40-bw*4)/3,Y=v=>bl-v/mx*(bl-26);
+  let s=`<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="Descomposición del cambio"><line x1="20" x2="${w-20}" y1="${bl}" y2="${bl}" stroke="var(--line-2)"/>`;
+  steps.forEach(([l,a,b,c,d],i)=>{const x=20+i*(bw+gp),y1=Y(Math.max(a,b)),y2=Y(Math.min(a,b)),delta=i===1||i===2;
+    s+=`<rect x="${x}" y="${y1}" width="${bw}" height="${Math.max(2,y2-y1)}" rx="3" fill="${c}"${tipAttr(d,(delta&&b-a>=0?'+':'')+fmt((b-a)/1000)+' mil personas')}/>`;
+    if(i<3)s+=`<line x1="${x+bw}" x2="${x+bw+gp}" y1="${Y(b)}" y2="${Y(b)}" stroke="var(--line-2)" stroke-dasharray="3 3"/>`;
+    s+=`<text x="${x+bw/2}" y="${y1-8}" text-anchor="middle" class="val">${delta&&b-a>=0?'+':''}${fmt((b-a)/1000)} mil</text><text x="${x+bw/2}" y="${bl+18}" text-anchor="middle" class="lbl">${l}</text>`});
+  s+='</svg>';
+  let read;
+  if(dp>=0&&dc>=0){const pc=Math.round(dp/(dp+dc)*100);read=`De los <b>+${fmt((dp+dc)/1000)} mil</b> casos nuevos, <b>${pc}%</b> se explica porque hay más personas en el grupo y <b>${100-pc}%</b> porque cambió la conducta.`}
+  else if(dp<0&&dc>=0)read=`El grupo pierde <b>${fmt(-dp/1000)} mil</b> casos por demografía, pero la conducta suma <b>${fmt(dc/1000)} mil</b>.`;
+  else read=`La demografía mueve <b>${dp>=0?'+':''}${fmt(dp/1000)} mil</b> casos y la conducta <b>${dc>=0?'+':''}${fmt(dc/1000)} mil</b>.`;
+  return {svg:s,read,i22,i26};
+}
+function dumbbell(V,L){
+  const d=V.dicho,u=d.u,[lo,hi]=d.range||[0,100],w=560,rowH=40,h=VAGES.length*rowH+40,x0=86,x1=w-28,X=v=>x0+(v-lo)/(hi-lo)*(x1-x0);
+  let s=`<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="Lo que se desea frente a lo que se espera"><g class="grid">`;
+  const step=u==='años'?5:20;for(let v=lo;v<=hi;v+=step)s+=`<line x1="${X(v)}" x2="${X(v)}" y1="6" y2="${h-30}"/><text x="${X(v)}" y="${h-12}" text-anchor="middle">${u==='años'?v:v+'%'}</text>`;
+  s+='</g>';
+  VAGES.forEach((a,i)=>{const g=gapOf(V,L,i),y=22+i*rowH,f=i===L.age;
+    s+=`<text x="${x0-14}" y="${y+4}" text-anchor="end" class="${f?'lbl':''}" ${f?'style="fill:var(--fg);font-weight:700"':''}>${a}</text>`;
+    s+=`<line x1="${X(g.b)}" x2="${X(g.a)}" y1="${y}" y2="${y}" stroke="var(--glow)" stroke-width="${f?6:3}" stroke-linecap="round" opacity="${f?1:.45}"${tipAttr('Brecha · '+a,g.g+(u==='años'?' años':' puntos'))}/>`;
+    s+=`<circle cx="${X(g.b)}" cy="${y}" r="${f?8:6}" fill="var(--surface)" stroke="var(--own)" stroke-width="2.5"${tipAttr(d.b.t+' · '+a,fmtU(g.b,u))}/><circle cx="${X(g.a)}" cy="${y}" r="${f?8:6}" fill="var(--own)" stroke="var(--surface)" stroke-width="2"${tipAttr(d.a.t+' · '+a,fmtU(g.a,u))}/>`;
+    if(f)s+=`<text x="${(X(g.a)+X(g.b))/2}" y="${y-12}" text-anchor="middle" style="fill:var(--glow);font-weight:700;font-size:13px">${g.g}${u==='años'?' años':' pts'}</text>`;
+  });
+  return s+'</svg>';
+}
+function heatmap(V,L){
+  const gaps=REG.map(r=>VAGES.map((_,i)=>({g:gapOf(V,L,i,r).g,n:sampleN(L,r,i)})));
+  const vals=gaps.flat().filter(c=>c.n>=80).map(c=>c.g),mx=Math.max(...vals,1),mn=Math.min(...vals,0);
+  let s=`<div class="heat" role="table" aria-label="Brecha por región y edad"><div class="h"></div>${VAGES.map((a,i)=>`<div class="h ${i===L.age?'focus':''}">${a}</div>`).join('')}`;
+  REG.forEach((r,ri)=>{s+=`<div class="r ${r===L.region?'focus':''}">${r}</div>`+gaps[ri].map((c,i)=>{const f=i===L.age&&(r===L.region||L.region===CO);
+    if(c.n<80)return `<div class="c na ${f?'focus':''}"${tipAttr('Base simulada de '+fmt(c.n)+' casos, menor a 80','Sin dato')}>—</div>`;
+    const t=(c.g-mn)/(mx-mn||1);return `<div class="c num ${f?'focus':''}" style="background:rgba(127,253,255,${(.08+t*.62).toFixed(2)});${t>.62?'color:var(--bg-deep)':''}"${tipAttr(r+' · '+VAGES[i]+' · n≈'+fmt(c.n),c.g+(V.dicho.u==='años'?' años':' puntos'))}>${c.g}</div>`}).join('')});
+  return s+'</div>';
+}
+const ORD=['','más grande','segunda más grande','tercera más grande','cuarta más grande','quinta más grande'];
+function signals(V,L){
+  const ai=L.age,u=V.dicho.u,uw=u==='años'?'años':'puntos',w=wfData(V,L),g=gapOf(V,L);
+  const gaps=VAGES.map((_,i)=>gapOf(V,L,i).g),rank=gaps.filter(x=>x>g.g).length+1;
+  const regs=REG.map(r=>({r,g:gapOf(V,L,ai,r).g,n:sampleN(L,r,ai)})).filter(x=>x.n>=80).sort((a,b)=>b.g-a.g);
+  const incB=gapOf(V,{...L,inc:'Bajo'}).g,incA=gapOf(V,{...L,inc:'Alto'}).g;
+  const rg=VRANGE[ai],grow=pop(L.region,Y1,...rg)/pop(L.region,NOW,...rg)-1;
+  const pp=(w.i26-w.i22)*100,tot=w.dp+w.dc,popPct=(w.dp>=0&&w.dc>=0&&tot>0)?Math.round(w.dp/tot*100):null;
+  const growTxt=(grow>=0?'crece ':'se reduce ')+fmt(Math.abs(grow*100),1)+'%';
+  return {ai,age:VAGES[ai],seg:segText(L),Seg:segText(L,{cap:true}),u,uw,g,a:g.a,b:g.b,gaps,rank,regs,incB,incA,grow,growTxt,pp,popPct,w,dv:val(V.id,'dato',V.dato,ai,L)};
+}
+const HYP={
+  bolsillo:S=>({t:`${S.Seg} esperan vivir ${S.g.g} años más de lo que les alcanza la plata, y su grupo ${S.growTxt} al 2044. La demanda de productos que “estiran” el ingreso crecería más rápido que la población.`,test:'Fase 1 · Pregunta en par: hasta qué edad cree que vivirá y hasta cuándo le alcanza, contrastada con el ahorro declarado en TGI.'}),
+  oficio:S=>({t:`${S.a}% quiere seguir trabajando después de los 65 y solo ${S.b}% cree que podrá. Si el grupo ${S.growTxt} al 2044, ese deseo llegará a las empresas como talento disponible que nadie está contratando.`,test:'Fase 3 · Mirada empresarial: qué hacen las empresas con la gente de más de 55.'}),
+  cuerpo:S=>({t:`La intención de cuidarse supera al hábito por ${S.g.g} puntos. Con ${fmt(S.dv)} años de vida por delante, la prevención no está ocurriendo: la gente dice prevenir, pero el gasto sigue yendo a curar.`,test:'Fase 2 · Diarios en video: una semana de hábitos de salud contada por la propia persona.'}),
+  vinculos:S=>({t:`${S.a}% espera que su familia lo cuide, pero nacen menos hijos y los hogares se achican. La brecha de ${S.g.g} puntos crecería por demografía aunque nadie cambie de opinión.`,test:'Fase 2 · Tres generaciones en la mesa: quién cuida a quién y quién paga.'}),
+  casa:S=>({t:`Quedarse en casa es el plan de ${S.a}%, pero solo ${S.b}% vive en una que le serviría. Adaptar la vivienda es una necesidad latente que todavía no aparece en la compra.`,test:'Fase 1 · ¿Qué le cambiaría a su casa para vivir en ella hasta los 90?'}),
+  movimiento:S=>({t:`La autonomía deseada (${S.a}%) choca con la esperada (${S.b}%). El uso de apps ${S.pp>=0?'sube':'cae'} ${fmt(Math.abs(S.pp),1)} pp en el grupo: lo digital puede estar funcionando como la nueva forma de “salir solo”.`,test:'Fase 2 · Compra acompañada: dónde se traba la autonomía en el banco, la farmacia y el transporte.'}),
+  disfrute:S=>({t:`${S.a}% usaría años extra de vida sana para aprender o viajar, pero solo ${S.b}% tiene un plan. La vida larga se imagina como ocio y no se planea como etapa.`,test:'Fase 4 · Taller proyectivo: un día en la Colombia de 2044.'})
+};
+function hypotheses(V,S){
+  const h=V.hecho.t.charAt(0).toLowerCase()+V.hecho.t.slice(1);let t2;
+  if(S.w.dp<0&&S.w.dc>=0)t2=`La demografía le resta personas al grupo de ${S.age}, pero la conducta compensa: la proporción que ${h} sube ${fmt(S.pp,1)} pp. El cambio es de hábitos, no de tamaño.`;
+  else if(S.popPct!=null&&S.popPct>=50)t2=`El aumento en “${h}” es sobre todo demográfico (${S.popPct}%): crece porque hay más personas de ${S.age}, no porque cada una lo haga más.`;
+  else if(S.popPct!=null)t2=`El aumento en “${h}” es sobre todo de conducta (${100-S.popPct}%): las personas de ${S.age} están cambiando, no solo sumándose.`;
+  else t2=`“${h}” se mueve ${fmt(S.pp,1)} pp en cinco años. Hay que separar si la demografía o la conducta empujan el cambio antes de leerlo como tendencia.`;
+  return [HYP[V.id](S),{t:t2,test:'Fase 0 · Pseudo-panel por cohorte con las cinco olas de TGI y el denominador DANE.'}];
+}
+function observations(V,S,L){
+  const h=V.hecho.t.charAt(0).toLowerCase()+V.hecho.t.slice(1);
+  return [
+    `<b>Demografía:</b> el grupo de ${S.age} ${S.growTxt.replace(/(\S+%)$/,'<b>$1</b>')} entre 2026 y 2044 en ${regName(L.region)}.<span class="tagsrc">DANE REAL</span>`,
+    `<b>Conducta:</b> “${h}” ${S.pp>=0?'sube':'baja'} <b>${fmt(Math.abs(S.pp),1)} pp</b> en cinco años${S.popPct!=null?`; ${S.popPct}% de los casos nuevos son demográficos`:''}.<span class="tagsrc">TGI SIM</span>`,
+    `<b>Brecha:</b> ${S.g.g} ${S.uw}, la ${ORD[S.rank]} entre los cinco grupos de edad${S.regs[0]?`; la mayor por región está en <b>${S.regs[0].r}</b> (${S.regs[0].g})`:''}.<span class="tagsrc">ESTUDIO SIM</span>`,
+    `<b>Ingreso:</b> ${S.incB} ${S.uw} en ingreso bajo frente a ${S.incA} en ingreso alto${S.incB>S.incA?'. La brecha se achica con el ingreso, pero no desaparece':'. El ingreso no la cierra'}.<span class="tagsrc">ESTUDIO SIM</span>`
+  ];
+}
+
+function renderVida(V){
+  const L=lens,u=unitOf(V.dato),seg=segText(L),Seg=segText(L,{cap:true});
+  const dv=val(V.id,'dato',V.dato,L.age,L);
+  const wf=waterfall(V,L),g=gapOf(V,L);
+  const next=VIDAS[V.n%7],code=n=>`EGR-V${V.n}-0${n}`,SG=signals(V,L);
+  const opt=(arr,cur,lab=x=>x)=>arr.map((x,i)=>`<option value="${typeof x==='number'?x:esc(x)}" ${String(cur)===String(x)?'selected':''}>${lab(x,i)}</option>`).join('');
+  document.getElementById('view').innerHTML=`
+  <div class="lens"><div class="wrap">
+    <span class="t">Lente</span>
+    <label for="l-region">Región<select id="l-region">${opt([CO,...REG],L.region)}</select></label>
+    <label for="l-inc">Ingreso por persona<select id="l-inc">${opt(['Todos',...INC],L.inc)}</select></label>
+    <label for="l-age">Edad<select id="l-age">${VAGES.map((a,i)=>`<option value="${i}" ${L.age===i?'selected':''}>${a} años</option>`).join('')}</select></label>
+    <label for="l-home">Hogar<select id="l-home">${opt(['Todos',...HOME],L.home)}</select></label>
+    <button class="reset" id="l-reset" type="button">Restablecer lente</button>
+    <div class="seg">Mirando a <b>${seg}</b>.</div>
+  </div></div>
+
+  <section class="scene" data-scene><div class="wrap">
+    <div class="eyebrow rise">Vida ${V.n} de 7</div>
+    <div class="vida-cover">
+      <div class="vida-n glow-in">${V.n}</div>
+      <div><h1 class="h-xl rise d1">${V.name}.</h1><p class="desc rise d1">${V.desc}</p></div>
+    </div>
+    <div class="ask rise d2"><span class="k">La pregunta</span><q>${V.q}</q></div>
+    <div class="steps rise d3">
+      <div class="step dane"><b>El dato</b>Cómo viven, según la fuente oficial</div>
+      <div class="step tgi"><b>El hecho</b>Qué hacen y cómo cambió en 5 años</div>
+      <div class="step own"><b>El dicho</b>Qué desean y qué esperan</div>
+      <div class="step gap"><b>La brecha</b>La distancia entre las tres</div>
+    </div>
+    <div class="demo-banner"><b>DEMO</b><span>Población: DANE real. Fuente oficial por vida, TGI y estudio propio: valores simulados para diseñar el relato.</span></div>
+  </div></section>
+
+  <section class="scene" data-scene><div class="wrap">
+    <div class="eyebrow">El dato · ${code(1)}</div>
+    <h2 class="h-l">${V.dato.say(dv,seg)}</h2>
+    <div class="panel" style="margin-top:28px"><div class="panel-head"><div><h3>${V.dato.t}</h3><div class="sub">Por grupo de edad · resaltado: el grupo del lente</div></div><span class="src dane sim"><i></i>${V.dato.src}</span></div>
+      ${barsChart(V,L)}</div>
+  </div></section>
+
+  <section class="scene" data-scene><div class="wrap">
+    <div class="eyebrow">El hecho · ${code(2)}</div>
+    <h2 class="h-l">${V.hecho.t}: <span class="hl num">${fmt(wf.i22*100)}% → ${fmt(wf.i26*100)}%</span> entre ${seg}.</h2>
+    <div class="grid2">
+      <div class="panel"><div class="panel-head"><div><h3>Cinco olas, 2022–2026</h3><div class="sub">% del grupo · cada ola son personas distintas</div></div><span class="src tgi sim"><i></i>TGI</span></div>${trendChart(V,L)}</div>
+      <div class="panel"><div class="panel-head"><div><h3>¿Población o conducta?</h3><div class="sub">Personas con la conducta, 2022 → 2026</div></div><span class="src tgi sim"><i></i>DANE × TGI</span></div>${wf.svg}<p class="read">${wf.read}</p></div>
+    </div>
+    <p class="note">La población del grupo sale de la proyección DANE real. La incidencia es simulada. Ingreso y hogar usan participaciones supuestas.</p>
+  </div></section>
+
+  <section class="scene" data-scene><div class="wrap">
+    <div class="eyebrow">El dicho · ${code(3)}</div>
+    <h2 class="h-l">${V.dicho.a.t}, frente a ${V.dicho.b.t.charAt(0).toLowerCase()+V.dicho.b.t.slice(1)}.</h2>
+    <div class="panel" style="margin-top:28px"><div class="panel-head"><div><h3>Lo que se desea y lo que se espera</h3><div class="sub">Estudio propio 2026 · una sola foto, sin serie</div></div><span class="src own sim"><i></i>Estudio propio</span></div>
+      ${dumbbell(V,L)}
+      <div class="legend"><span><i class="box" style="background:var(--own);border-radius:50%"></i>${V.dicho.a.t}</span><span><i class="box" style="border:2px solid var(--own);border-radius:50%"></i>${V.dicho.b.t}</span><span><i style="background:var(--glow)"></i>Brecha</span></div>
+    </div>
+  </div></section>
+
+  <section class="scene gap-scene" data-scene><div class="wrap">
+    <div class="eyebrow c rise">La brecha · ${code(4)}</div>
+    <div class="gap-hero">
+      <div class="gap-num glow-in num">${g.g}<small>${V.gapLbl}</small></div>
+      <p class="gap-say rise d1">${V.beat(g.a,g.b,Seg)}</p>
+    </div>
+    <div class="truths rise d2">
+      <div class="truth"><div class="k"><i style="background:var(--dane)"></i>El dato</div><div class="v num">${fmtU(dv,u)}</div><p>${V.dato.t}</p></div>
+      <div class="truth"><div class="k"><i style="background:var(--tgi)"></i>El hecho</div><div class="v num">${fmt(wf.i26*100)}%</div><p>${V.hecho.t} (2026)</p></div>
+      <div class="truth"><div class="k"><i style="background:var(--own)"></i>El dicho</div><div class="v num">${fmtU(g.a,V.dicho.u)} · ${fmtU(g.b,V.dicho.u)}</div><p>${V.dicho.a.t} · ${V.dicho.b.t.charAt(0).toLowerCase()+V.dicho.b.t.slice(1)}</p></div>
+    </div>
+    <div class="panel" style="margin-top:20px"><div class="panel-head"><div><h3>¿Dónde es más grande la brecha?</h3><div class="sub">${V.dicho.u==='años'?'Años':'Puntos'} de brecha por región y edad, con el ingreso y hogar del lente</div></div><span class="src gap sim"><i></i>Brecha</span></div>
+      <div class="scroll-x">${heatmap(V,L)}</div>
+      <p class="note">— = base simulada menor a 80 casos (sobre 2.700 encuestas). No se muestra para no sobreinterpretar.</p></div>
+  </div></section>
+
+  <section class="scene" data-scene><div class="wrap">
+    <div class="eyebrow c">La lectura · ${code(5)}</div>
+    <h2 class="h-l">Lo que creemos que está pasando.</h2>
+    <p class="lede">Interpretación calculada desde los datos del lente actual. Son hipótesis para poner a prueba en las siguientes fases, no conclusiones.</p>
+    <div class="read-grid">
+      <div><h3 class="h-m">Lo que vemos</h3><div class="obs">${observations(V,SG,L).map(o=>`<div class="ob">${o}</div>`).join('')}</div></div>
+      <div class="hyps">${hypotheses(V,SG).map((h,i)=>`<div class="hyp"><span class="k">H${i+1} · ${code(5)}</span><p>${h.t}</p><div class="test"><b>Cómo la probamos:</b> ${h.test}</div></div>`).join('')}
+        <button class="ask-agent" type="button" id="ask-hyp" ${SAMPLE?'':'hidden'}>✳ Profundizar estas hipótesis con el agente</button></div>
+    </div>
+  </div></section>
+
+  <section class="scene" data-scene><div class="wrap">
+    <div class="eyebrow">Para quién sirve</div>
+    <h2 class="h-l">Las categorías que viven en esta vida.</h2>
+    <div class="chips">${V.cats.map(c=>`<span class="chip">${c}</span>`).join('')}</div>
+    <div class="cats">${V.sponsor.map(([c,q])=>`<div class="cat"><span class="k">${c}</span><q>${q}</q><span class="lock">🔒 Respuesta disponible en la versión para sponsors</span></div>`).join('')}</div>
+  </div></section>
+
+  <section class="beat" data-scene><div class="wrap closing">
+    <div><div class="code rise">Pregunta intergeneracional</div><p class="say rise d1">${V.inter}</p></div>
+    <a class="next rise d2" href="#${next.id}"><small>Siguiente vida · ${next.n}</small><b>${next.name}</b></a>
+  </div></section>`;
+
+  const on=(id,k,f=x=>x)=>document.getElementById(id).addEventListener('change',e=>{lens[k]=f(e.target.value);saveLens();const y=scrollY;renderVida(V);scrollTo(0,y);observe();if(!$id('agent').hidden)agentCtx()});
+  document.getElementById('ask-hyp').addEventListener('click',()=>openAgent(`Desarrolla las hipótesis de ${V.name.toLowerCase()} para ${seg}: qué datos las sostienen, qué las podría refutar y qué preguntaría en la Fase 1.`));
+  on('l-region','region');on('l-inc','inc');on('l-age','age',Number);on('l-home','home');
+  document.getElementById('l-reset').addEventListener('click',()=>{lens={...DEF_LENS};saveLens();const y=scrollY;renderVida(V);scrollTo(0,y);observe()});
+}
+
+/* ================= agent (sample capability + page tools) ================= */
+let SAMPLE=null,agentCtl=null;const agentTurns=[];
+const $id=id=>document.getElementById(id);
+const r1=v=>Math.round(v*10)/10;
+function curDomain(){const id=(location.hash||'#nacion').slice(1);return VIDAS.find(v=>v.id===id)||null}
+function lensFrom(i){
+  const L={...lens};
+  if(i.region&&(i.region===CO||REG.includes(i.region)))L.region=String(i.region);
+  if(i.ingreso&&(i.ingreso==='Todos'||INC.includes(i.ingreso)))L.inc=String(i.ingreso);
+  if(i.edad&&VAGES.includes(String(i.edad)))L.age=VAGES.indexOf(String(i.edad));
+  if(i.hogar&&(i.hogar==='Todos'||HOME.includes(i.hogar)))L.home=String(i.hogar);
+  return L;
+}
+function vidaSnapshot(V,L){
+  const S=signals(V,L),u=unitOf(V.dato),byAge=f=>Object.fromEntries(VAGES.map((a,i)=>[a,f(i)]));
+  return {
+    vida:V.name,codigo:'EGR-V'+V.n,lente:{region:L.region,ingreso:L.inc,edad_foco:VAGES[L.age],hogar:L.home},segmento:S.seg,
+    advertencia:'Población DANE real. Dato oficial, TGI y estudio propio son SIMULADOS para la demo.',
+    dato:{indicador:V.dato.t,fuente:V.dato.src+' (simulado)',unidad:u,por_edad:byAge(i=>r1(val(V.id,'dato',V.dato,i,L)))},
+    hecho:{indicador:V.hecho.t,fuente:'TGI (simulado)',unidad:'%',serie_grupo_foco:Object.fromEntries([2022,2023,2024,2025,2026].map(y=>[y,r1(val(V.id,'hecho',V.hecho,L.age,L,y))])),por_edad_2026:byAge(i=>r1(val(V.id,'hecho',V.hecho,i,L)))},
+    descomposicion_2022_2026:{unidad:'personas',personas_2022:Math.round(S.w.A),efecto_poblacion_DANE:Math.round(S.w.dp),efecto_conducta_TGI:Math.round(S.w.dc),personas_2026:Math.round(S.w.B)},
+    dicho:{fuente:'Estudio propio 2026 (simulado), una sola ola',unidad:V.dicho.u,desea:V.dicho.a.t,espera:V.dicho.b.t,por_edad:byAge(i=>{const g=gapOf(V,L,i);return {desea:g.a,espera:g.b,brecha:g.g}})},
+    brecha:{valor:S.g.g,unidad:S.uw,etiqueta:V.gapLbl,ranking_entre_edades:S.rank,
+      por_region:Object.fromEntries(REG.map(r=>{const n=Math.round(sampleN(L,r,L.age));return [r,n<80?{suprimido:true,n_simulado:n}:{brecha:gapOf(V,L,L.age,r).g,n_simulado:n}]})),
+      por_ingreso:{Bajo:S.incB,Alto:S.incA}},
+    crecimiento_grupo_2026_2044_DANE_real:r1(S.grow*100)+'%',
+    hipotesis:hypotheses(V,S).map(h=>h.t),
+    categorias_sponsor:V.cats,pregunta_de_la_vida:V.q
+  };
+}
+function nationSnapshot(r){
+  const yr=y=>({poblacion:pop(r,y,0,100),pct_menores_15:r1(share(r,y,0,14)),pct_65_mas:r1(share(r,y,65,100)),edad_mediana:median(r,y),menores_1_anio:pop(r,y,0,0),personas_80_mas:pop(r,y,80,100),dependencia:r1(depRatio(r,y))});
+  let peakY=Y0,peak=0;YEARS.forEach(y=>{const t=pop(r,y,0,100);if(t>peak){peak=t;peakY=y}});
+  return {region:r,fuente:DANE_META.source+' (dato real, proyección)','2018':yr(2018),'2026':yr(2026),'2044':yr(2044),
+    anio_65_supera_menores_15:crossYear(r,65)||'después de 2044',anio_60_supera_menores_15:crossYear(r,60)||'después de 2044',anio_pico_poblacion:peakY,
+    comparacion_regiones:r===CO?Object.fromEntries(REG.map(x=>[x,{cruce_65:crossYear(x,65)||'después de 2044',mediana_2026:median(x,NOW),mediana_2044:median(x,Y1)}])):undefined};
+}
+const AGENT_TOOLS=()=>[
+  {name:'datos_vida',description:'Devuelve los datos de una de las siete vidas para un lente: dato oficial por edad, evolución TGI 2022–2026, descomposición población vs conducta, lo que se desea vs lo que se espera (estudio propio), brecha por edad, región e ingreso, crecimiento del grupo al 2044 (DANE real) e hipótesis. Si el usuario no pide otro lente, omite los filtros y se usa el lente actual.',
+   inputSchema:{type:'object',properties:{vida:{type:'string',enum:VIDAS.map(v=>v.id)},region:{type:'string',enum:[CO,...REG]},ingreso:{type:'string',enum:['Todos',...INC]},edad:{type:'string',enum:VAGES},hogar:{type:'string',enum:['Todos',...HOME]}},required:['vida']},
+   execute:i=>{const V=VIDAS.find(v=>v.id===String(i.vida));if(!V)throw new Error('Vida desconocida. Usa: '+VIDAS.map(v=>v.id).join(', '));agentWork('Consultando '+V.name.toLowerCase()+'…');return vidaSnapshot(V,lensFrom(i))}},
+  {name:'estado_nacion',description:'Devuelve indicadores demográficos REALES de la proyección DANE para Colombia o una región: población, % menores de 15, % 65+, edad mediana, menores de 1 año, 80+ y dependencia en 2018, 2026 y 2044, más los años de cruce generacional y el pico de población.',
+   inputSchema:{type:'object',properties:{region:{type:'string',enum:[CO,...REG]}}},
+   execute:i=>{const r=[CO,...REG].includes(String(i.region))?String(i.region):CO;agentWork('Consultando la proyección DANE de '+regName(r)+'…');return nationSnapshot(r)}}
+];
+function agentRules(){
+  const V=curDomain();
+  return `Eres el agente de El Gran Reacomodo, el estudio de Young Aurelius sobre cómo el cambio demográfico de Colombia transforma siete vidas: ${VIDAS.map(v=>v.id+' = '+v.name).join('; ')}.
+Lente del estudio: 5 regiones (Caribe, Central, Pacífica, Bogotá, Oriental), ingreso por persona (no estrato), 5 grupos de edad adultos y tipo de hogar. Cada vida cruza el dato oficial, el hecho (TGI, cinco olas 2022–2026) y el dicho (estudio propio 2026); la brecha entre ellos es el hallazgo.
+REGLAS:
+- Obtén SIEMPRE las cifras con las herramientas; nunca inventes números. Puedes llamar varias veces para comparar lentes, vidas o regiones.
+- Di de qué fuente sale cada cifra y aclara que solo la población DANE es real; TGI, dato oficial por vida y estudio propio son simulados en esta demo.
+- Separa lo que dicen los datos de tu interpretación; marca la interpretación como hipótesis. No afirmes causalidad.
+- Nunca reportes celdas con "suprimido": true (base menor a 80); di que no hay base suficiente.
+- La serie TGI compara personas distintas en cada ola: no hables de que "las mismas personas" cambiaron.
+- Responde en español neutro, directo, sin voseo. Máximo unas 180 palabras salvo que pidan más. Usa viñetas con "- " y **negritas** para cifras clave.
+- Cierra con una pregunta de seguimiento útil, en una línea que empiece con "Siguiente pregunta:".
+CONTEXTO ACTUAL: el usuario está mirando ${V?V.name+' (id '+V.id+')':'el Estado de la nación'}. Lente actual: región ${lens.region}, ingreso ${lens.inc}, edad ${VAGES[lens.age]}, hogar ${lens.home}. Si la pregunta no nombra otra vida, responde sobre este dominio.`;
+}
+function mdLite(t){
+  const e=esc(t).replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');
+  let out='',inList=false;
+  for(const raw of e.split('\n')){const l=raw.trim();
+    if(/^[-•*] /.test(l)){if(!inList){out+='<ul>';inList=true}out+='<li>'+l.replace(/^[-•*] /,'')+'</li>';continue}
+    if(inList){out+='</ul>';inList=false}
+    if(!l)continue;
+    if(/^#{1,4} /.test(l))out+='<h4>'+l.replace(/^#{1,4} /,'')+'</h4>';else out+='<p>'+l+'</p>';
+  }
+  return out+(inList?'</ul>':'');
+}
+let workEl=null;const agentWork=t=>{if(workEl)workEl.textContent=t};
+function agentCtx(){const V=curDomain();$id('ag-ctx').innerHTML=`Dominio: <b>${V?V.name:'Estado de la nación'}</b> · ${esc(segText(lens))}`}
+function agentSugs(){
+  const V=curDomain();
+  const qs=V?[`¿Dónde es más grande la brecha de ${V.short.toLowerCase()} y para quién?`,`¿El cambio en “${V.hecho.t.toLowerCase()}” es por población o por conducta?`,`Dame 3 hipótesis accionables para un sponsor de ${V.cats[0]}.`]
+    :['Resume el estado de la nación en tres titulares.','¿Qué región envejece más rápido y qué implica?','Compara Bogotá y el Caribe entre 2026 y 2044.'];
+  return `<div class="sugs"><span class="k">Puedes empezar por</span>${qs.map(q=>`<button type="button" data-q="${esc(q)}">${esc(q)}</button>`).join('')}</div>`;
+}
+function openAgent(q){
+  if(!SAMPLE)return;
+  $id('agent').hidden=false;$id('agent-btn').hidden=true;agentCtx();
+  if(!agentTurns.length)$id('ag-body').innerHTML=agentSugs();
+  if(q)sendAgent(q);else $id('ag-in').focus();
+}
+function closeAgent(){$id('agent').hidden=true;$id('agent-btn').hidden=!SAMPLE}
+const ERR={not_granted:'No se dio permiso para usar Claude en esta página.',sampling_disabled:'Claude no está disponible para esta cuenta.',rate_limited:'Demasiadas consultas seguidas. Espera un momento y vuelve a preguntar.',session_expired:'Tu sesión expiró. Inicia sesión de nuevo.',refused:'Claude no respondió esta pregunta. Prueba reformularla.',empty_completion:'No llegó respuesta. Prueba una pregunta más concreta.',tools_unavailable:'Este visor no permite al agente consultar los datos.',prompt_too_large:'La conversación es muy larga. Empieza una nueva.'};
+async function sendAgent(q){
+  q=String(q||'').trim();if(!q||agentCtl)return;
+  const body=$id('ag-body');if(!agentTurns.length)body.innerHTML='';
+  agentTurns.push({role:'user',content:q});
+  body.insertAdjacentHTML('beforeend',`<div class="msg u">${esc(q)}</div><div class="msg a"><div class="work">Pensando…</div><div class="txt"></div></div>`);
+  const msg=body.lastElementChild,txt=msg.querySelector('.txt');workEl=msg.querySelector('.work');body.scrollTop=body.scrollHeight;
+  $id('ag-in').value='';$id('ag-send').disabled=true;$id('ag-stop').hidden=false;
+  agentCtl=new AbortController();
+  const turns=agentTurns.slice(-10);if(turns[0].role!=='user')turns.shift();
+  try{
+    const {text,truncated}=await SAMPLE([{role:'user',content:agentRules()},...turns],{tools:AGENT_TOOLS(),signal:agentCtl.signal,modelTier:$id('ag-deep').checked?'default':'quick',
+      onText:({text})=>{workEl&&workEl.remove();workEl=null;txt.innerHTML=mdLite(text);body.scrollTop=body.scrollHeight}});
+    workEl&&workEl.remove();txt.innerHTML=mdLite(text)+(truncated?'<div class="err">La respuesta se cortó. Pide menos a la vez.</div>':'');
+    agentTurns.push({role:'assistant',content:text});
+  }catch(e){
+    workEl&&workEl.remove();
+    if(e&&e.text)txt.innerHTML=mdLite(e.text);
+    if(e&&e.code!=='cancelled')txt.insertAdjacentHTML('beforeend',`<div class="err">${ERR[e.code]||'Algo falló al consultar. Puedes volver a intentarlo.'}</div>`);
+    if(e&&e.text)agentTurns.push({role:'assistant',content:e.text});
+    if(e&&['not_granted','sampling_disabled','not_declared','capability_disabled','capability_removed'].includes(e.code)){SAMPLE=null;document.querySelectorAll('.ask-agent').forEach(b=>b.hidden=true)}
+  }finally{agentCtl=null;workEl=null;$id('ag-send').disabled=false;$id('ag-stop').hidden=true;body.scrollTop=body.scrollHeight}
+}
+$id('agent-btn').addEventListener('click',()=>openAgent());
+$id('ag-close').addEventListener('click',closeAgent);
+$id('ag-stop').addEventListener('click',()=>agentCtl&&agentCtl.abort());
+$id('ag-form').addEventListener('submit',e=>{e.preventDefault();sendAgent($id('ag-in').value)});
+$id('ag-in').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendAgent(e.target.value)}});
+$id('ag-body').addEventListener('click',e=>{const b=e.target.closest('[data-q]');if(b)sendAgent(b.dataset.q)});
+(async()=>{try{SAMPLE=window.claude&&window.claude.use?await window.claude.use('sample'):null}catch(e){SAMPLE=null}
+  if(SAMPLE){$id('agent-btn').hidden=!$id('agent').hidden;document.querySelectorAll('.ask-agent').forEach(b=>b.hidden=false)}})();
+
+/* ================= router, motion, presentation ================= */
+let io;
+function observe(){
+  io&&io.disconnect();
+  io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){const s=e.target;if(!s.classList.contains('live')){s.classList.add('live');if(s.dataset.sceneId==='pyr'&&document.body.classList.contains('present'))window.playPyramid&&playPyramid()}updateHud()}}),{threshold:.35});
+  document.querySelectorAll('[data-scene]').forEach(s=>io.observe(s));
+}
+function route(){
+  const id=(location.hash||'#nacion').slice(1),V=VIDAS.find(v=>v.id===id);
+  renderNav(V?V.id:'nacion');V?renderVida(V):renderNation();scrollTo(0,0);observe();if(!$id('agent').hidden){agentCtx();if(!agentTurns.length)$id('ag-body').innerHTML=agentSugs()}
+}
+addEventListener('hashchange',route);
+const scenes=()=>[...document.querySelectorAll('[data-scene]')];
+const curScene=()=>{const s=scenes();let best=0,bd=1e9;s.forEach((el,i)=>{const d=Math.abs(el.getBoundingClientRect().top);if(d<bd){bd=d;best=i}});return best};
+function go(dir){const s=scenes(),i=Math.max(0,Math.min(s.length-1,curScene()+dir));s[i].scrollIntoView({behavior:'smooth'})}
+function updateHud(){if(!document.body.classList.contains('present'))return;document.getElementById('hud-n').textContent=(curScene()+1)+' / '+scenes().length}
+function setPresent(on){document.body.classList.toggle('present',on);document.documentElement.classList.toggle('present',on);
+  if(on){closeAgent();try{document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen().catch(()=>{})}catch(e){}scenes()[curScene()].scrollIntoView();document.querySelectorAll('.live').forEach(s=>s.classList.remove('live'));observe();updateHud()}
+  else{try{document.fullscreenElement&&document.exitFullscreen()}catch(e){}}}
+document.getElementById('present').addEventListener('click',()=>setPresent(true));
+document.getElementById('hud-x').addEventListener('click',()=>setPresent(false));
+document.getElementById('hud-prev').addEventListener('click',()=>go(-1));
+document.getElementById('hud-next').addEventListener('click',()=>go(1));
+addEventListener('scroll',()=>updateHud(),{passive:true});
+addEventListener('keydown',e=>{if(/INPUT|SELECT|TEXTAREA/.test(e.target.tagName))return;if(e.key==='Escape'&&!$id('agent').hidden){closeAgent();return}
+  const pres=document.body.classList.contains('present');
+  if(e.key==='p'||e.key==='P'){setPresent(!pres);return}
+  if(!pres)return;
+  if(['ArrowDown','ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();go(1)}
+  else if(['ArrowUp','ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();go(-1)}
+  else if(e.key==='Escape')setPresent(false);
+  else if(e.key==='Enter'&&window.playPyramid)playPyramid();
+});
+document.addEventListener('fullscreenchange',()=>{if(!document.fullscreenElement&&document.body.classList.contains('present')){/* keep presenting without fullscreen */}});
+route();
+</script>
+
+</body></html>
