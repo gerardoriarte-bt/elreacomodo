@@ -267,6 +267,70 @@ body.present #agent-btn{display:none}
 .ag-stop{background:none;border:1px solid var(--line-2);color:var(--fg-2);border-radius:8px;padding:8px 12px;cursor:pointer}
 @media (max-width:900px){.read-grid{grid-template-columns:minmax(0,1fr)}}
 
+/* audiences */
+.aud-top{display:flex;flex-wrap:wrap;justify-content:space-between;gap:20px;align-items:flex-end}
+.quota{display:grid;gap:8px;min-width:260px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.quota .k{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.qrow{display:grid;grid-template-columns:120px minmax(0,1fr) 54px;gap:10px;align-items:center;font-size:12.5px;color:var(--fg-2)}
+.qbar{height:6px;border-radius:99px;background:var(--surface-2);overflow:hidden}
+.qbar i{display:block;height:100%;background:var(--glow);border-radius:99px}
+.qrow span:last-child{text-align:right;font-variant-numeric:tabular-nums}
+.modes{display:flex;gap:6px;flex-wrap:wrap;margin-top:26px}
+.modes button{border:1px solid var(--line-2);background:var(--surface);border-radius:99px;padding:9px 16px;cursor:pointer;font-weight:700;font-size:13px;color:var(--fg-2)}
+.modes button[aria-pressed="true"]{background:#012B2D;color:#EEEDEA;border-color:#012B2D}
+.aud-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:24px;margin-top:24px;align-items:start}
+.pgal{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.pc{display:flex;flex-direction:column;gap:10px;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px;cursor:pointer;color:var(--fg);min-width:0;position:relative}
+.pc:hover{border-color:var(--line-2)}
+.pc.on{border-color:var(--glow);box-shadow:0 0 0 2px var(--glow) inset}
+.pc .who{display:flex;gap:10px;align-items:center}
+.av{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font:700 13px var(--body);background:#012B2D;color:#7FFDFF;flex:none}
+.pc b{font:700 16px var(--display);display:block}
+.pc small{font-size:12px;color:var(--muted);display:block;line-height:1.35}
+.pc q{font:600 14px/1.35 var(--display);color:var(--fg-2);quotes:"“" "”"}
+.pv{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:3px;align-items:end;height:30px}
+.pv i{display:block;background:var(--glow);opacity:.75;border-radius:2px 2px 0 0}
+.pv-l{display:flex;justify-content:space-between;font-size:10px;color:var(--muted)}
+.pc .tag{position:absolute;top:10px;right:10px;font:700 9.5px var(--body);letter-spacing:.1em;text-transform:uppercase;color:#012B2D;background:#7FFDFF;border-radius:4px;padding:2px 6px}
+.work-panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden;position:sticky;top:calc(env(safe-area-inset-top,0px) + 16px)}
+.wp-head{padding:16px 18px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;justify-content:space-between}
+.wp-head .who{display:flex;gap:10px;align-items:center}
+.wp-head b{font:700 18px var(--display)}
+.wp-head small{display:block;font-size:12px;color:var(--fg-2)}
+.wp-head select{background:var(--surface);border:1px solid var(--line-2);border-radius:7px;padding:6px 10px;font-size:13px;color:var(--fg)}
+.sim-flag{font:700 10px var(--body);letter-spacing:.12em;text-transform:uppercase;color:#012B2D;background:repeating-linear-gradient(135deg,#E3E1DE 0 4px,#C9C6BF 4px 8px);border-radius:4px;padding:3px 7px}
+details.ficha{border-top:1px solid var(--line);padding:10px 18px;font-size:12.5px;color:var(--fg-2)}
+details.ficha summary{cursor:pointer;font-weight:700;color:var(--fg)}
+.ficha-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 16px;margin-top:10px}
+.ficha-grid div{border-top:1px solid var(--line);padding-top:6px}
+.ficha-grid b{display:block;color:var(--fg);font-size:12px}
+.convo{border-top:1px solid var(--line);padding:16px 18px;display:flex;flex-direction:column;gap:14px;max-height:520px;overflow-y:auto;background:var(--bg)}
+.bub{display:flex;gap:10px;align-items:flex-start;max-width:92%}
+.bub .tx{background:var(--surface);border:1px solid var(--line);border-radius:4px 12px 12px 12px;padding:10px 12px;font-size:14px;line-height:1.55;min-width:0}
+.bub .tx p{margin:0 0 6px}.bub .tx p:last-child{margin:0}
+.bub .nm{font-size:11px;font-weight:700;color:var(--muted);margin-bottom:3px;letter-spacing:.04em}
+.bub.me{align-self:flex-end;flex-direction:row-reverse}
+.bub.me .tx{background:#012B2D;color:#EEEDEA;border-color:#012B2D;border-radius:12px 4px 12px 12px}
+.ex-tag{align-self:center;font-size:11px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;font-weight:700}
+.wp-foot{border-top:1px solid var(--line);padding:12px 18px 14px;display:grid;gap:10px}
+.wp-foot textarea{width:100%;resize:vertical;background:var(--bg);border:1px solid var(--line-2);border-radius:10px;padding:10px 12px;color:var(--fg);font:inherit;font-size:14px;min-height:46px}
+.wp-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:space-between;font-size:12px;color:var(--muted)}
+.chipbtn{border:1px solid var(--line-2);background:var(--surface);border-radius:99px;padding:6px 11px;font-size:12px;cursor:pointer;color:var(--fg-2);text-align:left}
+.chipbtn:hover{border-color:var(--glow)}
+.go{background:#012B2D;color:#7FFDFF;border:0;border-radius:8px;padding:10px 16px;font-weight:800;cursor:pointer}
+.go:disabled{opacity:.45;cursor:default}
+.ct-res{display:grid;gap:10px}
+.ct-row{display:grid;grid-template-columns:150px minmax(0,1fr) 34px;gap:10px;align-items:center;font-size:13px}
+.ct-row .bar{height:12px;border-radius:0 4px 4px 0;background:var(--glow)}
+.ct-row .sc{font-weight:800;font-variant-numeric:tabular-nums;text-align:right}
+.ct-cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:6px}
+.ct-card{border:1px solid var(--line);border-radius:10px;padding:12px;font-size:13px;color:var(--fg-2);background:var(--surface);min-width:0}
+.ct-card b{color:var(--fg)}
+.ct-card q{display:block;font:600 14px/1.35 var(--display);color:var(--fg);margin-top:6px}
+.note-sim{font-size:12px;color:var(--muted);padding:0 18px 14px}
+@media (max-width:1000px){.aud-grid{grid-template-columns:minmax(0,1fr)}.work-panel{position:static}}
+@media (max-width:560px){.pgal,.ficha-grid,.ct-cards{grid-template-columns:minmax(0,1fr)}.qrow{grid-template-columns:90px minmax(0,1fr) 48px}.ct-row{grid-template-columns:96px minmax(0,1fr) 30px}}
+
 /* tooltip */
 #tip{position:fixed;pointer-events:none;z-index:50;background:#012B2D;color:#EEEDEA;font-size:12.5px;padding:8px 10px;border-radius:8px;max-width:260px;box-shadow:0 8px 24px rgba(1,43,45,.25);opacity:0;transition:opacity .12s}
 #tip b{display:block;font-size:13px}
@@ -479,7 +543,8 @@ document.addEventListener('pointermove',e=>{const t=e.target.closest('[data-tip]
 /* ================= nav ================= */
 function renderNav(cur){
   document.getElementById('nav').innerHTML=`<div class="grp">Panorama</div><a href="#nacion" ${cur==='nacion'?'aria-current="page"':''}><b>◎</b>Estado de la nación</a><div class="grp">Las siete vidas</div>`+
-   VIDAS.map(v=>`<a href="#${v.id}" ${cur===v.id?'aria-current="page"':''}><b>${v.n}</b>${v.short}</a>`).join('');
+   VIDAS.map(v=>`<a href="#${v.id}" ${cur===v.id?'aria-current="page"':''}><b>${v.n}</b>${v.short}</a>`).join('')+
+   `<div class="grp">Herramientas</div><a href="#audiencias" ${cur==='audiencias'?'aria-current="page"':''}><b>◉</b>Audiencias sintéticas</a>`;
 }
 
 /* ================= NATION ================= */
@@ -818,7 +883,7 @@ function renderVida(V){
     <div class="read-grid">
       <div><h3 class="h-m">Lo que vemos</h3><div class="obs">${observations(V,SG,L).map(o=>`<div class="ob">${o}</div>`).join('')}</div></div>
       <div class="hyps">${hypotheses(V,SG).map((h,i)=>`<div class="hyp"><span class="k">H${i+1} · ${code(5)}</span><p>${h.t}</p><div class="test"><b>Cómo la probamos:</b> ${h.test}</div></div>`).join('')}
-        <button class="ask-agent" type="button" id="ask-hyp">✳ Profundizar estas hipótesis con el agente</button></div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap"><button class="ask-agent" type="button" id="ask-hyp">✳ Profundizar estas hipótesis con el agente</button><button class="ask-agent" type="button" id="talk-aud">◉ Habla con esta audiencia</button></div></div>
     </div>
   </div></section>
 
@@ -835,6 +900,7 @@ function renderVida(V){
   </div></section>`;
 
   const on=(id,k,f=x=>x)=>document.getElementById(id).addEventListener('change',e=>{lens[k]=f(e.target.value);saveLens();const y=scrollY;renderVida(V);scrollTo(0,y);observe();if(!$id('agent').hidden)agentCtx()});
+  document.getElementById('talk-aud').addEventListener('click',()=>{AUD.custom=personaFromLens(lens,V);AUD.sel=['lente'];AUD.vida=V.id;AUD.mode='entrevista';AUD.chat=[];location.hash='audiencias'});
   document.getElementById('ask-hyp').addEventListener('click',()=>openAgent(`Desarrolla las hipótesis de ${V.name.toLowerCase()} para ${seg}: qué datos las sostienen, qué las podría refutar y qué preguntaría en la Fase 1.`));
   on('l-region','region');on('l-inc','inc');on('l-age','age',Number);on('l-home','home');
   document.getElementById('l-reset').addEventListener('click',()=>{lens={...DEF_LENS};saveLens();const y=scrollY;renderVida(V);scrollTo(0,y);observe()});
@@ -955,7 +1021,165 @@ $id('ag-form').addEventListener('submit',e=>{e.preventDefault();sendAgent($id('a
 $id('ag-in').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendAgent(e.target.value)}});
 $id('ag-body').addEventListener('click',e=>{const b=e.target.closest('[data-q]');if(b)sendAgent(b.dataset.q)});
 (async()=>{try{SAMPLE=window.claude&&window.claude.use?await window.claude.use('sample'):null}catch(e){SAMPLE=null}
-  if(SAMPLE){$id('agent-btn').hidden=!$id('agent').hidden;document.querySelectorAll('.ask-agent').forEach(b=>b.hidden=false)}})();
+  if(SAMPLE){$id('agent-btn').hidden=!$id('agent').hidden;document.querySelectorAll('.ask-agent').forEach(b=>b.hidden=false);if($id('wp'))refreshPanel()}})();
+
+/* ================= synthetic audiences (demo) ================= */
+const CITY={Caribe:'Barranquilla',Central:'Medellín',Pacífica:'Cali','Bogotá':'Bogotá',Oriental:'Bucaramanga'};
+const HOME_P={Unipersonal:'vive sola',ParejaM:'vive en pareja',['Pareja sin hijos']:'vive en pareja, sin hijos en casa','Con hijos':'vive con sus hijos',Multigeneracional:'vive con tres generaciones'};
+const PERSONAS=[
+ {id:'marta',f:true,name:'Marta',age:67,lens:{region:'Caribe',inc:'Bajo',age:3,home:'Unipersonal'},quote:'Trabajé 30 años y la pensión nunca llegó.',job:'vende arepas en las mañanas'},
+ {id:'jorge',name:'Jorge',age:58,lens:{region:'Central',inc:'Medio',age:2,home:'Pareja sin hijos'},quote:'Quiero bajar el ritmo, no parar.',job:'técnico de mantenimiento'},
+ {id:'luzdary',f:true,name:'Luz Dary',age:72,lens:{region:'Pacífica',inc:'Bajo',age:3,home:'Multigeneracional'},quote:'En esta casa vivimos tres generaciones y una sola pensión.',job:'cuida a sus nietos'},
+ {id:'andres',name:'Andrés',age:36,lens:{region:'Bogotá',inc:'Alto',age:1,home:'Con hijos'},quote:'Pago el colegio de mis hijos y la EPS de mis papás.',job:'gerente de proyectos'},
+ {id:'camila',f:true,name:'Camila',age:26,lens:{region:'Oriental',inc:'Medio',age:0,home:'Pareja sin hijos'},quote:'No sé si voy a tener hijos. Sí sé que quiero viajar.',job:'diseñadora independiente'},
+ {id:'hernando',name:'Hernando',age:79,lens:{region:'Bogotá',inc:'Medio',age:4,home:'Pareja sin hijos'},quote:'Todavía manejo, pero mis hijos ya me lo quieren prohibir.',job:'contador pensionado'},
+ {id:'yolanda',f:true,name:'Yolanda',age:49,lens:{region:'Central',inc:'Bajo',age:2,home:'Con hijos'},quote:'Cuido a mi mamá y a mis nietos. ¿Y a mí quién?',job:'auxiliar de cocina'},
+ {id:'felipe',name:'Felipe',age:63,lens:{region:'Oriental',inc:'Alto',age:3,home:'Unipersonal'},quote:'Me retiré y volví a estudiar. Nadie me lo esperaba.',job:'ingeniero retirado'}
+];
+const AUD={mode:'entrevista',sel:['marta'],vida:'bolsillo',chat:[],fg:null,ct:null,custom:null,busy:null,concept:'Un crédito para adaptar la casa pensado para mayores de 60: cuota fija, visita técnica gratis y asesoría para toda la familia.',topic:''};
+const AGE_MID=[26,38,52,66,79];
+function personaFromLens(L,V){
+  const names=['Gloria','Óscar','Patricia','Luis','Rosa','Carlos','Diana','Fabio'],h=Math.floor(hash(L.region+L.inc+L.age+L.home)*names.length);
+  const region=L.region===CO?REG[Math.floor(hash(L.home+L.age)*5)]:L.region;
+  const home=L.home==='Todos'?(L.age>=3?'Pareja sin hijos':'Con hijos'):L.home, inc=L.inc==='Todos'?'Medio':L.inc;
+  return {id:'lente',name:names[h],age:AGE_MID[L.age],lens:{region,inc,age:L.age,home},quote:`${V.dicho.a.t}, sí. ${V.dicho.b.t}… eso ya no lo tengo tan claro.`,job:'persona del lente',fromLens:true,f:h%2===0};
+}
+const allPersonas=()=>AUD.custom?[AUD.custom,...PERSONAS]:PERSONAS;
+const pById=id=>allPersonas().find(p=>p.id===id);
+const initials=n=>n.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+const homeTxt=p=>p.lens.home==='Unipersonal'?(p.f?'vive sola':'vive solo'):HOME_P[p.lens.home];
+const pLine=p=>`${p.age} años · ${CITY[p.lens.region]} (${p.lens.region}) · ingreso ${p.lens.inc.toLowerCase()} · ${homeTxt(p)}`;
+function fichaRows(p){return VIDAS.map(V=>{const L=p.lens,g=gapOf(V,L);return {V,dato:fmtU(val(V.id,'dato',V.dato,L.age,L),unitOf(V.dato)),hecho:fmt(val(V.id,'hecho',V.hecho,L.age,L))+'%',a:fmtU(g.a,V.dicho.u),b:fmtU(g.b,V.dicho.u),g:g.g}})}
+function fichaText(p){return fichaRows(p).map(r=>`- ${r.V.name}: ${r.V.dato.t}: ${r.dato}. ${r.V.hecho.t}: ${r.hecho} (2026). ${r.V.dicho.a.t}: ${r.a}. ${r.V.dicho.b.t}: ${r.b}. Brecha: ${r.g}.`).join('\n')}
+function personaPrompt(p,V){
+  return `Eres ${p.name}, ${p.age} años, de ${CITY[p.lens.region]}, ingreso ${p.lens.inc.toLowerCase()}, ${homeTxt(p)}; ${p.job}. Eres una AUDIENCIA SINTÉTICA de El Gran Reacomodo (Young Aurelius): una persona simulada que representa a tu grupo para una demo.
+Datos de tu grupo (personas como tú en tu región, edad, ingreso y hogar; son simulados para la demo). No los contradigas:
+${fichaText(p)}
+Tu frase: "${p.quote}"
+Tema de la conversación: ${V.name}. ${V.q}
+CÓMO RESPONDER: en primera persona, con tu voz y tu vida cotidiana, español colombiano natural sin caricaturas. Entre 50 y 120 palabras. Puedes contar anécdotas concretas coherentes con tus datos. No des cifras exactas como si fueran tuyas; habla de tu experiencia. Si te preguntan si eres real, explica que eres una audiencia sintética del estudio. No des consejos profesionales.`;
+}
+/* quota: makes the cost limits visible */
+const QMAX={sessions:20,turns:10};
+function quota(){try{const q=JSON.parse(localStorage.getItem('egr-quota')||'null');const m=new Date().toISOString().slice(0,7);if(q&&q.m===m)return q;return {m,sessions:0}}catch(e){return {m:'',sessions:0}}}
+function bumpSession(){const q=quota();q.sessions++;try{localStorage.setItem('egr-quota',JSON.stringify(q))}catch(e){}}
+const turnsUsed=()=>AUD.chat.filter(t=>t.role==='user').length;
+function quotaHtml(){const q=quota(),t=turnsUsed();return `<div class="quota" id="quota"><span class="k">Cuota de la demo · por usuario</span>
+  <div class="qrow"><span>Sesiones del mes</span><span class="qbar"><i style="width:${Math.min(100,q.sessions/QMAX.sessions*100)}%"></i></span><span>${q.sessions}/${QMAX.sessions}</span></div>
+  <div class="qrow"><span>Turnos de esta sesión</span><span class="qbar"><i style="width:${Math.min(100,t/QMAX.turns*100)}%"></i></span><span>${t}/${QMAX.turns}</span></div></div>`}
+
+const EXAMPLES={
+ entrevista:[['me','¿Hasta qué edad cree que le alcanza la plata?'],['marta','Mire, yo coticé muy poquito, siempre trabajé por mi cuenta. Con lo que tengo guardado y lo que me mandan mis hijos, calculo que llego hasta los 72, 73. Y uno espera vivir hasta los 85, entonces las cuentas no me cuadran. Por eso sigo vendiendo arepas en la mañana. No es que quiera, es que toca.'],['me','¿Y qué haría si tuviera un plan?'],['marta','Arreglaría el baño de la casa, que ya me da miedo resbalarme. Y dejaría de pedirle plata a mi hija cada fin de mes. Eso es lo que más me pesa.']],
+ grupo:[['andres','Yo pago la EPS de mis papás y el colegio de los niños. Si alguien me pregunta quién me va a cuidar a mí, la verdad no sé.'],['hernando','Yo cuidé a mi papá hasta los 90. Ahora mis hijos viven lejos y me toca a mí cuidar a mi esposa.'],['marta','A mí nadie me cuida. Vivo sola y la vecina es la que pregunta si amanecí bien.'],['andres','Eso es lo que me asusta: que a mí me toque igual que a usted, Marta.']],
+ test:[{nombre:'Marta',aceptacion:2,reaccion:'Me gusta la idea, pero otro crédito a mi edad me da miedo.',barrera:'Miedo a endeudarse'},{nombre:'Hernando',aceptacion:4,reaccion:'Si viene alguien a la casa y me explica, sí lo pensaría.',barrera:'Desconfianza en el banco'},{nombre:'Andrés',aceptacion:5,reaccion:'Lo tomaría para la casa de mis papás.',barrera:'Que la cuota suba'}]
+};
+
+function bubble(who,txt,isMe){const p=pById(who);return `<div class="bub ${isMe?'me':''}">${isMe?'':`<span class="av">${initials(p?p.name:'?')}</span>`}<div><div class="nm">${isMe?'Tú':esc(p?p.name:who)}</div><div class="tx">${isMe?esc(txt):mdLite(txt)}</div></div></div>`}
+function workPanel(){
+  const V=VIDAS.find(v=>v.id===AUD.vida)||VIDAS[0],sel=AUD.sel.map(pById).filter(Boolean);
+  const vidaSel=`<label class="sr" for="aud-vida">Vida</label><select id="aud-vida">${VIDAS.map(v=>`<option value="${v.id}" ${v.id===V.id?'selected':''}>${v.n} · ${v.short}</option>`).join('')}</select>`;
+  const noSample=!SAMPLE?`<div class="note-sim">Para conversar en vivo, abre la página dentro de Claude. Mientras tanto se muestra un ejemplo ilustrativo.</div>`:'';
+  if(AUD.mode==='entrevista'){
+    const p=sel[0];
+    const rows=fichaRows(p);
+    const log=AUD.chat.length?AUD.chat.map(t=>bubble(t.role==='user'?'me':p.id,t.content,t.role==='user')).join(''):`<span class="ex-tag">Ejemplo ilustrativo</span>`+EXAMPLES.entrevista.map(([w,t])=>bubble(w==='me'?'me':'marta',t,w==='me')).join('');
+    const sugs=[V.q,V.sponsor[0][1],'¿Qué le gustaría que una marca entendiera de usted?'];
+    return `<div class="wp-head"><div class="who"><span class="av">${initials(p.name)}</span><div><b>${esc(p.name)}</b><small>${esc(pLine(p))}</small></div></div><span class="sim-flag">Simulación</span></div>
+    <div class="wp-head" style="padding-top:0"><span style="font-size:12px;color:var(--muted)">Hablan sobre</span>${vidaSel}</div>
+    <details class="ficha"><summary>Ficha de datos de su grupo (7 vidas)</summary><div class="ficha-grid">${rows.map(r=>`<div><b>${r.V.n} · ${r.V.short}</b>${r.V.dato.t}: ${r.dato}<br>${r.V.hecho.t}: ${r.hecho}<br>Brecha: ${r.g}</div>`).join('')}</div></details>
+    <div class="convo" id="convo" aria-live="polite">${log}</div>
+    <form class="wp-foot" id="aud-form"><label for="aud-in" class="sr">Tu pregunta</label><textarea id="aud-in" rows="2" placeholder="Pregúntale a ${esc(p.name)}…" ${!SAMPLE||turnsUsed()>=QMAX.turns?'disabled':''}></textarea>
+      <div class="wp-row"><span style="display:flex;gap:6px;flex-wrap:wrap">${sugs.map(q=>`<button type="button" class="chipbtn" data-q="${esc(q)}" ${SAMPLE?'':'disabled'}>${esc(q)}</button>`).join('')}</span></div>
+      <div class="wp-row"><span>${turnsUsed()>=QMAX.turns?'Llegaste al tope de 10 turnos. Empieza otra sesión.':'Máximo 10 turnos por sesión.'}</span><span><button type="button" class="chipbtn" id="aud-new">Nueva sesión</button> <button class="go" id="aud-send" ${SAMPLE&&turnsUsed()<QMAX.turns?'':'disabled'}>Preguntar</button></span></div></form>${noSample}`;
+  }
+  if(AUD.mode==='grupo'){
+    const topic=AUD.topic||V.q;
+    const log=AUD.fg?AUD.fg:`<span class="ex-tag">Ejemplo ilustrativo</span>`+EXAMPLES.grupo.map(([w,t])=>bubble(w,t,false)).join('');
+    return `<div class="wp-head"><div><b>Grupo focal</b><small>${sel.length} participantes · elige entre 2 y 4 en la galería</small></div><span class="sim-flag">Simulación</span></div>
+    <div class="wp-head" style="padding-top:0;justify-content:flex-start">${sel.map(p=>`<span class="chipbtn" style="cursor:default">${esc(p.name)}, ${p.age}</span>`).join('')}</div>
+    <div class="convo" id="convo" aria-live="polite">${log}</div>
+    <form class="wp-foot" id="aud-form"><div class="wp-row"><span style="font-size:12px">Tema</span>${vidaSel}</div><label for="aud-in" class="sr">Pregunta para el grupo</label><textarea id="aud-in" rows="2">${esc(topic)}</textarea>
+      <div class="wp-row"><span>Una sesión = una conversación de 8 a 10 intervenciones.</span><button class="go" id="aud-send" ${SAMPLE&&sel.length>=2?'':'disabled'}>Iniciar grupo focal</button></div></form>${noSample}`;
+  }
+  const res=AUD.ct||EXAMPLES.test;
+  return `<div class="wp-head"><div><b>Test de concepto</b><small>${sel.length} audiencias reaccionan a una idea</small></div><span class="sim-flag">Simulación</span></div>
+    <form class="wp-foot" id="aud-form" style="border-top:0"><label for="aud-in" style="font-size:12px;color:var(--muted)">Concepto a probar</label><textarea id="aud-in" rows="3">${esc(AUD.concept)}</textarea>
+      <div class="wp-row"><span>Cada reacción se basa en la ficha de datos de su grupo.</span><button class="go" id="aud-send" ${SAMPLE&&sel.length?'':'disabled'}>Probar concepto</button></div></form>
+    <div class="convo" id="convo" style="max-height:none">${AUD.ct?'':'<span class="ex-tag">Ejemplo ilustrativo</span>'}
+      <div class="ct-res">${res.map(r=>`<div class="ct-row"><span>${esc(r.nombre)}</span><span class="qbar" style="height:12px;background:var(--surface-2)"><i class="bar" style="display:block;width:${(Number(r.aceptacion)||0)/5*100}%"></i></span><span class="sc">${Number(r.aceptacion)||0}/5</span></div>`).join('')}</div>
+      <div class="ct-cards">${res.map(r=>`<div class="ct-card"><b>${esc(r.nombre)}</b> · barrera: ${esc(r.barrera||'—')}<q>${esc(r.reaccion||'')}</q></div>`).join('')}</div>
+    </div>${noSample}`;
+}
+function renderAudiences(){
+  if(!AUD.sel.every(pById))AUD.sel=['marta'];
+  const multi=AUD.mode!=='entrevista';
+  document.getElementById('view').innerHTML=`
+  <section class="scene" data-scene><div class="wrap">
+    <div class="aud-top"><div><div class="eyebrow">Audiencias sintéticas · Demo</div><h1 class="h-l">Conversa con las personas detrás de los datos.</h1>
+      <p class="lede">Cada audiencia es una celda del lente convertida en persona. Responde desde la ficha de datos de su grupo en las siete vidas. Es un simulador de hipótesis, no evidencia.</p></div>
+      ${quotaHtml()}</div>
+    <div class="modes" role="group" aria-label="Modo">${[['entrevista','Entrevista'],['grupo','Grupo focal'],['test','Test de concepto']].map(([k,l])=>`<button type="button" data-mode="${k}" aria-pressed="${AUD.mode===k}">${l}</button>`).join('')}</div>
+    <div class="aud-grid">
+      <div><p class="note" style="margin:0 0 10px">${multi?'Elige entre 2 y 4 audiencias.':'Elige una audiencia.'} Las barras muestran el tamaño de su brecha en cada vida.</p>
+        <div class="pgal">${allPersonas().map(p=>{const gs=VIDAS.map(V=>gapOf(V,p.lens).g),mx=Math.max(...gs);
+          return `<button type="button" class="pc ${AUD.sel.includes(p.id)?'on':''}" data-p="${p.id}" aria-pressed="${AUD.sel.includes(p.id)}">${p.fromLens?'<span class="tag">Tu lente</span>':''}<span class="who"><span class="av">${initials(p.name)}</span><span><b>${esc(p.name)}, ${p.age}</b><small>${esc(pLine(p))}</small></span></span><q>${esc(p.quote)}</q>
+          <span><span class="pv">${gs.map((g,i)=>`<i style="height:${Math.max(8,g/mx*100)}%"${tipAttr(VIDAS[i].name,g+(VIDAS[i].dicho.u==='años'?' años':' pts')+' de brecha')}></i>`).join('')}</span><span class="pv-l"><span>Bolsillo</span><span>Disfrute</span></span></span></button>`}).join('')}</div></div>
+      <div class="work-panel" id="wp">${workPanel()}</div>
+    </div>
+  </div></section>`;
+  bindAudiences();
+}
+function bindAudiences(){
+  const view=document.getElementById('view');
+  view.querySelectorAll('[data-mode]').forEach(b=>b.onclick=()=>{AUD.mode=b.dataset.mode;if(AUD.mode==='entrevista')AUD.sel=AUD.sel.slice(0,1);else if(AUD.sel.length<2)AUD.sel=[...new Set([...AUD.sel,'marta','andres','hernando'])].slice(0,3);renderAudiences()});
+  view.querySelectorAll('.pc').forEach(b=>b.onclick=()=>{const id=b.dataset.p;
+    if(AUD.mode==='entrevista'){if(AUD.sel[0]!==id){AUD.sel=[id];AUD.chat=[]}}
+    else{AUD.sel=AUD.sel.includes(id)?AUD.sel.filter(x=>x!==id):AUD.sel.length<4?[...AUD.sel,id]:AUD.sel;AUD.fg=null;AUD.ct=null}
+    renderAudiences()});
+  bindPanel();
+}
+function refreshPanel(){$id('wp').innerHTML=workPanel();const q=$id('quota');if(q)q.outerHTML=quotaHtml();bindPanel()}
+function bindPanel(){
+  const vs=$id('aud-vida');if(vs)vs.onchange=e=>{AUD.vida=e.target.value;if(AUD.mode==='entrevista')AUD.chat=[];AUD.topic='';refreshPanel()};
+  const nw=$id('aud-new');if(nw)nw.onclick=()=>{AUD.chat=[];refreshPanel()};
+  document.querySelectorAll('#wp [data-q]').forEach(b=>b.onclick=()=>audSend(b.dataset.q));
+  const f=$id('aud-form');if(f)f.onsubmit=e=>{e.preventDefault();audSend($id('aud-in').value)};
+  const ta=$id('aud-in');if(ta&&AUD.mode==='entrevista')ta.onkeydown=e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();audSend(ta.value)}};
+}
+async function audSend(text){
+  text=String(text||'').trim();if(!SAMPLE||!text||AUD.busy)return;
+  const V=VIDAS.find(v=>v.id===AUD.vida)||VIDAS[0],sel=AUD.sel.map(pById).filter(Boolean),convo=()=>$id('convo');
+  AUD.busy=new AbortController();
+  try{
+    if(AUD.mode==='entrevista'){
+      if(turnsUsed()>=QMAX.turns)return;
+      if(!AUD.chat.length)bumpSession();
+      AUD.chat.push({role:'user',content:text});refreshPanel();
+      const p=sel[0];convo().insertAdjacentHTML('beforeend',`<div class="bub"><span class="av">${initials(p.name)}</span><div><div class="nm">${esc(p.name)}</div><div class="tx" id="live">…</div></div></div>`);convo().scrollTop=1e6;
+      const {text:ans}=await SAMPLE([{role:'user',content:personaPrompt(p,V)},...AUD.chat],{cache:false,modelTier:'quick',signal:AUD.busy.signal,onText:({text})=>{const l=$id('live');if(l)l.innerHTML=mdLite(text);convo().scrollTop=1e6}});
+      AUD.chat.push({role:'assistant',content:ans});
+    }else if(AUD.mode==='grupo'){
+      if(sel.length<2)return;bumpSession();AUD.topic=text;AUD.fg=`<div class="bub me"><div><div class="nm">Moderador</div><div class="tx">${esc(text)}</div></div></div><div id="fg-live"><span class="ex-tag">Conversando…</span></div>`;refreshPanel();
+      const prompt=`Simula un GRUPO FOCAL de El Gran Reacomodo (audiencias sintéticas, demo). Participantes:\n${sel.map(p=>`## ${p.name} (${pLine(p)}; ${p.job}). Frase: "${p.quote}"\n${fichaText(p)}`).join('\n\n')}\n\nTema (${V.name}): ${text}\n\nEscribe entre 8 y 10 intervenciones alternadas, una por línea, con el formato exacto "Nombre: texto". Cada una de 20 a 60 palabras, en primera persona, español colombiano natural. Que reaccionen entre ellos, que haya al menos un desacuerdo y que cada voz sea coherente con los datos de su grupo (sin recitar cifras). Nada más fuera de esas líneas.`;
+      const names=sel.map(p=>p.name);
+      const draw=t=>{const lines=t.split('\n').map(l=>l.trim()).filter(Boolean);const html=lines.map(l=>{const m=l.match(/^\**([^:*]{2,30})\**:\s*(.+)$/);const p=m&&sel.find(x=>x.name===m[1].trim());return p?bubble(p.id,m[2],false):''}).join('');const el=$id('fg-live');if(el&&html)el.innerHTML=html;convo().scrollTop=1e6};
+      const {text:ans}=await SAMPLE(prompt,{cache:false,modelTier:'quick',signal:AUD.busy.signal,onText:({text})=>draw(text)});
+      draw(ans);AUD.fg=$id('convo').innerHTML;
+    }else{
+      if(!sel.length)return;bumpSession();AUD.concept=text;AUD.ct=null;refreshPanel();
+      convo().innerHTML='<span class="ex-tag">Las audiencias están leyendo el concepto…</span>';
+      const prompt=`Test de concepto con AUDIENCIAS SINTÉTICAS de El Gran Reacomodo (demo). Concepto: "${text}"\n\nAudiencias:\n${sel.map(p=>`## ${p.name} (${pLine(p)}; ${p.job}). Frase: "${p.quote}"\n${fichaText(p)}`).join('\n\n')}\n\nPara cada audiencia, en orden, devuelve SOLO un arreglo JSON de objetos {"nombre": string, "aceptacion": entero 1-5, "reaccion": frase en primera persona de 15 a 35 palabras, "barrera": 2 a 5 palabras}. La aceptación debe ser coherente con sus datos.`;
+      const arr=await SAMPLE.json(prompt,{cache:false,modelTier:'quick',signal:AUD.busy.signal});
+      AUD.ct=Array.isArray(arr)?arr.slice(0,4).map(r=>({nombre:String(r.nombre||''),aceptacion:Math.max(1,Math.min(5,Number(r.aceptacion)||1)),reaccion:String(r.reaccion||''),barrera:String(r.barrera||'')})):null;
+    }
+  }catch(e){
+    if(e&&e.code!=='cancelled'){const c=convo();c&&c.insertAdjacentHTML('beforeend',`<div class="msg"><div class="err">${ERR[e.code]||(e.code==='invalid_json'?'La respuesta no llegó en el formato esperado. Prueba otra vez.':'Algo falló al simular. Puedes volver a intentarlo.')}</div></div>`)}
+    if(AUD.mode==='entrevista'&&e&&e.text)AUD.chat.push({role:'assistant',content:e.text});
+    if(e&&['not_granted','sampling_disabled','not_declared','capability_disabled','capability_removed'].includes(e.code))SAMPLE=null;
+    AUD.busy=null;return;
+  }finally{if(AUD.busy){AUD.busy=null}}
+  refreshPanel();
+}
 
 /* ================= router, motion, presentation ================= */
 let io;
@@ -966,7 +1190,7 @@ function observe(){
 }
 function route(){
   const id=(location.hash||'#nacion').slice(1),V=VIDAS.find(v=>v.id===id);
-  renderNav(V?V.id:'nacion');V?renderVida(V):renderNation();scrollTo(0,0);observe();if(!$id('agent').hidden){agentCtx();if(!agentTurns.length)$id('ag-body').innerHTML=agentSugs()}
+  renderNav(V?V.id:id==='audiencias'?'audiencias':'nacion');V?renderVida(V):id==='audiencias'?renderAudiences():renderNation();scrollTo(0,0);observe();if(!$id('agent').hidden){agentCtx();if(!agentTurns.length)$id('ag-body').innerHTML=agentSugs()}
 }
 addEventListener('hashchange',route);
 const scenes=()=>[...document.querySelectorAll('[data-scene]')];
