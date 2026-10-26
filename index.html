@@ -319,7 +319,7 @@ body.present #hud{display:flex}
 </aside>
 <main id="view"></main>
 <div id="tip" role="tooltip"></div>
-<button id="agent-btn" type="button" hidden aria-controls="agent"><span aria-hidden="true">✳</span> Pregúntale al estudio</button>
+<button id="agent-btn" type="button" aria-controls="agent"><span aria-hidden="true">✳</span> Pregúntale al estudio</button>
 <section id="agent" hidden role="dialog" aria-labelledby="ag-title">
   <div class="ag-head on-dark"><div class="ag-top"><div><div class="eyebrow c">Agente del estudio</div><h2 id="ag-title" class="h-m" style="margin-top:4px">Pregúntale a los datos.</h2></div><button class="ag-x" id="ag-close" type="button">Cerrar ✕</button></div><div class="ag-ctx" id="ag-ctx"></div></div>
   <div class="ag-body" id="ag-body" aria-live="polite"></div>
@@ -818,7 +818,7 @@ function renderVida(V){
     <div class="read-grid">
       <div><h3 class="h-m">Lo que vemos</h3><div class="obs">${observations(V,SG,L).map(o=>`<div class="ob">${o}</div>`).join('')}</div></div>
       <div class="hyps">${hypotheses(V,SG).map((h,i)=>`<div class="hyp"><span class="k">H${i+1} · ${code(5)}</span><p>${h.t}</p><div class="test"><b>Cómo la probamos:</b> ${h.test}</div></div>`).join('')}
-        <button class="ask-agent" type="button" id="ask-hyp" ${SAMPLE?'':'hidden'}>✳ Profundizar estas hipótesis con el agente</button></div>
+        <button class="ask-agent" type="button" id="ask-hyp">✳ Profundizar estas hipótesis con el agente</button></div>
     </div>
   </div></section>
 
@@ -919,16 +919,16 @@ function agentSugs(){
   return `<div class="sugs"><span class="k">Puedes empezar por</span>${qs.map(q=>`<button type="button" data-q="${esc(q)}">${esc(q)}</button>`).join('')}</div>`;
 }
 function openAgent(q){
-  if(!SAMPLE)return;
   $id('agent').hidden=false;$id('agent-btn').hidden=true;agentCtx();
   if(!agentTurns.length)$id('ag-body').innerHTML=agentSugs();
   if(q)sendAgent(q);else $id('ag-in').focus();
 }
-function closeAgent(){$id('agent').hidden=true;$id('agent-btn').hidden=!SAMPLE}
+function closeAgent(){$id('agent').hidden=true;$id('agent-btn').hidden=false}
 const ERR={not_granted:'No se dio permiso para usar Claude en esta página.',sampling_disabled:'Claude no está disponible para esta cuenta.',rate_limited:'Demasiadas consultas seguidas. Espera un momento y vuelve a preguntar.',session_expired:'Tu sesión expiró. Inicia sesión de nuevo.',refused:'Claude no respondió esta pregunta. Prueba reformularla.',empty_completion:'No llegó respuesta. Prueba una pregunta más concreta.',tools_unavailable:'Este visor no permite al agente consultar los datos.',prompt_too_large:'La conversación es muy larga. Empieza una nueva.'};
 async function sendAgent(q){
   q=String(q||'').trim();if(!q||agentCtl)return;
   const body=$id('ag-body');if(!agentTurns.length)body.innerHTML='';
+  if(!SAMPLE){body.insertAdjacentHTML('beforeend',`<div class="msg u">${esc(q)}</div><div class="msg a"><div class="txt"><p>El agente estará disponible pronto en esta versión del estudio.</p></div></div>`);$id('ag-in').value='';body.scrollTop=body.scrollHeight;return}
   agentTurns.push({role:'user',content:q});
   body.insertAdjacentHTML('beforeend',`<div class="msg u">${esc(q)}</div><div class="msg a"><div class="work">Pensando…</div><div class="txt"></div></div>`);
   const msg=body.lastElementChild,txt=msg.querySelector('.txt');workEl=msg.querySelector('.work');body.scrollTop=body.scrollHeight;
@@ -945,7 +945,7 @@ async function sendAgent(q){
     if(e&&e.text)txt.innerHTML=mdLite(e.text);
     if(e&&e.code!=='cancelled')txt.insertAdjacentHTML('beforeend',`<div class="err">${ERR[e.code]||'Algo falló al consultar. Puedes volver a intentarlo.'}</div>`);
     if(e&&e.text)agentTurns.push({role:'assistant',content:e.text});
-    if(e&&['not_granted','sampling_disabled','not_declared','capability_disabled','capability_removed'].includes(e.code)){SAMPLE=null;document.querySelectorAll('.ask-agent').forEach(b=>b.hidden=true)}
+    if(e&&['not_granted','sampling_disabled','not_declared','capability_disabled','capability_removed'].includes(e.code)){SAMPLE=null}
   }finally{agentCtl=null;workEl=null;$id('ag-send').disabled=false;$id('ag-stop').hidden=true;body.scrollTop=body.scrollHeight}
 }
 $id('agent-btn').addEventListener('click',()=>openAgent());
