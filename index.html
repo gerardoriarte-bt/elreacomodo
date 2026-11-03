@@ -148,7 +148,7 @@ svg .grid line{stroke:var(--line);stroke-width:1}
 .mult .cross{font-size:12px;color:var(--fg-2);margin-top:2px}
 .mult .cross b{color:var(--glow);font-family:var(--display);font-size:20px}
 .doors{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:28px}
-.door{display:flex;flex-direction:column;gap:8px;text-decoration:none;background:var(--surface);color:var(--fg);border:1px solid var(--line);border-radius:12px;padding:18px;min-height:190px;transition:transform .2s}
+.door{position:relative;display:flex;flex-direction:column;gap:8px;text-decoration:none;background:var(--surface);color:var(--fg);border:1px solid var(--line);border-radius:12px;padding:18px;min-height:190px;transition:transform .2s}
 .door:hover{transform:translateY(-3px);border-color:var(--brand)}
 .door .dn{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
 .door .g{margin-top:6px;font-family:var(--display);font-weight:700;font-size:64px;line-height:.9;letter-spacing:-.03em;color:var(--glow)}
@@ -161,6 +161,21 @@ svg .grid line{stroke:var(--line);stroke-width:1}
 .door .gkey{display:flex;justify-content:space-between;gap:8px;font-size:11px;color:var(--muted)}
 .door .gkey .m{color:var(--glow);text-align:right}
 .door .gkey b{font-weight:700}
+.door .more{display:none}
+@media (hover:hover){.door:has(.more)::after{content:'Ver detalle';position:absolute;top:16px;right:18px;font-size:11px;font-weight:700;color:var(--muted);opacity:0;transition:opacity .15s}.door:hover::after{opacity:1}}
+#door-more{position:fixed;z-index:45;width:340px;max-width:calc(100vw - 24px);pointer-events:none;background:var(--bg);border:1px solid var(--line-2);border-radius:12px;padding:18px;font-size:13px;line-height:1.45;color:var(--fg-2);box-shadow:0 16px 40px rgba(1,43,45,.35)}
+#door-more[hidden]{display:none}
+#door-more h5{margin:0 0 8px;font:700 16px/1.2 var(--display);color:var(--fg)}
+#door-more p{margin:0 0 10px}
+#door-more b{color:var(--fg)}
+#door-more ol{list-style:none;margin:0 0 10px;padding:0;display:grid;gap:6px}
+#door-more li{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:8px 10px;background:var(--surface);border-radius:8px}
+#door-more li b{font:700 18px var(--display);color:var(--glow);white-space:nowrap}
+#door-more .calc{padding-bottom:10px;border-bottom:1px solid var(--line)}
+#door-more .calc b{color:var(--glow)}
+#door-more .row{margin-bottom:10px}
+#door-more .lab{display:block;font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:2px}
+#door-more .foot{margin:0;font-size:11.5px;color:var(--muted)}
 .door.dark{background:var(--surface-2);color:var(--fg)}
 .door.dark h4{color:var(--brand);font-size:20px}
 .door.dark p{font-size:13px;color:var(--fg-2)}
@@ -390,6 +405,7 @@ body.present #hud{display:flex}
 </aside>
 <main id="view"></main>
 <div id="tip" role="tooltip"></div>
+<div id="door-more" class="on-dark" role="tooltip" hidden></div>
 <button id="agent-btn" type="button" aria-controls="agent"><span aria-hidden="true">✳</span> Pregúntale al estudio</button>
 <section id="agent" hidden role="dialog" aria-labelledby="ag-title">
   <div class="ag-head on-dark"><div class="ag-top"><div><div class="eyebrow c">Agente del estudio</div><h2 id="ag-title" class="h-m" style="margin-top:4px">Pregúntale a los datos.</h2></div><button class="ag-x" id="ag-close" type="button">Cerrar ✕</button></div><div class="ag-ctx" id="ag-ctx"></div></div>
@@ -547,6 +563,28 @@ document.addEventListener('pointermove',e=>{const t=e.target.closest('[data-tip]
   tip.innerHTML=`<b>${t.dataset.tipb}</b>${t.dataset.tip}`;tip.style.opacity=1;
   const r=tip.getBoundingClientRect();let x=e.clientX+14,y=e.clientY+14;if(x+r.width>innerWidth-8)x=e.clientX-r.width-14;if(y+r.height>innerHeight-8)y=e.clientY-r.height-14;tip.style.left=x+'px';tip.style.top=y+'px'});
 
+/* ================= door detail ================= */
+const dm=document.getElementById('door-more');let dmFor=null;
+const hideMore=()=>{dm.hidden=true;dmFor=null};
+function showMore(d){
+  const src=d.querySelector('.more');if(!src)return;
+  dmFor=d;dm.innerHTML=src.innerHTML;dm.hidden=false;
+  const r=d.getBoundingClientRect(),w=dm.offsetWidth,h=dm.offsetHeight,G=12;
+  let x=r.right+G;if(x+w>innerWidth-G)x=r.left-w-G;
+  let y=Math.min(Math.max(r.top,G),innerHeight-h-G);
+  if(x<G){x=Math.min(Math.max(r.left,G),innerWidth-w-G);y=r.bottom+8+h>innerHeight-G?r.top-h-8:r.bottom+8}
+  dm.style.left=x+'px';dm.style.top=Math.max(G,y)+'px';
+}
+if(matchMedia('(hover:hover)').matches){
+  document.addEventListener('pointerover',e=>{const d=e.target.closest('.door');if(d&&d!==dmFor)showMore(d)});
+  document.addEventListener('pointerout',e=>{const d=e.target.closest('.door');if(d&&!d.contains(e.relatedTarget))hideMore()});
+}
+document.addEventListener('focusin',e=>{const d=e.target.closest('.door');d&&d.matches(':focus-visible')?showMore(d):hideMore()});
+document.addEventListener('focusout',e=>{if(e.target.closest('.door'))hideMore()});
+addEventListener('scroll',()=>dmFor&&hideMore(),{passive:true});
+addEventListener('hashchange',hideMore);
+document.addEventListener('keydown',e=>{if(e.key==='Escape')hideMore()});
+
 /* ================= nav ================= */
 function renderNav(cur){
   document.getElementById('nav').innerHTML=`<div class="grp">Panorama</div><a href="#nacion" ${cur==='nacion'?'aria-current="page"':''}><b>◎</b>Estado de la nación</a><div class="grp">Las siete vidas</div>`+
@@ -581,6 +619,16 @@ function nationCounters(y){
   <div class="counter"><div class="k">Menores de 15</div><div class="v num">${fmt(u,1)}%</div><div class="d">${fmt(share(CO,Y0,0,14),1)}% en 2018</div></div>
   <div class="counter"><div class="k">65 años o más</div><div class="v num">${fmt(o,1)}%</div><div class="d">${fmt(share(CO,Y0,65,100),1)}% en 2018</div></div>`;
 }
+function doorMore(V,L,g){
+  const u=V.dicho.u,seg=segText(L);
+  return `<div class="more" hidden><h5>${V.name}</h5>
+    <p>Les hicimos dos preguntas a ${seg}:</p>
+    <ol><li><span>${V.dicho.a.t}</span><b>${fmtU(g.a,u)}</b></li><li><span>${V.dicho.b.t}</span><b>${fmtU(g.b,u)}</b></li></ol>
+    <p class="calc">${g.a} − ${g.b} = <b>${g.g}${u==='años'?' años':' de cada 100'}</b>. Esa diferencia es el número grande.</p>
+    <div class="row"><span class="lab">Cifras oficiales · ${V.dato.src}</span>${V.dato.say(val(V.id,'dato',V.dato,L.age,L),seg)}</div>
+    <div class="row"><span class="lab">Lo que la gente hace · TGI</span>${V.hecho.t}: <b>${fmt(val(V.id,'hecho',V.hecho,L.age,L))}%</b></div>
+    <p class="foot">Cifras simuladas. Haz clic para ver la vida completa.</p></div>`;
+}
 function renderNation(){
   const c65=crossYear(CO,65),c60=crossYear(CO,60);
   let peakY=Y0,peak=0;YEARS.forEach(y=>{const t=pop(CO,y,0,100);if(t>peak){peak=t;peakY=y}});
@@ -594,9 +642,9 @@ function renderNation(){
      ${lineChart({xs:YEARS,w:300,h:170,yMax:30,yStep:10,yFmt:v=>v+'%',xTicks:[2018,2044],today:null,mr:14,series:[{name:'Menores de 15 · '+x.r,values:YEARS.map(y=>share(x.r,y,0,14)),color:'var(--ref)',width:1.6,fmt:v=>fmt(v,1)+'%'},{name:'65+ · '+x.r,values:YEARS.map(y=>share(x.r,y,65,100)),color:'var(--dane)',width:2.2,fmt:v=>fmt(v,1)+'%'}],marks:x.c?[{x:x.c,y:share(x.r,x.c,65,100),label:'',dy:0}]:[]})}
      <div class="note" style="margin-top:6px">Mediana: ${x.m0} → ${x.m1} años · Población 2026–2044: ${x.d>=0?'+':''}${fmt(x.d*100,1)}%</div></button>`).join('');
   const GOLPE={bolsillo:'de vida sin plata para vivirlos.',oficio:'quieren seguir trabajando, pero no ven dónde.',cuerpo:'dicen que se cuidan, pero todavía no hacen nada concreto.',vinculos:'esperan que su familia los cuide, pero no creen que pueda.',casa:'quieren quedarse en su casa, pero su casa no les va a servir.',movimiento:'quieren valerse solos a los 80, pero no creen lograrlo.',disfrute:'sueñan con aprender o viajar, pero no tienen un plan.'};
-  const doors=VIDAS.map(V=>{const g=gapOf(V,{...DEF_LENS}),yrs=V.dicho.u==='años',[r0,r1]=yrs?V.dicho.range:[0,100],X=v=>(v-r0)/(r1-r0)*100;
+  const doors=VIDAS.map(V=>{const L={...DEF_LENS},g=gapOf(V,L),yrs=V.dicho.u==='años',[r0,r1]=yrs?V.dicho.range:[0,100],X=v=>(v-r0)/(r1-r0)*100;
     const bar=`<div class="gbar" aria-hidden="true"><i class="have" style="width:${X(g.b)}%"></i><i class="miss" style="left:${X(g.b)}%;width:${X(g.a)-X(g.b)}%"></i></div><div class="gkey">${yrs?`<span>Plata hasta los <b>${g.b}</b></span><span class="m">Vida hasta los <b>${g.a}</b></span>`:`<span>Creen que podrán: <b>${g.b}</b></span><span class="m">Lo quieren: <b>${g.a}</b></span>`}</div>`;
-    return `<a class="door" href="#${V.id}" aria-label="${esc(V.name)}: ${g.g} ${yrs?'años':'de cada 100'} ${GOLPE[V.id]}"><span class="dn">${V.n} · ${V.short}</span><span class="g num">${g.g}<small>${yrs?'años':'de cada 100'}</small></span><span class="punch">${GOLPE[V.id]}</span>${bar}</a>`}).join('')+
+    return `<a class="door" href="#${V.id}" aria-label="${esc(V.name)}: ${g.g} ${yrs?'años':'de cada 100'} ${GOLPE[V.id]}"><span class="dn">${V.n} · ${V.short}</span><span class="g num">${g.g}<small>${yrs?'años':'de cada 100'}</small></span><span class="punch">${GOLPE[V.id]}</span>${bar}${doorMore(V,L,g)}</a>`}).join('')+
    `<div class="door dark on-dark"><h4>Lo que se quiere no es lo que se espera.</h4><p>En las siete vidas pasa lo mismo: la gente sabe cómo quiere envejecer, pero no cree que vaya a lograrlo. Toca una tarjeta para ver por qué.</p></div>`;
 
   document.getElementById('view').innerHTML=`
