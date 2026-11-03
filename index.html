@@ -161,6 +161,25 @@ svg .grid line{stroke:var(--line);stroke-width:1}
 .door .gkey{display:flex;justify-content:space-between;gap:8px;font-size:11px;color:var(--muted)}
 .door .gkey .m{color:var(--glow);text-align:right}
 .door .gkey b{font-weight:700}
+.cent-stats{display:flex;align-items:stretch;gap:10px;margin-top:26px;flex-wrap:wrap}
+.cent-stats .cs{flex:1 1 150px;min-width:0;display:flex;flex-direction:column;gap:6px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.cent-stats .l{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.cent-stats b{font-family:var(--display);font-size:clamp(28px,3.6vw,44px);line-height:1;color:var(--fg)}
+.cent-stats .now{border-color:var(--glow)}
+.cent-stats .now b{color:var(--glow)}
+.cent-stats .fut{border-style:dashed;border-color:var(--dane)}
+.cent-stats .fut b{color:var(--dane)}
+.cent-stats .arr{align-self:center;color:var(--muted);font-size:22px}
+@media (max-width:560px){.cent-stats .arr{display:none}}
+.cent-more{margin-top:14px;border-top:1px solid var(--line);padding-top:12px;font-size:13px;color:var(--fg-2)}
+.cent-more summary{cursor:pointer;font-weight:700;color:var(--brand)}
+.cent-more p{margin:10px 0 0}
+.cent-tab{width:100%;border-collapse:collapse;margin-top:10px;font-size:12.5px;font-variant-numeric:tabular-nums}
+.cent-tab th,.cent-tab td{text-align:right;padding:6px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
+.cent-tab th:first-child,.cent-tab td:first-child{text-align:left}
+.cent-tab th{font-size:11px;color:var(--muted);font-weight:700}
+.cent-tab tr.now td{background:var(--surface-2)}
+.cent-tab small{color:var(--muted)}
 .door .more{display:none}
 @media (hover:hover){.door:has(.more)::after{content:'Ver detalle';position:absolute;top:16px;right:18px;font-size:11px;font-weight:700;color:var(--muted);opacity:0;transition:opacity .15s}.door:hover::after{opacity:1}}
 #door-more{position:fixed;z-index:45;width:340px;max-width:calc(100vw - 24px);pointer-events:none;background:var(--bg);border:1px solid var(--line-2);border-radius:12px;padding:18px;font-size:13px;line-height:1.45;color:var(--fg-2);box-shadow:0 16px 40px rgba(1,43,45,.35)}
@@ -420,6 +439,7 @@ body.present #hud{display:flex}
 <div id="hud" aria-live="polite"><span id="hud-n">1 / 1</span><button id="hud-prev" aria-label="Escena anterior">↑</button><button id="hud-next" aria-label="Escena siguiente">↓</button><button class="x" id="hud-x">Salir</button></div>
 
 <script src="dane-population.js"></script>
+<script src="dane-national.js"></script>
 <script>
 /* ================= data helpers (DANE real) ================= */
 const P=DANE_POP, CO='Toda Colombia', REG=['Caribe','Central','Pacífica','Bogotá','Oriental'];
@@ -859,6 +879,75 @@ function observations(V,S,L){
   ];
 }
 
+/* ================= century: 1950–2050 by quinquennium (DANE national) ================= */
+const HY=Object.keys(DANE_NAT).map(Number).sort((a,b)=>a-b),HNOW=2025;
+const nat=(y,lo,hi)=>{const a=DANE_NAT[y].a;let s=0;for(let i=lo;i<=hi;i++)s+=a[i];return s};
+const natMedian=y=>{const a=DANE_NAT[y].a,t=nat(y,0,100);let c=0;for(let i=0;i<=100;i++){c+=a[i];if(c>=t/2)return i}};
+const f1=v=>v>=10?fmt(v):fmt(v,1);
+const of10=v=>Math.round(v/10)+' de cada 10',of100=v=>'1 de cada '+Math.round(100/v);
+const mil=v=>v>=1e6?fmt(v/1e6,1)+' millones':fmt(Math.round(v/1e4)*10)+' mil';
+const CENTURY={
+  bolsillo:{t:'Personas en edad de trabajar por cada mayor de 65',f:y=>nat(y,15,64)/nat(y,65,100),show:f1,
+    say:(a,b,c)=>`En 1950 había <b>${f1(a)}</b> personas en edad de trabajar por cada persona mayor de 65. Hoy hay <b>${f1(b)}</b>. En 2050 habrá <b>${f1(c)}</b>.`,
+    read:'Son las manos que sostienen, con su trabajo y sus aportes, cada pensión y cada gasto de la vejez. Mientras más baja la barra, más pesa la cuenta sobre cada trabajador.',
+    how:'Personas de 15 a 64 años ÷ personas de 65 años o más.',parts:[['15–64',15,64],['65+',65,100]]},
+  oficio:{t:'Jóvenes que llegan al trabajo por cada persona cerca del retiro',f:y=>nat(y,15,24)/nat(y,55,64),show:f1,
+    say:(a,b,c)=>`En 1950 llegaban <b>${f1(a)}</b> jóvenes al trabajo por cada persona cerca del retiro. Hoy llegan <b>${f1(b)}</b>. En 2050 ${c<1?`ni siquiera alcanzarán para reemplazarla: <b>${f1(c)}</b>`:`llegarán <b>${f1(c)}</b>`}.`,
+    read:'Compara a quienes tienen de 15 a 24 años con quienes tienen de 55 a 64. Por debajo de 1, salen más personas del trabajo de las que entran.',
+    how:'Personas de 15 a 24 años ÷ personas de 55 a 64 años.',parts:[['15–24',15,24],['55–64',55,64]]},
+  cuerpo:{t:'Colombianos con 60 años o más',f:y=>nat(y,60,100)/nat(y,0,100)*100,show:of100,
+    say:(a,b,c)=>`En 1950, <b>${of100(a)}</b> colombianos tenía 60 años o más. Hoy es <b>${of100(b)}</b>. En 2050 será <b>${of100(c)}</b>.`,
+    read:'Son los cuerpos que más necesitan prevenir y cuidarse. La barra mide qué parte del país tiene 60 años o más: mientras más alta, más pesa la salud de los mayores.',
+    how:'Personas de 60 años o más ÷ población total.',parts:[['60+',60,100],['Total',0,100]],pct:true},
+  vinculos:{t:'Niños por cada persona mayor de 65',f:y=>nat(y,0,14)/nat(y,65,100),show:f1,
+    say:(a,b,c)=>`En 1950 había <b>${f1(a)}</b> niños por cada persona mayor de 65. Hoy hay <b>${f1(b)}</b>. En 2050 habrá <b>${c<1?'menos de uno':f1(c)}</b>.`,
+    read:'Menores de 15 años frente a mayores de 65. Menos hijos y nietos quiere decir menos manos en la familia para cuidar a los mayores.',
+    how:'Personas de 0 a 14 años ÷ personas de 65 años o más.',parts:[['0–14',0,14],['65+',65,100]]},
+  casa:{t:'Colombianos que viven en una cabecera municipal',f:y=>DANE_NAT[y].u/nat(y,0,100)*100,show:of10,
+    say:(a,b,c)=>`En 1950, <b>${of10(a)}</b> colombianos vivían en un casco urbano. Hoy son <b>${of10(b)}</b>, y así seguirá hasta 2050.`,
+    read:'El país pasó del campo a la ciudad en una sola vida. Quienes hoy tienen 70 años nacieron en un país rural y envejecen en uno urbano, en casas que no se pensaron para la vejez.',
+    how:'Población en cabeceras municipales ÷ población total.',parts:null,pct:true},
+  movimiento:{t:'Personas de 70 años o más',f:y=>nat(y,70,100),show:mil,tick:v=>v>=1e6?fmt(v/1e6,1)+' M':mil(v),
+    say:(a,b,c)=>`En 1950 había <b>${mil(a)}</b> personas de 70 años o más. Hoy hay <b>${mil(b)}</b>. En 2050 serán <b>${mil(c)}</b>.`,
+    read:'Es la edad en la que moverse por cuenta propia empieza a costar. Cada barra es la cantidad de personas, no un porcentaje.',
+    how:'Suma de personas de 70 años o más.',parts:[['70+',70,100],['Total',0,100]]},
+  disfrute:{t:'Edad mediana de los colombianos',f:natMedian,show:v=>v+' años',
+    say:(a,b,c)=>`En 1950, la mitad de los colombianos tenía menos de <b>${a} años</b>. Hoy, menos de <b>${b}</b>. En 2050, menos de <b>${c}</b>.`,
+    read:'Es la edad que parte al país en dos mitades. Un país joven usa su tiempo en crecer; uno maduro tiene que decidir qué hace con los años que gana.',
+    how:'Edad en la que se acumula la mitad de la población.',parts:[['Total',0,100]]}
+};
+function centuryChart(C){
+  const sm=innerWidth<600,vals=HY.map(C.f),mx=Math.max(...vals)*1.18,w=sm?380:720,h=270,bl=226,pl=6,pr=6,n=HY.length,gp=sm?3:6,bw=(w-pl-pr-gp*(n-1))/n,Y=v=>bl-v/mx*(bl-30);
+  let s=`<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="${esc(C.t)}, 1950 a 2050">${HATCH}<line x1="0" x2="${w}" y1="${bl}" y2="${bl}" stroke="var(--line-2)"/>`;
+  HY.forEach((y,i)=>{const v=vals[i],x=pl+i*(bw+gp),now=y===HNOW,proj=y>HNOW,key=y===HY[0]||now||y===HY[n-1];
+    s+=`<rect x="${x}" y="${Y(v)}" width="${bw}" height="${bl-Y(v)}" rx="3" fill="${now?'var(--glow)':proj?'url(#hatch)':'var(--dane)'}" ${key||proj?'':'opacity=".7"'}${tipAttr(C.t+' · '+y+(proj?' · proyección':''),C.show(v))}/>`;
+    if(key){const first=i===0,last=i===n-1,top=Math.min(Y(v),now&&i<n-1?Y(vals[i+1]):Y(v),now&&i>0?Y(vals[i-1]):Y(v));
+      s+=`<text x="${first?x:last?x+bw:x+bw/2}" y="${top-9}" text-anchor="${first?'start':last?'end':'middle'}" class="val" ${now?'style="fill:var(--glow)"':''}>${(C.tick||C.show)(v)}</text>`}
+    if(y%25===0)s+=`<text x="${x+bw/2}" y="${bl+20}" text-anchor="middle" class="${now?'lbl':''}" ${now?'style="fill:var(--fg);font-weight:700"':''}>${now?'Hoy · ':''}${y}</text>`});
+  return s+'</svg>';
+}
+function century(V){
+  const C=CENTURY[V.id],v=HY.map(C.f),i0=0,iN=HY.indexOf(HNOW),i1=HY.length-1;
+  const cols=C.parts||[],head=`<tr><th>Año</th><th>${C.t}</th>${cols.map(c=>`<th>Personas ${c[0]}</th>`).join('')}${V.id==='casa'?'<th>En cabeceras</th><th>Total</th>':''}</tr>`;
+  const body=HY.map((y,i)=>`<tr${y===HNOW?' class="now"':''}><td>${y}${y>HNOW?' <small>proy.</small>':''}</td><td><b>${C.pct?fmt(v[i],1)+'%':fmt(v[i],V.id==='disfrute'||V.id==='movimiento'?0:2)}</b></td>${cols.map(c=>`<td>${fmt(nat(y,c[1],c[2]))}</td>`).join('')}${V.id==='casa'?`<td>${fmt(DANE_NAT[y].u)}</td><td>${fmt(nat(y,0,100))}</td>`:''}</tr>`).join('');
+  return `<section class="scene" data-scene><div class="wrap">
+    <div class="eyebrow">La historia · 1950–2050</div>
+    <h2 class="h-l">${C.say(v[i0],v[iN],v[i1])}</h2>
+    <div class="cent-stats">${[[HY[i0],v[i0],'Así empezó'],[HNOW,v[iN],'Hoy'],[HY[i1],v[i1],'Hacia dónde va']].map(([y,x,l],k)=>`<div class="cs${k===1?' now':''}${k===2?' fut':''}"><span class="l">${l} · ${y}</span><b class="num">${C.show(x)}</b></div>`).join('<span class="arr" aria-hidden="true">→</span>')}</div>
+    <div class="panel" style="margin-top:22px"><div class="panel-head"><div><h3>${C.t}</h3><div class="sub">Toda Colombia, cada cinco años</div></div><span class="src dane real"><i></i>DANE · 1950–2050</span></div>
+      ${centuryChart(C)}
+      <div class="legend"><span><i style="background:var(--dane)"></i>Lo que ya pasó</span><span><i style="background:var(--glow)"></i>Hoy</span><span><i class="box" style="background:repeating-linear-gradient(135deg,var(--dane) 0 4px,rgba(0,160,110,.45) 4px 7px)"></i>Proyección del DANE</span></div>
+      <p class="read"><b>Cómo leerlo:</b> ${C.read}</p>
+      <details class="cent-more"><summary>Ver los números y de dónde salen</summary>
+        <p><b>Cálculo:</b> ${C.how} Pasa el cursor por cada barra para ver su valor.</p>
+        <div class="scroll-x"><table class="cent-tab"><thead>${head}</thead><tbody>${body}</tbody></table></div>
+        <p class="note">Fuente: DANE, Proyecciones de Población y Estudios Demográficos (PPED). Series nacionales por sexo y edad simple 1950–2017 y 2018–2070, actualización del 18 de julio de 2025. Hasta 2017 son retroproyecciones; desde 2026, proyecciones.</p>
+        <p class="note">Esta historia es de toda Colombia: el DANE no publica datos por región antes de 1985, por eso no cambia con el lente. En 1985 el DANE une dos series y las edades de 85 años o más saltan ese año; por eso usamos grupos de edad amplios.</p>
+      </details>
+    </div>
+  </div></section>`;
+}
+
 function renderVida(V){
   const L=lens,u=unitOf(V.dato),seg=segText(L),Seg=segText(L,{cap:true});
   const dv=val(V.id,'dato',V.dato,L.age,L);
@@ -891,6 +980,8 @@ function renderVida(V){
     </div>
     <div class="demo-banner"><b>DEMO</b><span>Población: DANE real. Fuente oficial por vida, TGI y estudio propio: valores simulados para diseñar el relato.</span></div>
   </div></section>
+
+  ${century(V)}
 
   <section class="scene" data-scene><div class="wrap">
     <div class="eyebrow">El dato · ${code(1)}</div>
