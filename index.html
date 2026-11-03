@@ -173,6 +173,12 @@ svg .grid line{stroke:var(--line);stroke-width:1}
 @media (max-width:560px){.cent-stats .arr{display:none}}
 .hist-say{font:600 clamp(18px,2vw,22px)/1.35 var(--display);color:var(--fg);max-width:46ch;margin:6px 0 4px}
 .hist-say b{color:var(--glow)}
+.dp{display:grid;gap:8px;margin:10px 0 4px}
+.dp-row{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.dp-l{width:72px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.dp button{border:1px solid var(--line-2);background:var(--surface);color:var(--fg);border-radius:99px;padding:6px 12px;font:600 13px var(--body);cursor:pointer;font-variant-numeric:tabular-nums}
+.dp button[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.dp button:disabled{opacity:.35;cursor:not-allowed}
 .cmp-pre{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
 .cmp-pre button{border:1px solid var(--line-2);background:var(--surface);color:var(--fg);border-radius:99px;padding:7px 14px;font:600 13px var(--body,inherit);cursor:pointer}
 .cmp-pre button[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
@@ -838,21 +844,38 @@ function renderNation(){
 
 /* ================= VIDA ================= */
 const DATO_YS=[2001,2006,2011,2016,2021,NOW];
-function barsChart(V,L){
-  const m=V.dato,u=unitOf(m),n=DATO_YS.length,all=VAGES.map((_,i)=>DATO_YS.map(y=>val(V.id,'dato',m,i,L,y))),max=Math.max(...all.flat())*1.15;
-  const w=560,h=262,bl=200,cw=(w-40)/5,pad=10,bw=(cw-2*pad-(n-1)*2)/n,Y=v=>bl-v/max*(bl-30);
-  let s=`<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="${esc(m.t)} por grupo de edad, ${DATO_YS[0]} a ${NOW}"><line x1="20" x2="${w-20}" y1="${bl}" y2="${bl}" stroke="var(--line-2)"/>`;
-  all.forEach((vs,i)=>{const x0=20+i*cw+pad,f=i===L.age,cx=20+i*cw+cw/2,last=vs[n-1],first=vs[0];
-    vs.forEach((v,k)=>{const x=x0+k*(bw+2);
-      s+=`<rect x="${x}" y="${Y(v)}" width="${bw}" height="${bl-Y(v)}" rx="2" fill="var(--dane)" opacity="${((f?1:.42)*(.3+.7*k/(n-1))).toFixed(2)}"${tipAttr(m.t+' · '+VAGES[i]+' años · '+(DATO_YS[k]===NOW?'hoy ('+NOW+')':DATO_YS[k]),fmtU(v,u)+' · simulado')}/>`});
-    s+=`<text x="${x0+(n-1)*(bw+2)+bw/2}" y="${Y(last)-8}" text-anchor="middle" class="val" ${f?'':'style="fill:var(--fg-2);font-weight:500"'}>${fmtU(last,u)}</text>`;
-    s+=`<text x="${cx}" y="${bl+18}" text-anchor="middle" class="${f?'lbl':''}" ${f?'style="fill:var(--fg);font-weight:700"':''}>${VAGES[i]}</text>`;
-    s+=`<text x="${cx}" y="${bl+34}" text-anchor="middle" style="fill:var(--muted);font-size:11px">en ${DATO_YS[0]}: ${fmtU(first,u)}</text>`});
+const ylab=y=>y===NOW?'Hoy':String(y);
+function barsChart(V,L,ya=DATO_YS[0],yb=NOW){
+  const m=V.dato,u=unitOf(m),A=VAGES.map((_,i)=>val(V.id,'dato',m,i,L,ya)),B=VAGES.map((_,i)=>val(V.id,'dato',m,i,L,yb)),max=Math.max(...A,...B)*1.15;
+  const w=560,h=262,bl=200,cw=(w-40)/5,bw=34,Y=v=>bl-v/max*(bl-30);
+  let s=`<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="${esc(m.t)} por grupo de edad, ${ylab(ya)} frente a ${ylab(yb)}"><line x1="20" x2="${w-20}" y1="${bl}" y2="${bl}" stroke="var(--line-2)"/>`;
+  VAGES.forEach((g,i)=>{const f=i===L.age,cx=20+i*cw+cw/2,xa=cx-bw-2,xb=cx+2,d=Math.round(B[i])-Math.round(A[i]);
+    s+=`<rect x="${xa}" y="${Y(A[i])}" width="${bw}" height="${bl-Y(A[i])}" rx="3" fill="var(--ref)" opacity="${f?1:.55}"${tipAttr(m.t+' · '+g+' años · '+ylab(ya),fmtU(A[i],u)+' · simulado')}/>`;
+    s+=`<rect x="${xb}" y="${Y(B[i])}" width="${bw}" height="${bl-Y(B[i])}" rx="3" fill="var(--dane)" opacity="${f?1:.45}"${tipAttr(m.t+' · '+g+' años · '+ylab(yb),fmtU(B[i],u)+' · simulado')}/>`;
+    s+=`<text x="${xa+bw/2}" y="${Y(A[i])-7}" text-anchor="middle" style="fill:var(--muted);font-size:12px">${fmtU(A[i],u)}</text>`;
+    s+=`<text x="${xb+bw/2}" y="${Y(B[i])-7}" text-anchor="middle" class="val" ${f?'':'style="fill:var(--fg-2);font-weight:600"'}>${fmtU(B[i],u)}</text>`;
+    s+=`<text x="${cx}" y="${bl+18}" text-anchor="middle" class="${f?'lbl':''}" ${f?'style="fill:var(--fg);font-weight:700"':''}>${g}</text>`;
+    s+=`<text x="${cx}" y="${bl+35}" text-anchor="middle" style="fill:${d===0?'var(--muted)':'var(--glow)'};font-size:12px;font-weight:700">${d===0?'igual':(d>0?'▲ sube ':'▼ baja ')+fmtU(Math.abs(d),u).replace('%','')}</text>`});
   return s+'</svg>';
 }
-function datoChange(V,L){
-  const m=V.dato,u=unitOf(m),a=val(V.id,'dato',m,L.age,L,DATO_YS[0]),b=val(V.id,'dato',m,L.age,L),d=Math.round(b)-Math.round(a);
-  return `Para ${segText(L)}: <b>${fmtU(a,u)}</b> en ${DATO_YS[0]} y <b>${fmtU(b,u)}</b> hoy. ${Math.abs(d)<1?'Casi no ha cambiado en 25 años.':`Son ${u==='%'?Math.abs(d)+' de cada 100':fmtU(Math.abs(d),u)} ${d>0?'más':'menos'} que en ${DATO_YS[0]}.`}`;
+function datoChange(V,L,ya=DATO_YS[0],yb=NOW){
+  const m=V.dato,u=unitOf(m),a=val(V.id,'dato',m,L.age,L,ya),b=val(V.id,'dato',m,L.age,L,yb),d=Math.round(b)-Math.round(a);
+  return `Para ${segText(L)}: <b>${fmtU(a,u)}</b> en ${ya} y <b>${fmtU(b,u)}</b> ${yb===NOW?'hoy':'en '+yb}. ${d===0?'Casi no cambió.':`Son ${u==='%'?Math.abs(d)+' de cada 100':fmtU(Math.abs(d),u)} ${d>0?'más':'menos'}.`}`;
+}
+function datoPicker(){
+  const row=(k,l,ys,cur)=>`<div class="dp-row"><span class="dp-l">${l}</span>${ys.map(y=>`<button type="button" data-k="${k}" data-y="${y}" aria-pressed="${y===cur}">${ylab(y)}</button>`).join('')}</div>`;
+  return `<div class="dp" id="dp">${row('a','Antes',DATO_YS.slice(0,-1),DATO_YS[0])}${row('b','Después',DATO_YS.slice(1),NOW)}</div>
+    <div class="legend"><span><i class="box" style="background:var(--ref)"></i>Antes · <b id="dp-la">${ylab(DATO_YS[0])}</b></span><span><i class="box" style="background:var(--dane)"></i>Después · <b id="dp-lb">${ylab(NOW)}</b></span></div>`;
+}
+function bindDato(V,L){
+  const root=$id('dp');if(!root)return;let ya=DATO_YS[0],yb=NOW;
+  const upd=()=>{
+    root.querySelectorAll('button').forEach(x=>{const y=+x.dataset.y,k=x.dataset.k;x.setAttribute('aria-pressed',String(k==='a'?y===ya:y===yb));x.disabled=k==='a'?y>=yb:y<=ya});
+    $id('dp-la').textContent=ylab(ya);$id('dp-lb').textContent=ylab(yb);
+    $id('dp-chart').innerHTML=barsChart(V,L,ya,yb);$id('dp-say').innerHTML=datoChange(V,L,ya,yb);
+  };
+  root.addEventListener('click',e=>{const x=e.target.closest('button');if(!x||x.disabled)return;x.dataset.k==='a'?ya=+x.dataset.y:yb=+x.dataset.y;upd()});
+  upd();
 }
 function trendChart(V,L){
   const m=V.hecho,yrs=[2022,2023,2024,2025,2026];
@@ -1212,10 +1235,11 @@ function renderVida(V){
   <section class="scene" data-scene><div class="wrap">
     <div class="eyebrow">El dato · ${code(1)}</div>
     <h2 class="h-l">${V.dato.say(dv,seg)}</h2>
-    <div class="panel" style="margin-top:28px"><div class="panel-head"><div><h3>${V.dato.t}</h3><div class="sub">Por grupo de edad, cada cinco años de ${DATO_YS[0]} a hoy · resaltado: el grupo del lente</div></div><span class="src dane sim"><i></i>${V.dato.src}</span></div>
-      ${barsChart(V,L)}
-      <p class="read">${datoChange(V,L)}</p>
-      <p class="note">Cada grupo tiene seis barras: la más clara es ${DATO_YS[0]} y la más fuerte es hoy. Pasa el cursor para ver cada año. Serie simulada mientras se conectan las encuestas oficiales.</p></div>
+    <div class="panel" style="margin-top:28px"><div class="panel-head"><div><h3>${V.dato.t}</h3><div class="sub">Por grupo de edad · resaltado: el grupo del lente</div></div><span class="src dane sim"><i></i>${V.dato.src}</span></div>
+      ${datoPicker()}
+      <div id="dp-chart">${barsChart(V,L)}</div>
+      <p class="read" id="dp-say">${datoChange(V,L)}</p>
+      <p class="note">Elige un año de antes y uno de después para compararlos. Serie simulada mientras se conectan las encuestas oficiales.</p></div>
     ${V.id==='cuerpo'?lifeHistory():scenario(V,L)}
   </div></section>
 
@@ -1267,7 +1291,7 @@ function renderVida(V){
   document.getElementById('talk-aud').addEventListener('click',()=>{AUD.custom=personaFromLens(lens,V);AUD.sel=['lente'];AUD.vida=V.id;AUD.mode='entrevista';AUD.chat=[];location.hash='audiencias'});
   document.getElementById('ask-hyp').addEventListener('click',()=>openAgent(`Desarrolla las hipótesis de ${V.name.toLowerCase()} para ${seg}: qué datos las sostienen, qué las podría refutar y qué preguntaría en la Fase 1.`));
   on('l-region','region');on('l-inc','inc');on('l-age','age',Number);on('l-home','home');
-  bindCompare(V);
+  bindCompare(V);bindDato(V,L);
   document.getElementById('l-reset').addEventListener('click',()=>{lens={...DEF_LENS};saveLens();const y=scrollY;renderVida(V);scrollTo(0,y);observe()});
 }
 
