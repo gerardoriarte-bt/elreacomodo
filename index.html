@@ -179,6 +179,10 @@ svg .grid line{stroke:var(--line);stroke-width:1}
 .dp button{border:1px solid var(--line-2);background:var(--surface);color:var(--fg);border-radius:99px;padding:6px 12px;font:600 13px var(--body);cursor:pointer;font-variant-numeric:tabular-nums}
 .dp button[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
 .dp button:disabled{opacity:.35;cursor:not-allowed}
+.yr-ticks{position:relative;height:16px;margin:-12px 9px 16px;font-size:11px;color:var(--muted)}
+.yr-ticks span{position:absolute;transform:translateX(-50%);white-space:nowrap}
+.yr-ticks span:first-child{transform:none}.yr-ticks span:last-child{transform:translateX(-100%)}
+.yr-ticks .now{color:var(--fg);font-weight:700}
 .cmp-pre{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
 .cmp-pre button{border:1px solid var(--line-2);background:var(--surface);color:var(--fg);border-radius:99px;padding:7px 14px;font:600 13px var(--body,inherit);cursor:pointer}
 .cmp-pre button[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
@@ -501,10 +505,12 @@ body.present #hud{display:flex}
 
 <script src="dane-population.js"></script>
 <script src="dane-national.js"></script>
+<script src="dane-history.js"></script>
 <script>
 /* ================= data helpers (DANE real) ================= */
 const P=DANE_POP, CO='Toda Colombia', REG=['Caribe','Central','Pacífica','Bogotá','Oriental'];
 const Y0=2018,Y1=2044,NOW=2026,YEARS=[];for(let y=Y0;y<=Y1;y++)YEARS.push(y);
+const YH=1950;for(const y in DANE_HIST)P[CO][y]=DANE_HIST[y]; // retroproyección nacional 1950–2017
 const pop=(r,y,lo,hi)=>{const a=P[r][y];let s=0;for(let i=lo;i<=hi;i++)s+=a[0][i]+a[1][i];return s};
 const median=(r,y)=>{const t=pop(r,y,0,100);let c=0;for(let i=0;i<=100;i++){c+=P[r][y][0][i]+P[r][y][1][i];if(c>=t/2)return i}};
 const share=(r,y,lo,hi)=>pop(r,y,lo,hi)/pop(r,y,0,100)*100;
@@ -675,7 +681,7 @@ function renderNav(cur){
 
 /* ================= NATION ================= */
 function pyramid(year){
-  const tot=pop(CO,year,0,100), base=pop(CO,Y0,0,100), w=640,h=400,mid=w/2,gap=26,maxP=5,bh=15,top=22;
+  const tot=pop(CO,year,0,100), base=pop(CO,Y0,0,100), w=640,h=400,mid=w/2,gap=26,maxP=9,bh=15,top=22;
   const sx=v=>v/maxP*(mid-gap-10);
   let s=`<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="Pirámide poblacional ${year}">${HATCH}`;
   s+=`<text x="${mid-gap-8}" y="12" text-anchor="end" class="lbl">Hombres</text><text x="${mid+gap+8}" y="12" class="lbl">Mujeres</text>`;
@@ -689,7 +695,7 @@ function pyramid(year){
       s+=`<rect x="${x0}" y="${y}" width="${Math.max(.5,w0)}" height="${bh}" rx="2" fill="none" stroke="var(--fg)" stroke-opacity=".45" stroke-width="1" pointer-events="none"/>`;
     });
   }
-  const axY=top+21*(bh+2)+6;[0,2.5,5].forEach(p=>{s+=`<text x="${mid-gap-sx(p)}" y="${axY+10}" text-anchor="middle">${fmt(p,1)}%</text><text x="${mid+gap+sx(p)}" y="${axY+10}" text-anchor="middle">${fmt(p,1)}%</text>`});
+  const axY=top+21*(bh+2)+6;[0,3,6,9].forEach(p=>{s+=`<text x="${mid-gap-sx(p)}" y="${axY+10}" text-anchor="middle">${p}%</text><text x="${mid+gap+sx(p)}" y="${axY+10}" text-anchor="middle">${p}%</text>`});
   return s+'</svg>';
 }
 function nationCounters(y){
@@ -747,18 +753,21 @@ function renderNation(){
   <section class="scene" data-scene data-scene-id="pyr"><div class="wrap">
     <div class="eyebrow">01 · La forma del país</div>
     <h2 class="h-l">Un país que pierde la forma de pirámide.</h2>
-    <p class="lede">Dale play: cada barra es un grupo de cinco años. El contorno muestra 2018; desde 2027 las barras se rayan porque son proyección.</p>
+    <p class="lede">Dale play y mira 94 años en un minuto, de 1950 a 2044. Cada barra es un grupo de cinco años; el contorno muestra 2018 y desde 2027 las barras se rayan porque son proyección.</p>
     <div class="grid-main">
       <div class="panel"><div class="panel-head"><span class="src dane real"><i></i>DANE · proyección</span><span class="status" id="pyr-status">Año de lectura</span></div>
         <div id="pyr">${pyramid(NOW)}</div>
         <div class="legend"><span><i class="box" style="background:var(--dane)"></i>Estimado</span><span><i class="box" style="background:repeating-linear-gradient(135deg,#00A06E 0 3px,rgba(0,160,110,.35) 3px 6px)"></i>Proyectado</span><span><i class="box" style="border:1px solid var(--fg)"></i>2018</span></div>
       </div>
       <div>
-        <div class="year-ctrl"><button class="play" id="play" type="button" aria-label="Reproducir 2018 a 2044">▶</button><div class="big-year num" id="yr">${NOW}</div></div>
-        <input type="range" id="yr-range" min="${Y0}" max="${Y1}" value="${NOW}" step="1" aria-label="Año" style="width:100%;accent-color:var(--brand);margin:14px 0 18px">
+        <div class="year-ctrl"><button class="play" id="play" type="button" aria-label="Reproducir 1950 a 2044">▶</button><div class="big-year num" id="yr">${NOW}</div></div>
+        <input type="range" id="yr-range" min="${YH}" max="${Y1}" value="${NOW}" step="1" aria-label="Año" style="width:100%;accent-color:var(--brand);margin:14px 0 18px">
+        <div class="yr-ticks" aria-hidden="true">${[YH,1985,Y0,NOW,Y1].map(y=>`<span style="left:${(y-YH)/(Y1-YH)*100}%"${y===NOW?' class="now"':''}>${y===NOW?'Hoy':y}</span>`).join('')}</div>
         <div class="counters" id="counters">${nationCounters(NOW)}</div>
       </div>
     </div>
+    <p class="note">De 1950 a 2017 son retroproyecciones del DANE, solo para todo el país. En 1985 el DANE une dos series y las edades de 85 años o más saltan ese año.</p>
+    ${compareBlock({sub:'Elige dos años entre 1950 y 2050 y mira cómo cambió el país',note:'Todos los indicadores son reales: DANE, Proyecciones de Población (PPED), y ONU, World Population Prospects 2024 (esperanza de vida e hijos por mujer). Población en cabeceras: DANE.'})}
   </div></section>
 
   <section class="beat" data-scene><div class="wrap">
@@ -834,11 +843,12 @@ function renderNation(){
 
   // pyramid interactions
   const rng=document.getElementById('yr-range'),yrEl=document.getElementById('yr'),play=document.getElementById('play');
-  const setYear=y=>{y=+y;document.getElementById('pyr').innerHTML=pyramid(y);document.getElementById('counters').innerHTML=nationCounters(y);yrEl.textContent=y;yrEl.classList.toggle('proj',y>NOW);rng.value=y;document.getElementById('pyr-status').textContent=y<NOW?'Serie estimada':y===NOW?'Año de lectura':'Proyección'};
+  const setYear=y=>{y=+y;document.getElementById('pyr').innerHTML=pyramid(y);document.getElementById('counters').innerHTML=nationCounters(y);yrEl.textContent=y;yrEl.classList.toggle('proj',y>NOW);rng.value=y;document.getElementById('pyr-status').textContent=y<Y0?'Retroproyección DANE':y<NOW?'Serie estimada':y===NOW?'Año de lectura':'Proyección'};
   rng.addEventListener('input',e=>{stopPlay();setYear(e.target.value)});
   let timer=null;const stopPlay=()=>{clearInterval(timer);timer=null;play.textContent='▶'};
-  window.playPyramid=()=>{if(timer)return;let y=+rng.value>=Y1?Y0:+rng.value;setYear(y);play.textContent='❚❚';timer=setInterval(()=>{y++;if(y>Y1){stopPlay();return}setYear(y)},380)};
+  window.playPyramid=()=>{if(timer)return;let y=+rng.value>=Y1?YH:+rng.value;setYear(y);play.textContent='❚❚';timer=setInterval(()=>{y++;if(y>Y1){stopPlay();return}setYear(y)},220)};
   play.addEventListener('click',()=>timer?stopPlay():playPyramid());
+  bindCompare(nationRows());
   document.querySelectorAll('.mult').forEach(b=>b.addEventListener('click',()=>{lens.region=b.dataset.region;saveLens();location.hash='bolsillo'}));
 }
 
@@ -1107,6 +1117,19 @@ const SIMH={
   disfrute:{t:'Horas de ocio a la semana, personas de 60–74',u:' h',p:{1950:31,1975:27,2000:22,2025:18,2050:21}}
 };
 const lerp=(p,y)=>{const k=Object.keys(p).map(Number);for(let i=0;i<k.length-1;i++)if(y<=k[i+1])return p[k[i]]+(p[k[i+1]]-p[k[i]])*(y-k[i])/(k[i+1]-k[i]);return p[k[k.length-1]]};
+function nationRows(){
+  const pc=v=>fmt(v,1)+'%';
+  return [
+    {t:'Habitantes de Colombia',f:y=>nat(y,0,100),show:v=>fmt(v/1e6,1)+' M',src:'DANE',real:true},
+    {t:'Edad mediana',f:natMedian,show:v=>v+' años',src:'DANE',real:true},
+    {t:'Menores de 15 años',f:y=>nat(y,0,14)/nat(y,0,100)*100,show:pc,src:'DANE',real:true},
+    {t:'Personas de 65 años o más',f:y=>nat(y,65,100)/nat(y,0,100)*100,show:pc,src:'DANE',real:true},
+    {t:'Personas en edad de trabajar por cada mayor de 65',f:y=>nat(y,15,64)/nat(y,65,100),show:f1,src:'DANE',real:true},
+    {t:'Viven en una cabecera municipal',f:y=>DANE_NAT[y].u/nat(y,0,100)*100,show:v=>fmt(Math.round(v))+'%',src:'DANE',real:true},
+    {t:'Años que vive en promedio quien nace',f:y=>UN_LE[y][0],show:v=>fmt(Math.round(v))+' años',src:'ONU',real:true},
+    {t:'Hijos por mujer',f:y=>UN_TFR[y],show:v=>fmt(v,1),src:'ONU',real:true}
+  ];
+}
 function compareRows(V){
   const C=CENTURY[V.id],H=SIMH[V.id];
   return [
@@ -1118,14 +1141,14 @@ function compareRows(V){
   ];
 }
 const PRE=[[1950,HNOW,'1950 vs hoy'],[HNOW,2050,'Hoy vs 2050'],[1950,2050,'1950 vs 2050']];
-function compareBlock(){
+function compareBlock({sub='Mueve los dos años y mira cómo cambia el país',note='Indicadores reales: DANE (población) y ONU, World Population Prospects 2024 (esperanza de vida e hijos por mujer). La fila marcada como simulada es inventada para la demo: no existe una fuente con esa historia desde 1950.'}={}){
   const sl=(id,v,l)=>`<label class="cmp-sl" for="${id}"><span>${l}</span><b id="${id}-o" class="num">${v}</b><input id="${id}" type="range" min="1950" max="2050" step="5" value="${v}"></label>`;
-  return `<div class="panel cmp" id="cmp" style="margin-top:18px"><div class="panel-head"><div><h3>Compara dos años</h3><div class="sub">Mueve los dos años y mira cómo cambia el país</div></div></div>
+  return `<div class="panel cmp" id="cmp" style="margin-top:18px"><div class="panel-head"><div><h3>Compara dos años</h3><div class="sub">${sub}</div></div></div>
     <div class="cmp-pre">${PRE.map(([a,b,l],i)=>`<button type="button" data-a="${a}" data-b="${b}"${i===0?' aria-pressed="true"':''}>${l}</button>`).join('')}</div>
     <div class="cmp-ctl">${sl('cmp-a',1950,'Un año')}${sl('cmp-b',HNOW,'Otro año')}</div>
     <p class="hist-say" id="cmp-say" aria-live="polite"></p>
     <div class="cmp-grid"><div id="cmp-pyr"></div><div id="cmp-tab"></div></div>
-    <p class="note">Indicadores reales: DANE (población) y ONU, World Population Prospects 2024 (esperanza de vida e hijos por mujer). La fila marcada como simulada es inventada para la demo: no existe una fuente con esa historia desde 1950.</p>
+    <p class="note">${note}</p>
   </div>`;
 }
 const chg=(a,b)=>{if(!a)return '—';const r=b/a;if(Math.abs(r-1)<.03)return 'Casi igual';return r>=1.95?'×'+fmt(r,1):(r>1?'+':'−')+fmt(Math.abs(r-1)*100)+'%'};
@@ -1139,9 +1162,9 @@ function comparePyr(a,b){
     s+=`<text x="${mid}" y="${y+bh-2}" text-anchor="middle" style="font-size:10px;fill:var(--muted)">${g[2]}</text>`});
   return s+'</svg><p class="note" style="margin-top:6px">Cada barra es qué parte del país tenía esa edad. Arriba, los mayores; abajo, los niños.</p>';
 }
-function bindCompare(V){
+function bindCompare(rows){
   const root=$id('cmp');if(!root)return;
-  const ra=$id('cmp-a'),rb=$id('cmp-b'),sec=root.closest('section'),rows=compareRows(V);
+  const ra=$id('cmp-a'),rb=$id('cmp-b'),sec=root.closest('section');
   const upd=()=>{
     let a=+ra.value,b=+rb.value;$id('cmp-a-o').textContent=a;$id('cmp-b-o').textContent=b;
     root.querySelectorAll('.cmp-pre button').forEach(x=>x.setAttribute('aria-pressed',String(+x.dataset.a===a&&+x.dataset.b===b)));
@@ -1291,7 +1314,7 @@ function renderVida(V){
   document.getElementById('talk-aud').addEventListener('click',()=>{AUD.custom=personaFromLens(lens,V);AUD.sel=['lente'];AUD.vida=V.id;AUD.mode='entrevista';AUD.chat=[];location.hash='audiencias'});
   document.getElementById('ask-hyp').addEventListener('click',()=>openAgent(`Desarrolla las hipótesis de ${V.name.toLowerCase()} para ${seg}: qué datos las sostienen, qué las podría refutar y qué preguntaría en la Fase 1.`));
   on('l-region','region');on('l-inc','inc');on('l-age','age',Number);on('l-home','home');
-  bindCompare(V);bindDato(V,L);
+  bindCompare(compareRows(V));bindDato(V,L);
   document.getElementById('l-reset').addEventListener('click',()=>{lens={...DEF_LENS};saveLens();const y=scrollY;renderVida(V);scrollTo(0,y);observe()});
 }
 

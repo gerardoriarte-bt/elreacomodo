@@ -11,7 +11,7 @@
       ]
     },
     {
-      "source": "/(dane-population|dane-national).js",
+      "source": "/(dane-population|dane-national|dane-history).js",
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=86400, stale-while-revalidate=604800" }
       ]
