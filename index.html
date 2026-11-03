@@ -150,12 +150,17 @@ svg .grid line{stroke:var(--line);stroke-width:1}
 .doors{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:28px}
 .door{display:flex;flex-direction:column;gap:8px;text-decoration:none;background:var(--surface);color:var(--fg);border:1px solid var(--line);border-radius:12px;padding:18px;min-height:190px;transition:transform .2s}
 .door:hover{transform:translateY(-3px);border-color:var(--brand)}
-.door .n{font-family:var(--display);font-weight:700;color:var(--brand);font-size:22px;line-height:1}
-.door h4{margin:0;font:700 17px/1.2 var(--display)}
-.door .g{margin-top:auto;font-family:var(--display);font-weight:700;font-size:30px;line-height:1;color:var(--glow)}
-.door .g small{font-size:14px;font-weight:600;color:var(--fg-2);margin-left:4px}
-.door .gl{font-size:13px;line-height:1.4;color:var(--fg-2)}
-.door .gl b{color:var(--fg)}
+.door .dn{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.door .g{margin-top:6px;font-family:var(--display);font-weight:700;font-size:64px;line-height:.9;letter-spacing:-.03em;color:var(--glow)}
+.door .g small{font-size:16px;font-weight:700;letter-spacing:0;color:var(--fg);margin-left:6px}
+.door .punch{font:600 16px/1.3 var(--display);color:var(--fg)}
+.door .gbar{position:relative;height:10px;border-radius:5px;background:var(--line);margin-top:auto;overflow:hidden}
+.door .gbar i{position:absolute;top:0;bottom:0;left:0}
+.door .gbar .have{background:var(--ref)}
+.door .gbar .miss{background:var(--glow)}
+.door .gkey{display:flex;justify-content:space-between;gap:8px;font-size:11px;color:var(--muted)}
+.door .gkey .m{color:var(--glow);text-align:right}
+.door .gkey b{font-weight:700}
 .door.dark{background:var(--surface-2);color:var(--fg)}
 .door.dark h4{color:var(--brand);font-size:20px}
 .door.dark p{font-size:13px;color:var(--fg-2)}
@@ -588,9 +593,11 @@ function renderNation(){
   const mult=regs.map(x=>`<button class="mult" type="button" data-region="${x.r}" aria-label="Ver ${x.r}"><h4>${x.r}</h4><div class="cross">${x.c?`65+ supera a menores de 15 en <b>${x.c}</b>`:'Sin cruce antes de <b>2044</b>'}</div>
      ${lineChart({xs:YEARS,w:300,h:170,yMax:30,yStep:10,yFmt:v=>v+'%',xTicks:[2018,2044],today:null,mr:14,series:[{name:'Menores de 15 · '+x.r,values:YEARS.map(y=>share(x.r,y,0,14)),color:'var(--ref)',width:1.6,fmt:v=>fmt(v,1)+'%'},{name:'65+ · '+x.r,values:YEARS.map(y=>share(x.r,y,65,100)),color:'var(--dane)',width:2.2,fmt:v=>fmt(v,1)+'%'}],marks:x.c?[{x:x.c,y:share(x.r,x.c,65,100),label:'',dy:0}]:[]})}
      <div class="note" style="margin-top:6px">Mediana: ${x.m0} → ${x.m1} años · Población 2026–2044: ${x.d>=0?'+':''}${fmt(x.d*100,1)}%</div></button>`).join('');
-  const ex=gapOf(VIDAS[1],{...DEF_LENS});
-  const doors=VIDAS.map(V=>{const g=gapOf(V,{...DEF_LENS});return `<a class="door" href="#${V.id}"><span class="n">${V.n}</span><h4>${V.name}</h4><span class="g num">${g.g}<small>${V.dicho.u==='años'?' años sin plata':' de cada 100'}</small></span><span class="gl">${V.beat(g.a,g.b,V.dicho.u==='años'?'Las personas de 60–74 años':'las personas de 60–74 años')}</span></a>`}).join('')+
-   `<div class="door dark on-dark"><h4>Siete vidas, una brecha cada una.</h4><p>En cada vida comparamos tres cosas: lo que dicen las cifras oficiales, lo que la gente hace de verdad y lo que la gente dice que quiere. Donde esas tres no coinciden está lo interesante.</p></div>`;
+  const GOLPE={bolsillo:'de vida sin plata para vivirlos.',oficio:'quieren seguir trabajando, pero no ven dónde.',cuerpo:'dicen que se cuidan, pero todavía no hacen nada concreto.',vinculos:'esperan que su familia los cuide, pero no creen que pueda.',casa:'quieren quedarse en su casa, pero su casa no les va a servir.',movimiento:'quieren valerse solos a los 80, pero no creen lograrlo.',disfrute:'sueñan con aprender o viajar, pero no tienen un plan.'};
+  const doors=VIDAS.map(V=>{const g=gapOf(V,{...DEF_LENS}),yrs=V.dicho.u==='años',[r0,r1]=yrs?V.dicho.range:[0,100],X=v=>(v-r0)/(r1-r0)*100;
+    const bar=`<div class="gbar" aria-hidden="true"><i class="have" style="width:${X(g.b)}%"></i><i class="miss" style="left:${X(g.b)}%;width:${X(g.a)-X(g.b)}%"></i></div><div class="gkey">${yrs?`<span>Plata hasta los <b>${g.b}</b></span><span class="m">Vida hasta los <b>${g.a}</b></span>`:`<span>Creen que podrán: <b>${g.b}</b></span><span class="m">Lo quieren: <b>${g.a}</b></span>`}</div>`;
+    return `<a class="door" href="#${V.id}" aria-label="${esc(V.name)}: ${g.g} ${yrs?'años':'de cada 100'} ${GOLPE[V.id]}"><span class="dn">${V.n} · ${V.short}</span><span class="g num">${g.g}<small>${yrs?'años':'de cada 100'}</small></span><span class="punch">${GOLPE[V.id]}</span>${bar}</a>`}).join('')+
+   `<div class="door dark on-dark"><h4>Lo que se quiere no es lo que se espera.</h4><p>En las siete vidas pasa lo mismo: la gente sabe cómo quiere envejecer, pero no cree que vaya a lograrlo. Toca una tarjeta para ver por qué.</p></div>`;
 
   document.getElementById('view').innerHTML=`
   <section class="scene on-dark" data-scene><div class="wrap">
@@ -692,7 +699,7 @@ function renderNation(){
   <section class="scene" data-scene><div class="wrap">
     <div class="eyebrow c">Lo que esto le hace a la vida</div>
     <h2 class="h-l">Este reacomodo cambia siete vidas.</h2>
-    <p class="lede">El número grande es la distancia entre lo que la gente quiere y lo que cree que va a tener. Si ${ex.a} de cada 100 quieren seguir trabajando y solo ${ex.b} creen que podrán, quedan <b>${ex.g} de cada 100</b> que lo quieren pero no ven cómo. Todas las tarjetas miran a las personas de 60–74 años. Las cifras son simuladas.</p>
+    <p class="lede">Les preguntamos a personas de 60 a 74 años qué quieren para su vejez y qué creen que de verdad van a tener. <b>El número grande es cuántas se quedan con las ganas.</b> <span class="note">Cifras simuladas mientras llega el estudio.</span></p>
     <div class="doors">${doors}</div>
   </div></section>`;
 
