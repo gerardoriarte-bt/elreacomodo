@@ -544,7 +544,7 @@ function segText(L,{cap=false}={}){
 const VIDAS=[
  {id:'bolsillo',short:'Bolsillo',n:1,name:'La vida del bolsillo',desc:'Ingreso, ahorro, deuda, pensión y hasta cuándo alcanza.',q:'¿Hasta qué edad le alcanza la plata que tiene planeada? ¿Y hasta qué edad cree que va a vivir?',
   cats:['Finanzas','Retail'],
-  dato:{t:'Cotiza o recibe pensión',src:'GEIH · PILA',b:[34,46,43,31,27],is:12,say:(v,s)=>`<b>${fmt(v)}%</b> de ${s} cotiza o recibe pensión.`},
+  dato:{t:'Cotiza o recibe pensión',src:'GEIH · PILA',b:[34,46,43,31,27],is:12,sl:[.3,.35,.4,.45,.4],say:(v,s)=>`<b>${fmt(v)}%</b> de ${s} cotiza o recibe pensión.`},
   hecho:{t:'Tiene un producto de ahorro o inversión',b:[37,44,44,39,28],sl:[2.2,1.2,.6,1.4,1.6],is:14},
   dicho:{u:'años',a:{t:'Edad hasta la que espera vivir',b:[84,83,82,84,88],is:2},b:{t:'Edad hasta la que le alcanza lo planeado',b:[66,68,71,76,83],is:5},range:[60,95]},
   gapLbl:'años de vida sin plan',beat:(a,b,s)=>`${s} esperan vivir hasta los <b>${a}</b>. Su plata les alcanza hasta los <b>${b}</b>.`,
@@ -552,7 +552,7 @@ const VIDAS=[
   inter:'¿Quién sostiene a quién cuando la vida dura 100 años?'},
  {id:'oficio',short:'Oficio y aprendizaje',n:2,name:'La vida del oficio y el aprendizaje',desc:'Trabajar, aprender, reinventarse y retirarse más de una vez.',q:'¿Hasta qué edad quiere trabajar? ¿Volvería a estudiar para cambiar de oficio?',
   cats:['Academia','Tecnología'],
-  dato:{t:'Está ocupado',src:'GEIH · PILA · ECV',b:[52,74,70,38,9],is:6,say:(v,s)=>`<b>${fmt(v)}%</b> de ${s} trabaja.`},
+  dato:{t:'Está ocupado',src:'GEIH · PILA · ECV',b:[52,74,70,38,9],is:6,sl:[-.1,.1,.2,.3,.15],say:(v,s)=>`<b>${fmt(v)}%</b> de ${s} trabaja.`},
   hecho:{t:'Tomó un curso o formación en el último año',b:[38,30,21,11,4],sl:[1,1.4,1.6,1.1,.4],is:9},
   dicho:{u:'%',a:{t:'Quiere seguir trabajando después de los 65',b:[22,31,44,63,41],is:-4},b:{t:'Cree que tendrá dónde hacerlo',b:[15,17,19,28,14],is:5}},
   gapLbl:'puntos entre querer trabajar y poder hacerlo',beat:(a,b,s)=>`<b>${a}%</b> de ${s} quiere seguir trabajando después de los 65. Solo <b>${b}%</b> cree que tendrá dónde.`,
@@ -560,7 +560,7 @@ const VIDAS=[
   inter:'¿Qué aprende un equipo cuando trabajan juntos personas de 25 y de 65?'},
  {id:'cuerpo',short:'Cuerpo',n:3,name:'La vida del cuerpo',desc:'Salud, energía, hábitos, prevención y cuidado de sí.',q:'¿Qué hace hoy pensando en cómo quiere estar a los 85?',
   cats:['Salud','Farmacéutica','Alimentos','Belleza'],
-  dato:{t:'Años de vida que le quedan en promedio',src:'Tablas de vida · ECV',u:'años',b:[54,41,28,17,8],is:1.5,say:(v,s)=>`A ${s} les quedan, en promedio, <b>${fmt(v)} años</b> de vida.`},
+  dato:{t:'Años de vida que le quedan en promedio',src:'Tablas de vida · ECV',u:'años',b:[54,41,28,17,8],is:1.5,sl:[.15,.14,.12,.1,.06],say:(v,s)=>`A ${s} les quedan, en promedio, <b>${fmt(v)} años</b> de vida.`},
   hecho:{t:'Hace actividad física cada semana',b:[54,45,38,34,21],sl:[.4,.9,1.3,1.7,1],is:8},
   dicho:{u:'%',a:{t:'Dice que se cuida pensando en los 85',b:[41,58,69,77,74],is:3},b:{t:'Hace algo concreto hoy por esa meta',b:[18,24,29,36,31],is:6}},
   gapLbl:'puntos entre la intención y el hábito',beat:(a,b,s)=>`<b>${a}%</b> de ${s} dice cuidarse pensando en los 85. Apenas <b>${b}%</b> hace algo concreto hoy.`,
@@ -568,7 +568,7 @@ const VIDAS=[
   inter:'¿Quién cuida la salud de quién en una familia de tres generaciones?'},
  {id:'vinculos',short:'Vínculos',n:4,name:'La vida de los vínculos',desc:'Pareja, familia, amigos, soledad y el cuidado que se da y se recibe.',q:'¿Quién lo va a cuidar a usted? ¿Y a quién va a cuidar usted en los próximos diez años?',
   cats:['Alimentos','Licores','Medios','Farmacéutica'],
-  dato:{t:'Horas semanales de cuidado no pago',src:'ENUT · ECV',u:'h',b:[14,24,21,17,9],is:-3,say:(v,s)=>`${s.charAt(0).toUpperCase()+s.slice(1)} dedican <b>${fmt(v)} horas</b> a la semana a cuidar sin pago.`},
+  dato:{t:'Horas semanales de cuidado no pago',src:'ENUT · ECV',u:'h',b:[14,24,21,17,9],is:-3,sl:[-.05,.05,.12,.15,.1],say:(v,s)=>`${s.charAt(0).toUpperCase()+s.slice(1)} dedican <b>${fmt(v)} horas</b> a la semana a cuidar sin pago.`},
   hecho:{t:'Compra productos para cuidar a otra persona',b:[14,26,37,33,16],sl:[.5,.8,1.9,1.5,.6],is:6},
   dicho:{u:'%',a:{t:'Espera que su familia lo cuide en la vejez',b:[61,57,54,58,66],is:-3},b:{t:'Cree que alguien podrá hacerlo',b:[38,31,27,30,41],is:4}},
   gapLbl:'puntos entre esperar cuidado y tenerlo',beat:(a,b,s)=>`<b>${a}%</b> de ${s} espera que su familia lo cuide. Solo <b>${b}%</b> cree que alguien realmente podrá.`,
@@ -576,7 +576,7 @@ const VIDAS=[
   inter:'¿Cómo se reparte el cuidado cuando hay menos hijos y más abuelos?'},
  {id:'casa',short:'Casa',n:5,name:'La vida de la casa',desc:'Con quién se vive, la vivienda, el barrio y la canasta del hogar.',q:'¿Con quién va a vivir a los 75? ¿Su casa de hoy le sirve para esa edad?',
   cats:['Vivienda','Retail','Alimentos'],
-  dato:{t:'Vive solo',src:'ECV · Censo 2018',b:[9,13,14,19,27],is:2,say:(v,s)=>`<b>${fmt(v)}%</b> de ${s} vive solo.`},
+  dato:{t:'Vive solo',src:'ECV · Censo 2018',b:[9,13,14,19,27],is:2,sl:[.12,.15,.18,.22,.3],say:(v,s)=>`<b>${fmt(v)}%</b> de ${s} vive solo.`},
   hecho:{t:'Compra formatos pequeños o individuales',b:[44,36,30,35,40],sl:[1.6,1.2,1,1.5,1.8],is:4},
   dicho:{u:'%',a:{t:'Quiere envejecer en su casa actual',b:[44,52,63,74,86],is:2},b:{t:'Su casa actual le serviría a esa edad',b:[29,30,33,38,42],is:7}},
   gapLbl:'puntos entre querer quedarse y poder hacerlo',beat:(a,b,s)=>`<b>${a}%</b> de ${s} quiere envejecer en su casa. Solo <b>${b}%</b> vive en una que le serviría.`,
@@ -584,7 +584,7 @@ const VIDAS=[
   inter:'¿Qué casa sirve para vivir con otra generación?'},
  {id:'movimiento',short:'Movimiento',n:6,name:'La vida en movimiento',desc:'Moverse, decidir y valerse por sí mismo, en la ciudad y en lo digital.',q:'¿Qué tendría que pasar para que dejara de salir solo o de manejar?',
   cats:['Movilidad','Tecnología'],
-  dato:{t:'Sale solo de su casa a diario',src:'ECV · ENUT',b:[83,85,79,64,38],is:3,say:(v,s)=>`<b>${fmt(v)}%</b> de ${s} sale solo de su casa a diario.`},
+  dato:{t:'Sale solo de su casa a diario',src:'ECV · ENUT',b:[83,85,79,64,38],is:3,sl:[.1,.05,-.05,-.1,-.25],say:(v,s)=>`<b>${fmt(v)}%</b> de ${s} sale solo de su casa a diario.`},
   hecho:{t:'Usa apps de transporte o pagos digitales',b:[77,72,57,39,18],sl:[1.5,2.4,3.1,3.4,1.9],is:12},
   dicho:{u:'%',a:{t:'Quiere moverse por su cuenta a los 80',b:[88,90,91,89,84],is:1},b:{t:'Cree que podrá hacerlo',b:[51,47,44,46,39],is:6}},
   gapLbl:'puntos entre la autonomía deseada y la esperada',beat:(a,b,s)=>`<b>${a}%</b> de ${s} quiere moverse por su cuenta a los 80. <b>${b}%</b> cree que podrá.`,
@@ -592,7 +592,7 @@ const VIDAS=[
   inter:'¿Quién lleva a quién cuando los mayores son mayoría?'},
  {id:'disfrute',short:'Disfrute',n:7,name:'La vida del disfrute',desc:'Ocio, cultura, entretenimiento, viajes y aprender por gusto.',q:'Si tuviera 30 años más de vida sana, ¿en qué los usaría?',
   cats:['Medios','Licores','Belleza','Academia'],
-  dato:{t:'Horas semanales de ocio',src:'ENUT · Consumo Cultural',u:'h',b:[24,17,16,21,29],is:2,say:(v,s)=>`${s.charAt(0).toUpperCase()+s.slice(1)} tienen <b>${fmt(v)} horas</b> de ocio a la semana.`},
+  dato:{t:'Horas semanales de ocio',src:'ENUT · Consumo Cultural',u:'h',b:[24,17,16,21,29],is:2,sl:[-.1,-.05,0,.05,.1],say:(v,s)=>`${s.charAt(0).toUpperCase()+s.slice(1)} tienen <b>${fmt(v)} horas</b> de ocio a la semana.`},
   hecho:{t:'Viajó o fue a un evento cultural este año',b:[51,44,41,39,21],sl:[.8,.6,1.2,2.1,1],is:13},
   dicho:{u:'%',a:{t:'Usaría años extra de vida sana para aprender o viajar',b:[74,71,68,66,52],is:4},b:{t:'Tiene un plan concreto para ese tiempo',b:[22,19,18,21,17],is:6}},
   gapLbl:'puntos entre el deseo y el plan',beat:(a,b,s)=>`Con 30 años más de vida sana, <b>${a}%</b> de ${s} los usaría para aprender o viajar. <b>${b}%</b> tiene un plan.`,
@@ -837,13 +837,22 @@ function renderNation(){
 }
 
 /* ================= VIDA ================= */
+const DATO_YS=[2001,2006,2011,2016,2021,NOW];
 function barsChart(V,L){
-  const m=V.dato,u=unitOf(m),vals=VAGES.map((_,i)=>val(V.id,'dato',m,i,L)),max=Math.max(...vals)*1.15,w=560,h=250,bl=210,bw=60,gp=(w-40-bw*5)/4;
-  let s=`<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="${esc(m.t)} por grupo de edad"><line x1="20" x2="${w-20}" y1="${bl}" y2="${bl}" stroke="var(--line-2)"/>`;
-  vals.forEach((v,i)=>{const x=20+i*(bw+gp),bh=v/max*(bl-30),f=i===L.age;
-    s+=`<path d="M${x},${bl}V${bl-bh+4}q0,-4 4,-4h${bw-8}q4,0 4,4V${bl}Z" fill="var(--dane)" opacity="${f?1:.38}"${tipAttr(m.t+' · '+VAGES[i],fmtU(v,u))}/>`;
-    s+=`<text x="${x+bw/2}" y="${bl-bh-8}" text-anchor="middle" class="val" ${f?'':'style="fill:var(--fg-2);font-weight:500"'}>${fmtU(v,u)}</text><text x="${x+bw/2}" y="${bl+18}" text-anchor="middle" class="${f?'lbl':''}" ${f?'style="fill:var(--fg);font-weight:700"':''}>${VAGES[i]}</text>`});
+  const m=V.dato,u=unitOf(m),n=DATO_YS.length,all=VAGES.map((_,i)=>DATO_YS.map(y=>val(V.id,'dato',m,i,L,y))),max=Math.max(...all.flat())*1.15;
+  const w=560,h=262,bl=200,cw=(w-40)/5,pad=10,bw=(cw-2*pad-(n-1)*2)/n,Y=v=>bl-v/max*(bl-30);
+  let s=`<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="${esc(m.t)} por grupo de edad, ${DATO_YS[0]} a ${NOW}"><line x1="20" x2="${w-20}" y1="${bl}" y2="${bl}" stroke="var(--line-2)"/>`;
+  all.forEach((vs,i)=>{const x0=20+i*cw+pad,f=i===L.age,cx=20+i*cw+cw/2,last=vs[n-1],first=vs[0];
+    vs.forEach((v,k)=>{const x=x0+k*(bw+2);
+      s+=`<rect x="${x}" y="${Y(v)}" width="${bw}" height="${bl-Y(v)}" rx="2" fill="var(--dane)" opacity="${((f?1:.42)*(.3+.7*k/(n-1))).toFixed(2)}"${tipAttr(m.t+' · '+VAGES[i]+' años · '+(DATO_YS[k]===NOW?'hoy ('+NOW+')':DATO_YS[k]),fmtU(v,u)+' · simulado')}/>`});
+    s+=`<text x="${x0+(n-1)*(bw+2)+bw/2}" y="${Y(last)-8}" text-anchor="middle" class="val" ${f?'':'style="fill:var(--fg-2);font-weight:500"'}>${fmtU(last,u)}</text>`;
+    s+=`<text x="${cx}" y="${bl+18}" text-anchor="middle" class="${f?'lbl':''}" ${f?'style="fill:var(--fg);font-weight:700"':''}>${VAGES[i]}</text>`;
+    s+=`<text x="${cx}" y="${bl+34}" text-anchor="middle" style="fill:var(--muted);font-size:11px">en ${DATO_YS[0]}: ${fmtU(first,u)}</text>`});
   return s+'</svg>';
+}
+function datoChange(V,L){
+  const m=V.dato,u=unitOf(m),a=val(V.id,'dato',m,L.age,L,DATO_YS[0]),b=val(V.id,'dato',m,L.age,L),d=Math.round(b)-Math.round(a);
+  return `Para ${segText(L)}: <b>${fmtU(a,u)}</b> en ${DATO_YS[0]} y <b>${fmtU(b,u)}</b> hoy. ${Math.abs(d)<1?'Casi no ha cambiado en 25 años.':`Son ${u==='%'?Math.abs(d)+' de cada 100':fmtU(Math.abs(d),u)} ${d>0?'más':'menos'} que en ${DATO_YS[0]}.`}`;
 }
 function trendChart(V,L){
   const m=V.hecho,yrs=[2022,2023,2024,2025,2026];
@@ -1203,8 +1212,10 @@ function renderVida(V){
   <section class="scene" data-scene><div class="wrap">
     <div class="eyebrow">El dato · ${code(1)}</div>
     <h2 class="h-l">${V.dato.say(dv,seg)}</h2>
-    <div class="panel" style="margin-top:28px"><div class="panel-head"><div><h3>${V.dato.t}</h3><div class="sub">Por grupo de edad · resaltado: el grupo del lente</div></div><span class="src dane sim"><i></i>${V.dato.src}</span></div>
-      ${barsChart(V,L)}</div>
+    <div class="panel" style="margin-top:28px"><div class="panel-head"><div><h3>${V.dato.t}</h3><div class="sub">Por grupo de edad, cada cinco años de ${DATO_YS[0]} a hoy · resaltado: el grupo del lente</div></div><span class="src dane sim"><i></i>${V.dato.src}</span></div>
+      ${barsChart(V,L)}
+      <p class="read">${datoChange(V,L)}</p>
+      <p class="note">Cada grupo tiene seis barras: la más clara es ${DATO_YS[0]} y la más fuerte es hoy. Pasa el cursor para ver cada año. Serie simulada mientras se conectan las encuestas oficiales.</p></div>
     ${V.id==='cuerpo'?lifeHistory():scenario(V,L)}
   </div></section>
 
