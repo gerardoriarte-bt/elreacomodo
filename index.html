@@ -153,7 +153,9 @@ svg .grid line{stroke:var(--line);stroke-width:1}
 .door .n{font-family:var(--display);font-weight:700;color:var(--brand);font-size:22px;line-height:1}
 .door h4{margin:0;font:700 17px/1.2 var(--display)}
 .door .g{margin-top:auto;font-family:var(--display);font-weight:700;font-size:30px;line-height:1;color:var(--glow)}
-.door .gl{font-size:12px;color:var(--muted)}
+.door .g small{font-size:14px;font-weight:600;color:var(--fg-2);margin-left:4px}
+.door .gl{font-size:13px;line-height:1.4;color:var(--fg-2)}
+.door .gl b{color:var(--fg)}
 .door.dark{background:var(--surface-2);color:var(--fg)}
 .door.dark h4{color:var(--brand);font-size:20px}
 .door.dark p{font-size:13px;color:var(--fg-2)}
@@ -586,8 +588,9 @@ function renderNation(){
   const mult=regs.map(x=>`<button class="mult" type="button" data-region="${x.r}" aria-label="Ver ${x.r}"><h4>${x.r}</h4><div class="cross">${x.c?`65+ supera a menores de 15 en <b>${x.c}</b>`:'Sin cruce antes de <b>2044</b>'}</div>
      ${lineChart({xs:YEARS,w:300,h:170,yMax:30,yStep:10,yFmt:v=>v+'%',xTicks:[2018,2044],today:null,mr:14,series:[{name:'Menores de 15 · '+x.r,values:YEARS.map(y=>share(x.r,y,0,14)),color:'var(--ref)',width:1.6,fmt:v=>fmt(v,1)+'%'},{name:'65+ · '+x.r,values:YEARS.map(y=>share(x.r,y,65,100)),color:'var(--dane)',width:2.2,fmt:v=>fmt(v,1)+'%'}],marks:x.c?[{x:x.c,y:share(x.r,x.c,65,100),label:'',dy:0}]:[]})}
      <div class="note" style="margin-top:6px">Mediana: ${x.m0} → ${x.m1} años · Población 2026–2044: ${x.d>=0?'+':''}${fmt(x.d*100,1)}%</div></button>`).join('');
-  const doors=VIDAS.map(V=>{const g=gapOf(V,{...DEF_LENS});return `<a class="door" href="#${V.id}"><span class="n">${V.n}</span><h4>${V.name}</h4><span class="g num">${g.g}${V.dicho.u==='años'?' años':' pts'}</span><span class="gl">${V.gapLbl} · 60–74 años</span></a>`}).join('')+
-   `<div class="door dark on-dark"><h4>Siete vidas, una brecha cada una.</h4><p>Cada vida cruza el dato oficial, lo que la gente hace (TGI) y lo que dice (estudio propio). La distancia entre esas tres verdades es el hallazgo.</p></div>`;
+  const ex=gapOf(VIDAS[1],{...DEF_LENS});
+  const doors=VIDAS.map(V=>{const g=gapOf(V,{...DEF_LENS});return `<a class="door" href="#${V.id}"><span class="n">${V.n}</span><h4>${V.name}</h4><span class="g num">${g.g}<small>${V.dicho.u==='años'?' años sin plata':' de cada 100'}</small></span><span class="gl">${V.beat(g.a,g.b,V.dicho.u==='años'?'Las personas de 60–74 años':'las personas de 60–74 años')}</span></a>`}).join('')+
+   `<div class="door dark on-dark"><h4>Siete vidas, una brecha cada una.</h4><p>En cada vida comparamos tres cosas: lo que dicen las cifras oficiales, lo que la gente hace de verdad y lo que la gente dice que quiere. Donde esas tres no coinciden está lo interesante.</p></div>`;
 
   document.getElementById('view').innerHTML=`
   <section class="scene on-dark" data-scene><div class="wrap">
@@ -689,7 +692,7 @@ function renderNation(){
   <section class="scene" data-scene><div class="wrap">
     <div class="eyebrow c">Lo que esto le hace a la vida</div>
     <h2 class="h-l">Este reacomodo cambia siete vidas.</h2>
-    <p class="lede">Cada puerta abre una vida con su brecha más grande para las personas de 60–74 años. Las cifras de brecha son simuladas.</p>
+    <p class="lede">El número grande es la distancia entre lo que la gente quiere y lo que cree que va a tener. Si ${ex.a} de cada 100 quieren seguir trabajando y solo ${ex.b} creen que podrán, quedan <b>${ex.g} de cada 100</b> que lo quieren pero no ven cómo. Todas las tarjetas miran a las personas de 60–74 años. Las cifras son simuladas.</p>
     <div class="doors">${doors}</div>
   </div></section>`;
 
