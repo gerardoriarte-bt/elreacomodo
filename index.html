@@ -173,6 +173,29 @@ svg .grid line{stroke:var(--line);stroke-width:1}
 @media (max-width:560px){.cent-stats .arr{display:none}}
 .hist-say{font:600 clamp(18px,2vw,22px)/1.35 var(--display);color:var(--fg);max-width:46ch;margin:6px 0 4px}
 .hist-say b{color:var(--glow)}
+.cmp-pre{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.cmp-pre button{border:1px solid var(--line-2);background:var(--surface);color:var(--fg);border-radius:99px;padding:7px 14px;font:600 13px var(--body,inherit);cursor:pointer}
+.cmp-pre button[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.cmp-ctl{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 24px;margin:16px 0 6px}
+.cmp-sl{display:grid;grid-template-columns:1fr auto;align-items:baseline;gap:2px 10px;min-width:0}
+.cmp-sl span{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.cmp-sl b{font:700 32px/1 var(--display);color:var(--glow)}
+.cmp-sl input{grid-column:1/-1;width:100%;accent-color:var(--brand)}
+.cmp-grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:24px;margin-top:10px;align-items:start}
+.cmp-row{display:grid;grid-template-columns:minmax(0,1fr) 92px 92px 84px;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
+.cmp-row.head{font-size:11px;font-weight:700;color:var(--muted);padding-top:0}
+.cmp-row.head span{text-align:right}
+.cmp-row .t{font-size:13.5px;color:var(--fg);line-height:1.3}
+.cmp-row .t small{display:inline-block;margin-left:6px;font-size:9.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:1px 6px;border-radius:4px;vertical-align:1px}
+.cmp-row small.ok{color:#fff;background:var(--brand)}
+.cmp-row small.fake{color:#012B2D;background:repeating-linear-gradient(135deg,#E3E1DE 0 4px,#C9C6BF 4px 8px)}
+.cmp-row b{text-align:right;font:700 17px var(--display);color:var(--fg)}
+.cmp-row em{text-align:right;font-style:normal;font-weight:700;font-size:13px;color:var(--glow)}
+.cmp-row em.dn{color:var(--fg-2)}
+.cmp-row.sim b{color:var(--fg-2)}
+rect.pick{stroke:var(--fg);stroke-width:2.5;opacity:1}
+@media (max-width:900px){.cmp-grid{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:560px){.cmp-ctl{grid-template-columns:minmax(0,1fr)}.cmp-row{grid-template-columns:minmax(0,1fr) 64px 64px;}.cmp-row em{grid-column:2/-1}.cmp-row.head span:last-child{display:none}.cmp-row b{font-size:15px}}
 .cent-more{margin-top:14px;border-top:1px solid var(--line);padding-top:12px;font-size:13px;color:var(--fg-2)}
 .cent-more summary{cursor:pointer;font-weight:700;color:var(--brand)}
 .cent-more p{margin:10px 0 0}
@@ -237,6 +260,36 @@ svg .grid line{stroke:var(--line);stroke-width:1}
 .gap-num small{display:block;font-size:.2em;letter-spacing:0;margin-top:14px;max-width:16ch;line-height:1.25;color:var(--fg-2);text-shadow:none;font-weight:500;font-family:var(--body)}
 .gap-say{font-family:var(--display);font-size:clamp(22px,2.8vw,34px);line-height:1.2;font-weight:700;max-width:26ch}
 .gap-say b{color:var(--glow)}
+.code-sm{opacity:.6;font-weight:600}
+.ppl{display:grid;grid-template-columns:repeat(20,minmax(0,1fr));gap:6px;max-width:640px;margin-top:14px}
+.ppl i{aspect-ratio:1;border-radius:50%;display:block}
+.ppl .have,.ppl-key .have{background:var(--ref)}
+.ppl .miss,.ppl-key .miss{background:var(--glow);box-shadow:0 0 10px rgba(127,253,255,.35)}
+.ppl .rest,.ppl-key .rest{background:transparent;border:1.5px solid var(--line-2)}
+.ppl-key{display:flex;flex-wrap:wrap;gap:8px 22px;margin-top:16px;font-size:14px;color:var(--fg-2)}
+.ppl-key span{display:inline-flex;align-items:center;gap:8px}
+.ppl-key i{width:12px;height:12px;border-radius:50%;flex:none}
+.ppl-key b{color:var(--fg)}
+.ppl-key em{font-style:normal}
+.steps3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:6px}
+.steps3 .st{background:var(--surface-2);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.steps3 .n{width:26px;height:26px;border-radius:50%;background:var(--glow);color:var(--bg-deep);font-weight:800;display:grid;place-items:center;font-size:13px}
+.steps3 p{margin:0;font-size:14px;color:var(--fg-2)}
+.steps3 b.num{margin-top:auto;font:700 20px var(--display);color:var(--fg)}
+.steps3 .st:last-child b.num{color:var(--glow)}
+.rk-h{margin:0 0 8px;font:700 13px var(--body);color:var(--fg-2)}
+.rank{display:grid;gap:8px}
+.rk{display:grid;grid-template-columns:110px minmax(0,1fr) 34px;gap:10px;align-items:center;font-size:13px;color:var(--fg-2)}
+.rk .b{height:12px;border-radius:6px;background:var(--line);overflow:hidden}
+.rk .b i{display:block;height:100%;background:var(--ref);border-radius:6px}
+.rk b{text-align:right;font:700 15px var(--display);color:var(--fg)}
+.rk.on{color:var(--fg);font-weight:700}
+.rk.on .b i{background:var(--glow)}
+.rk.on b{color:var(--glow)}
+.rk .na{grid-column:2/-1;font-size:12px;color:var(--muted)}
+.ctx2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:14px}
+.truth p.t{font-size:15px;color:var(--fg);margin-top:8px}
+@media (max-width:760px){.steps3,.ctx2{grid-template-columns:minmax(0,1fr)}.ppl{grid-template-columns:repeat(10,minmax(0,1fr))}}
 .truths{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:40px}
 .truth{border:1px solid var(--line);border-radius:12px;padding:16px;background:var(--surface);min-width:0}
 .truth .k{display:flex;gap:8px;align-items:center;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--fg-2);font-weight:700}
@@ -641,6 +694,7 @@ function nationCounters(y){
   <div class="counter"><div class="k">Menores de 15</div><div class="v num">${fmt(u,1)}%</div><div class="d">${fmt(share(CO,Y0,0,14),1)}% en 2018</div></div>
   <div class="counter"><div class="k">65 años o más</div><div class="v num">${fmt(o,1)}%</div><div class="d">${fmt(share(CO,Y0,65,100),1)}% en 2018</div></div>`;
 }
+const GOLPE={bolsillo:'de vida sin plata para vivirlos.',oficio:'quieren seguir trabajando, pero no ven dónde.',cuerpo:'dicen que se cuidan, pero todavía no hacen nada concreto.',vinculos:'esperan que su familia los cuide, pero no creen que pueda.',casa:'quieren quedarse en su casa, pero su casa no les va a servir.',movimiento:'quieren valerse solos a los 80, pero no creen lograrlo.',disfrute:'sueñan con aprender o viajar, pero no tienen un plan.'};
 function doorMore(V,L,g){
   const u=V.dicho.u,seg=segText(L);
   return `<div class="more" hidden><h5>${V.name}</h5>
@@ -663,7 +717,6 @@ function renderNation(){
   const mult=regs.map(x=>`<button class="mult" type="button" data-region="${x.r}" aria-label="Ver ${x.r}"><h4>${x.r}</h4><div class="cross">${x.c?`65+ supera a menores de 15 en <b>${x.c}</b>`:'Sin cruce antes de <b>2044</b>'}</div>
      ${lineChart({xs:YEARS,w:300,h:170,yMax:30,yStep:10,yFmt:v=>v+'%',xTicks:[2018,2044],today:null,mr:14,series:[{name:'Menores de 15 · '+x.r,values:YEARS.map(y=>share(x.r,y,0,14)),color:'var(--ref)',width:1.6,fmt:v=>fmt(v,1)+'%'},{name:'65+ · '+x.r,values:YEARS.map(y=>share(x.r,y,65,100)),color:'var(--dane)',width:2.2,fmt:v=>fmt(v,1)+'%'}],marks:x.c?[{x:x.c,y:share(x.r,x.c,65,100),label:'',dy:0}]:[]})}
      <div class="note" style="margin-top:6px">Mediana: ${x.m0} → ${x.m1} años · Población 2026–2044: ${x.d>=0?'+':''}${fmt(x.d*100,1)}%</div></button>`).join('');
-  const GOLPE={bolsillo:'de vida sin plata para vivirlos.',oficio:'quieren seguir trabajando, pero no ven dónde.',cuerpo:'dicen que se cuidan, pero todavía no hacen nada concreto.',vinculos:'esperan que su familia los cuide, pero no creen que pueda.',casa:'quieren quedarse en su casa, pero su casa no les va a servir.',movimiento:'quieren valerse solos a los 80, pero no creen lograrlo.',disfrute:'sueñan con aprender o viajar, pero no tienen un plan.'};
   const doors=VIDAS.map(V=>{const L={...DEF_LENS},g=gapOf(V,L),yrs=V.dicho.u==='años',[r0,r1]=yrs?V.dicho.range:[0,100],X=v=>(v-r0)/(r1-r0)*100;
     const bar=`<div class="gbar" aria-hidden="true"><i class="have" style="width:${X(g.b)}%"></i><i class="miss" style="left:${X(g.b)}%;width:${X(g.a)-X(g.b)}%"></i></div><div class="gkey">${yrs?`<span>Plata hasta los <b>${g.b}</b></span><span class="m">Vida hasta los <b>${g.a}</b></span>`:`<span>Creen que podrán: <b>${g.b}</b></span><span class="m">Lo quieren: <b>${g.a}</b></span>`}</div>`;
     return `<a class="door" href="#${V.id}" aria-label="${esc(V.name)}: ${g.g} ${yrs?'años':'de cada 100'} ${GOLPE[V.id]}"><span class="dn">${V.n} · ${V.short}</span><span class="g num">${g.g}<small>${yrs?'años':'de cada 100'}</small></span><span class="punch">${GOLPE[V.id]}</span>${bar}${doorMore(V,L,g)}</a>`}).join('')+
@@ -922,7 +975,7 @@ function centuryChart(C,ys=HY,vals=ys.map(C.f)){
   const sm=innerWidth<600,mx=Math.max(...vals)*1.18,w=sm?380:720,h=270,bl=226,pl=6,pr=6,n=ys.length,gp=sm?3:6,bw=(w-pl-pr-gp*(n-1))/n,Y=v=>bl-v/mx*(bl-30);
   let s=`<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="${esc(C.t)}, 1950 a 2050">${HATCH}<line x1="0" x2="${w}" y1="${bl}" y2="${bl}" stroke="var(--line-2)"/>`;
   ys.forEach((y,i)=>{const v=vals[i],x=pl+i*(bw+gp),now=y===HNOW,proj=y>HNOW,key=i===0||now||i===n-1;
-    s+=`<rect x="${x}" y="${Y(v)}" width="${bw}" height="${bl-Y(v)}" rx="3" fill="${now?'var(--glow)':proj?'url(#hatch)':'var(--dane)'}" ${key||proj?'':'opacity=".7"'}${tipAttr(C.t+' · '+y+(proj?' · proyección':''),C.show(v))}/>`;
+    s+=`<rect x="${x}" y="${Y(v)}" width="${bw}" height="${bl-Y(v)}" rx="3" data-y="${y}" fill="${now?'var(--glow)':proj?'url(#hatch)':'var(--dane)'}" ${key||proj?'':'opacity=".7"'}${tipAttr(C.t+' · '+y+(proj?' · proyección':''),C.show(v))}/>`;
     if(key){const first=i===0,last=i===n-1,top=Math.min(Y(v),now&&i<n-1?Y(vals[i+1]):Y(v),now&&i>0?Y(vals[i-1]):Y(v));
       s+=`<text x="${first?x:last?x+bw:x+bw/2}" y="${top-9}" text-anchor="${first?'start':last?'end':'middle'}" class="val" ${now?'style="fill:var(--glow)"':''}>${(C.tick||C.show)(v)}</text>`}
     if(n<=8||y%25===0)s+=`<text x="${x+bw/2}" y="${bl+20}" text-anchor="middle" class="${now?'lbl':''}" ${now?'style="fill:var(--fg);font-weight:700"':''}>${now?'Hoy · ':''}${y}</text>`});
@@ -947,7 +1000,129 @@ function century(V){
         <p class="note">Esta historia es de toda Colombia: el DANE no publica datos por región antes de 1985, por eso no cambia con el lente. En 1985 el DANE une dos series y las edades de 85 años o más saltan ese año; por eso usamos grupos de edad amplios.</p>
       </details>
     </div>
+    ${compareBlock()}
   </div></section>`;
+}
+
+/* ================= la brecha, para todos ================= */
+function gapPeople(a,b){
+  const cells=[];for(let i=0;i<100;i++)cells.push(i<b?'have':i<a?'miss':'rest');
+  return `<div class="ppl" role="img" aria-label="De cada 100 personas: ${b} lo quieren y creen lograrlo, ${a-b} lo quieren pero no creen lograrlo, ${100-a} no lo buscan">${cells.map(c=>`<i class="${c}"></i>`).join('')}</div>`;
+}
+function gapLife(a,b,[r0,r1]){
+  const w=640,h=120,pl=10,pr=10,X=v=>pl+(v-r0)/(r1-r0)*(w-pl-pr),y=58;
+  let s=`<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="La plata alcanza hasta los ${b} años; espera vivir hasta los ${a}">`;
+  s+=`<rect x="${X(r0)}" y="${y}" width="${X(r1)-X(r0)}" height="16" rx="8" fill="var(--line)"/>`;
+  s+=`<rect x="${X(r0)}" y="${y}" width="${X(b)-X(r0)}" height="16" rx="8" fill="var(--ref)"/>`;
+  s+=`<rect x="${X(b)}" y="${y}" width="${X(a)-X(b)}" height="16" fill="var(--glow)"/>`;
+  s+=`<text x="${X(b)}" y="${y-12}" text-anchor="end" style="fill:var(--fg);font-weight:700;font-size:14px">La plata alcanza hasta los ${b}</text>`;
+  s+=`<text x="${X(a)}" y="${y+40}" text-anchor="start" style="fill:var(--glow);font-weight:700;font-size:14px">Espera vivir hasta los ${a}</text>`;
+  s+=`<text x="${(X(a)+X(b))/2}" y="${y+12}" text-anchor="middle" style="fill:var(--bg-deep);font-weight:800;font-size:11px">${a-b} años</text>`;
+  [r0,70,80,90,r1].forEach(v=>s+=`<text x="${X(v)}" y="${h-4}" text-anchor="middle" style="fill:var(--muted);font-size:11px">${v}</text>`);
+  return s+'</svg>';
+}
+function rankBars(items,unit,focus){
+  const mx=Math.max(...items.filter(x=>x.g!=null).map(x=>x.g),1);
+  return `<div class="rank">${items.map(x=>`<div class="rk${x.k===focus?' on':''}"><span class="l">${x.k}</span>${x.g==null?'<span class="na">Pocas encuestas</span>':`<span class="b"><i style="width:${x.g/mx*100}%"></i></span><b class="num">${x.g}</b>`}</div>`).join('')}</div><p class="note">${unit}</p>`;
+}
+function gapSection(V,L,{g,dv,wf,seg,Seg,u,code}){
+  const yrs=V.dicho.u==='años',G=GOLPE[V.id],h=V.hecho.t.charAt(0).toLowerCase()+V.hecho.t.slice(1),who=seg.replace(/^las /,'');
+  const ages=VAGES.map((a,i)=>({k:a+' años',g:gapOf(V,L,i).g})),regs=REG.map(r=>{const n=sampleN(L,r,L.age);return {k:r,g:n<80?null:gapOf(V,L,L.age,r).g}});
+  const topA=ages.reduce((m,x)=>x.g>m.g?x:m),topR=regs.filter(x=>x.g!=null).sort((a,b)=>b.g-a.g)[0];
+  const unit=yrs?'Años de diferencia entre la edad que espera vivir y la edad hasta la que le alcanza la plata.':'De cada 100 personas, cuántas quieren algo pero no creen lograrlo.';
+  const say=yrs?`${Seg} esperan vivir <b>${g.g} años</b> más de lo que les alcanza la plata.`:`De cada 100 ${who}, <b>${g.g}</b> ${G}`;
+  const pick=yrs
+    ?`${gapLife(g.a,g.b,V.dicho.range)}<div class="ppl-key"><span><i class="have"></i><em>Años con plata planeada</em></span><span><i class="miss"></i><em><b>${g.g} años sin plata</b>: la brecha</em></span></div>`
+    :`${gapPeople(g.a,g.b)}<div class="ppl-key"><span><i class="have"></i><em><b>${g.b}</b> lo quieren y creen que lo lograrán</em></span><span><i class="miss"></i><em><b>${g.g}</b> ${G.replace(/\.$/,'')}: <b>la brecha</b></em></span><span><i class="rest"></i><em><b>${100-g.a}</b> no lo buscan</em></span></div>`;
+  const step=(n,t,v)=>`<div class="st"><span class="n">${n}</span><p>${t}</p><b class="num">${v}</b></div>`;
+  return `<section class="scene gap-scene" data-scene><div class="wrap">
+    <div class="eyebrow c rise">La brecha <span class="code-sm">· ${code}</span></div>
+    <h2 class="h-l rise">Lo que la gente quiere, frente a lo que cree que va a tener.</h2>
+    <div class="gap-hero">
+      <div class="gap-num glow-in num">${g.g}<small>${yrs?'años':'de cada 100'}</small></div>
+      <p class="gap-say rise d1">${say}</p>
+    </div>
+    <div class="panel" style="margin-top:28px"><div class="panel-head"><div><h3>Así se ve</h3><div class="sub">${yrs?'La vida de una persona promedio de este grupo, de los 60 a los 95':'Imagina a 100 '+who+'. Cada punto es una persona'}</div></div><span class="src own sim"><i></i>Estudio propio</span></div>
+      ${pick}</div>
+    <div class="panel" style="margin-top:14px"><div class="panel-head"><h3>Cómo sale este número</h3></div>
+      <div class="steps3">
+        ${step(1,yrs?'Les preguntamos: <b>¿hasta qué edad cree que va a vivir?</b>':`Les preguntamos si <b>${V.dicho.a.t.toLowerCase()}</b>.`,yrs?'Hasta los '+g.a:g.a+' de cada 100 dicen que sí')}
+        ${step(2,yrs?'Y también: <b>¿hasta qué edad le alcanza la plata que tiene planeada?</b>':`Y también si <b>${V.dicho.b.t.toLowerCase()}</b>.`,yrs?'Hasta los '+g.b:g.b+' de cada 100 dicen que sí')}
+        ${step(3,`Restamos: ${g.a} − ${g.b}. ${yrs?'Son los años que tendría que vivir sin plata planeada.':'Son las personas que lo quieren, pero no creen que lo vayan a tener.'}`,'= '+g.g+(yrs?' años':' de cada 100'))}
+      </div></div>
+    <div class="panel" style="margin-top:14px"><div class="panel-head"><div><h3>¿Dónde pesa más?</h3><div class="sub">La brecha es más grande entre las personas de <b>${topA.k}</b>${topR?` y en <b>${topR.k==='Bogotá'?'Bogotá':'la región '+topR.k}</b>`:''}.</div></div><span class="src gap sim"><i></i>Brecha</span></div>
+      <div class="grid2" style="margin-top:8px"><div><h4 class="rk-h">Por edad</h4>${rankBars(ages,unit,VAGES[L.age]+' años')}</div><div><h4 class="rk-h">Por región · ${VAGES[L.age]} años</h4>${rankBars(regs,'“Pocas encuestas” quiere decir que hay menos de 80 casos simulados: muy pocos para dar un número.',L.region)}</div></div>
+      <details class="cent-more"><summary>Ver el cruce completo de región y edad</summary><div class="scroll-x" style="margin-top:10px">${heatmap(V,L)}</div><p class="note">Cada casilla es la brecha de esa región y esa edad. — = menos de 80 casos simulados (sobre 2.700 encuestas).</p></details>
+    </div>
+    <div class="ctx2">
+      <div class="truth"><div class="k"><i style="background:var(--dane)"></i>Para ponerlo en contexto · cifras oficiales</div><p class="t">${V.dato.say(dv,seg)}</p></div>
+      <div class="truth"><div class="k"><i style="background:var(--tgi)"></i>Y lo que la gente hace · TGI</div><p class="t"><b>${fmt(wf.i26*100)}%</b> de ${seg} ${h}.</p></div>
+    </div>
+    <p class="note">Todas las cifras de esta sección son simuladas mientras llega el estudio.</p>
+  </div></section>`;
+}
+
+/* ================= compare two years ================= */
+const UN_TFR={1950:6.41,1955:6.62,1960:6.74,1965:6.33,1970:5.28,1975:4.4,1980:3.8,1985:3.22,1990:3,1995:2.85,2000:2.57,2005:2.31,2010:2.01,2015:1.77,2020:1.69,2025:1.62,2030:1.58,2035:1.57,2040:1.57,2045:1.57,2050:1.58};
+// Series inventadas para la demo: no existen fuentes con esta historia. Se marcan como simuladas.
+const SIMH={
+  bolsillo:{t:'Personas de 60–74 que cotizan o reciben pensión',u:'%',p:{1950:2,1975:9,2000:22,2025:31,2050:38}},
+  oficio:{t:'Personas de 60–74 que trabajan',u:'%',p:{1950:61,1975:52,2000:41,2025:38,2050:45}},
+  cuerpo:{t:'Personas de 60–74 con hipertensión diagnosticada',u:'%',p:{1950:6,1975:14,2000:27,2025:38,2050:44}},
+  vinculos:{t:'Personas por hogar',u:'',p:{1950:6.1,1975:5.4,2000:4,2025:2.9,2050:2.4}},
+  casa:{t:'Personas de 60 o más que viven solas',u:'%',p:{1950:4,1975:6,2000:9,2025:14,2050:21}},
+  movimiento:{t:'Personas de 70 o más que salen solas a diario',u:'%',p:{1950:71,1975:63,2000:53,2025:47,2050:52}},
+  disfrute:{t:'Horas de ocio a la semana, personas de 60–74',u:' h',p:{1950:31,1975:27,2000:22,2025:18,2050:21}}
+};
+const lerp=(p,y)=>{const k=Object.keys(p).map(Number);for(let i=0;i<k.length-1;i++)if(y<=k[i+1])return p[k[i]]+(p[k[i+1]]-p[k[i]])*(y-k[i])/(k[i+1]-k[i]);return p[k[k.length-1]]};
+function compareRows(V){
+  const C=CENTURY[V.id],H=SIMH[V.id];
+  return [
+    {t:C.t,f:C.f,show:C.show,src:'DANE',real:true},
+    {t:'Habitantes de Colombia',f:y=>nat(y,0,100),show:v=>fmt(v/1e6,1)+' M',src:'DANE',real:true},
+    {t:'Años que vive en promedio quien nace',f:y=>UN_LE[y][0],show:v=>fmt(Math.round(v))+' años',src:'ONU',real:true},
+    {t:'Hijos por mujer',f:y=>UN_TFR[y],show:v=>fmt(v,1),src:'ONU',real:true},
+    {t:H.t,f:y=>lerp(H.p,y),show:v=>(H.u==='%'?fmt(Math.round(v)):fmt(v,1))+H.u,src:'Simulado',real:false}
+  ];
+}
+const PRE=[[1950,HNOW,'1950 vs hoy'],[HNOW,2050,'Hoy vs 2050'],[1950,2050,'1950 vs 2050']];
+function compareBlock(){
+  const sl=(id,v,l)=>`<label class="cmp-sl" for="${id}"><span>${l}</span><b id="${id}-o" class="num">${v}</b><input id="${id}" type="range" min="1950" max="2050" step="5" value="${v}"></label>`;
+  return `<div class="panel cmp" id="cmp" style="margin-top:18px"><div class="panel-head"><div><h3>Compara dos años</h3><div class="sub">Mueve los dos años y mira cómo cambia el país</div></div></div>
+    <div class="cmp-pre">${PRE.map(([a,b,l],i)=>`<button type="button" data-a="${a}" data-b="${b}"${i===0?' aria-pressed="true"':''}>${l}</button>`).join('')}</div>
+    <div class="cmp-ctl">${sl('cmp-a',1950,'Un año')}${sl('cmp-b',HNOW,'Otro año')}</div>
+    <p class="hist-say" id="cmp-say" aria-live="polite"></p>
+    <div class="cmp-grid"><div id="cmp-pyr"></div><div id="cmp-tab"></div></div>
+    <p class="note">Indicadores reales: DANE (población) y ONU, World Population Prospects 2024 (esperanza de vida e hijos por mujer). La fila marcada como simulada es inventada para la demo: no existe una fuente con esa historia desde 1950.</p>
+  </div>`;
+}
+const chg=(a,b)=>{if(!a)return '—';const r=b/a;if(Math.abs(r-1)<.03)return 'Casi igual';return r>=1.95?'×'+fmt(r,1):(r>1?'+':'−')+fmt(Math.abs(r-1)*100)+'%'};
+function comparePyr(a,b){
+  const G=[];for(let i=0;i<80;i+=5)G.push([i,i+4,i+'–'+(i+4)]);G.push([80,100,'80+']);
+  const sh=y=>G.map(([lo,hi])=>nat(y,lo,hi)/nat(y,0,100)*100),A=sh(a),B=sh(b),mx=Math.max(...A,...B),w=420,bh=13,gp=3,top=24,mid=w/2,cw=26,X=v=>v/mx*(mid-cw-6),h=top+G.length*(bh+gp)+4;
+  let s=`<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="Población por edad, ${a} y ${b}">${HATCH}<text x="${mid-cw-6}" y="14" text-anchor="end" class="lbl" style="fill:var(--fg);font-weight:700">${a}</text><text x="${mid+cw+6}" y="14" class="lbl" style="fill:var(--fg);font-weight:700">${b}</text>`;
+  G.slice().reverse().forEach((g,k)=>{const i=G.length-1-k,y=top+k*(bh+gp);
+    s+=`<rect x="${mid-cw-X(A[i])}" y="${y}" width="${X(A[i])}" height="${bh}" rx="2" fill="${a>HNOW?'url(#hatch)':'var(--ref)'}"${tipAttr(g[2]+' años · '+a,fmt(A[i],1)+'% de la población')}/>`;
+    s+=`<rect x="${mid+cw}" y="${y}" width="${X(B[i])}" height="${bh}" rx="2" fill="${b>HNOW?'url(#hatch)':'var(--dane)'}"${tipAttr(g[2]+' años · '+b,fmt(B[i],1)+'% de la población')}/>`;
+    s+=`<text x="${mid}" y="${y+bh-2}" text-anchor="middle" style="font-size:10px;fill:var(--muted)">${g[2]}</text>`});
+  return s+'</svg><p class="note" style="margin-top:6px">Cada barra es qué parte del país tenía esa edad. Arriba, los mayores; abajo, los niños.</p>';
+}
+function bindCompare(V){
+  const root=$id('cmp');if(!root)return;
+  const ra=$id('cmp-a'),rb=$id('cmp-b'),sec=root.closest('section'),rows=compareRows(V);
+  const upd=()=>{
+    let a=+ra.value,b=+rb.value;$id('cmp-a-o').textContent=a;$id('cmp-b-o').textContent=b;
+    root.querySelectorAll('.cmp-pre button').forEach(x=>x.setAttribute('aria-pressed',String(+x.dataset.a===a&&+x.dataset.b===b)));
+    sec.querySelectorAll('rect[data-y]').forEach(r=>r.classList.toggle('pick',+r.dataset.y===a||+r.dataset.y===b));
+    if(a>b)[a,b]=[b,a];
+    const m=rows[0],va=m.f(a),vb=m.f(b);
+    $id('cmp-say').innerHTML=a===b?`Elige dos años distintos para compararlos.`:`${m.t}: <b>${m.show(va)}</b> en ${a} y <b>${m.show(vb)}</b> en ${b}${b>HNOW?' (proyección)':''}.`;
+    $id('cmp-pyr').innerHTML=comparePyr(a,b);
+    $id('cmp-tab').innerHTML=`<div class="cmp-row head"><span></span><span class="num">${a}</span><span class="num">${b}</span><span>Cambio</span></div>`+rows.map(r=>{const x=r.f(a),y=r.f(b);return `<div class="cmp-row${r.real?'':' sim'}"><span class="t">${r.t}<small class="${r.real?'ok':'fake'}">${r.src}</small></span><b class="num">${r.show(x)}</b><b class="num">${r.show(y)}</b><em${y<x?' class="dn"':''}>${a===b?'—':chg(x,y)}</em></div>`}).join('');
+  };
+  ra.addEventListener('input',upd);rb.addEventListener('input',upd);
+  root.querySelectorAll('.cmp-pre button').forEach(x=>x.addEventListener('click',()=>{ra.value=x.dataset.a;rb.value=x.dataset.b;upd()}));
+  upd();
 }
 
 /* ================= El dato over time ================= */
@@ -1052,21 +1227,7 @@ function renderVida(V){
     </div>
   </div></section>
 
-  <section class="scene gap-scene" data-scene><div class="wrap">
-    <div class="eyebrow c rise">La brecha · ${code(4)}</div>
-    <div class="gap-hero">
-      <div class="gap-num glow-in num">${g.g}<small>${V.gapLbl}</small></div>
-      <p class="gap-say rise d1">${V.beat(g.a,g.b,Seg)}</p>
-    </div>
-    <div class="truths rise d2">
-      <div class="truth"><div class="k"><i style="background:var(--dane)"></i>El dato</div><div class="v num">${fmtU(dv,u)}</div><p>${V.dato.t}</p></div>
-      <div class="truth"><div class="k"><i style="background:var(--tgi)"></i>El hecho</div><div class="v num">${fmt(wf.i26*100)}%</div><p>${V.hecho.t} (2026)</p></div>
-      <div class="truth"><div class="k"><i style="background:var(--own)"></i>El dicho</div><div class="v num">${fmtU(g.a,V.dicho.u)} · ${fmtU(g.b,V.dicho.u)}</div><p>${V.dicho.a.t} · ${V.dicho.b.t.charAt(0).toLowerCase()+V.dicho.b.t.slice(1)}</p></div>
-    </div>
-    <div class="panel" style="margin-top:20px"><div class="panel-head"><div><h3>¿Dónde es más grande la brecha?</h3><div class="sub">${V.dicho.u==='años'?'Años':'Puntos'} de brecha por región y edad, con el ingreso y hogar del lente</div></div><span class="src gap sim"><i></i>Brecha</span></div>
-      <div class="scroll-x">${heatmap(V,L)}</div>
-      <p class="note">— = base simulada menor a 80 casos (sobre 2.700 encuestas). No se muestra para no sobreinterpretar.</p></div>
-  </div></section>
+  ${gapSection(V,L,{g,dv,wf,seg,Seg,u,code:code(4)})}
 
   <section class="scene" data-scene><div class="wrap">
     <div class="eyebrow c">La lectura · ${code(5)}</div>
@@ -1095,6 +1256,7 @@ function renderVida(V){
   document.getElementById('talk-aud').addEventListener('click',()=>{AUD.custom=personaFromLens(lens,V);AUD.sel=['lente'];AUD.vida=V.id;AUD.mode='entrevista';AUD.chat=[];location.hash='audiencias'});
   document.getElementById('ask-hyp').addEventListener('click',()=>openAgent(`Desarrolla las hipótesis de ${V.name.toLowerCase()} para ${seg}: qué datos las sostienen, qué las podría refutar y qué preguntaría en la Fase 1.`));
   on('l-region','region');on('l-inc','inc');on('l-age','age',Number);on('l-home','home');
+  bindCompare(V);
   document.getElementById('l-reset').addEventListener('click',()=>{lens={...DEF_LENS};saveLens();const y=scrollY;renderVida(V);scrollTo(0,y);observe()});
 }
 
