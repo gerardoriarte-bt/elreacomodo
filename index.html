@@ -171,6 +171,8 @@ svg .grid line{stroke:var(--line);stroke-width:1}
 .cent-stats .fut b{color:var(--dane)}
 .cent-stats .arr{align-self:center;color:var(--muted);font-size:22px}
 @media (max-width:560px){.cent-stats .arr{display:none}}
+.hist-say{font:600 clamp(18px,2vw,22px)/1.35 var(--display);color:var(--fg);max-width:46ch;margin:6px 0 4px}
+.hist-say b{color:var(--glow)}
 .cent-more{margin-top:14px;border-top:1px solid var(--line);padding-top:12px;font-size:13px;color:var(--fg-2)}
 .cent-more summary{cursor:pointer;font-weight:700;color:var(--brand)}
 .cent-more p{margin:10px 0 0}
@@ -885,7 +887,7 @@ const nat=(y,lo,hi)=>{const a=DANE_NAT[y].a;let s=0;for(let i=lo;i<=hi;i++)s+=a[
 const natMedian=y=>{const a=DANE_NAT[y].a,t=nat(y,0,100);let c=0;for(let i=0;i<=100;i++){c+=a[i];if(c>=t/2)return i}};
 const f1=v=>v>=10?fmt(v):fmt(v,1);
 const of10=v=>Math.round(v/10)+' de cada 10',of100=v=>'1 de cada '+Math.round(100/v);
-const mil=v=>v>=1e6?fmt(v/1e6,1)+' millones':fmt(Math.round(v/1e4)*10)+' mil';
+const mil=v=>v>=1e6?fmt(v/1e6,1)+' millones':v>=1e5?fmt(Math.round(v/1e4)*10)+' mil':fmt(Math.max(1,Math.round(v/1e3)))+' mil';
 const CENTURY={
   bolsillo:{t:'Personas en edad de trabajar por cada mayor de 65',f:y=>nat(y,15,64)/nat(y,65,100),show:f1,
     say:(a,b,c)=>`En 1950 había <b>${f1(a)}</b> personas en edad de trabajar por cada persona mayor de 65. Hoy hay <b>${f1(b)}</b>. En 2050 habrá <b>${f1(c)}</b>.`,
@@ -916,14 +918,14 @@ const CENTURY={
     read:'Es la edad que parte al país en dos mitades. Un país joven usa su tiempo en crecer; uno maduro tiene que decidir qué hace con los años que gana.',
     how:'Edad en la que se acumula la mitad de la población.',parts:[['Total',0,100]]}
 };
-function centuryChart(C){
-  const sm=innerWidth<600,vals=HY.map(C.f),mx=Math.max(...vals)*1.18,w=sm?380:720,h=270,bl=226,pl=6,pr=6,n=HY.length,gp=sm?3:6,bw=(w-pl-pr-gp*(n-1))/n,Y=v=>bl-v/mx*(bl-30);
+function centuryChart(C,ys=HY,vals=ys.map(C.f)){
+  const sm=innerWidth<600,mx=Math.max(...vals)*1.18,w=sm?380:720,h=270,bl=226,pl=6,pr=6,n=ys.length,gp=sm?3:6,bw=(w-pl-pr-gp*(n-1))/n,Y=v=>bl-v/mx*(bl-30);
   let s=`<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="${esc(C.t)}, 1950 a 2050">${HATCH}<line x1="0" x2="${w}" y1="${bl}" y2="${bl}" stroke="var(--line-2)"/>`;
-  HY.forEach((y,i)=>{const v=vals[i],x=pl+i*(bw+gp),now=y===HNOW,proj=y>HNOW,key=y===HY[0]||now||y===HY[n-1];
+  ys.forEach((y,i)=>{const v=vals[i],x=pl+i*(bw+gp),now=y===HNOW,proj=y>HNOW,key=i===0||now||i===n-1;
     s+=`<rect x="${x}" y="${Y(v)}" width="${bw}" height="${bl-Y(v)}" rx="3" fill="${now?'var(--glow)':proj?'url(#hatch)':'var(--dane)'}" ${key||proj?'':'opacity=".7"'}${tipAttr(C.t+' · '+y+(proj?' · proyección':''),C.show(v))}/>`;
     if(key){const first=i===0,last=i===n-1,top=Math.min(Y(v),now&&i<n-1?Y(vals[i+1]):Y(v),now&&i>0?Y(vals[i-1]):Y(v));
       s+=`<text x="${first?x:last?x+bw:x+bw/2}" y="${top-9}" text-anchor="${first?'start':last?'end':'middle'}" class="val" ${now?'style="fill:var(--glow)"':''}>${(C.tick||C.show)(v)}</text>`}
-    if(y%25===0)s+=`<text x="${x+bw/2}" y="${bl+20}" text-anchor="middle" class="${now?'lbl':''}" ${now?'style="fill:var(--fg);font-weight:700"':''}>${now?'Hoy · ':''}${y}</text>`});
+    if(n<=8||y%25===0)s+=`<text x="${x+bw/2}" y="${bl+20}" text-anchor="middle" class="${now?'lbl':''}" ${now?'style="fill:var(--fg);font-weight:700"':''}>${now?'Hoy · ':''}${y}</text>`});
   return s+'</svg>';
 }
 function century(V){
@@ -946,6 +948,46 @@ function century(V){
       </details>
     </div>
   </div></section>`;
+}
+
+/* ================= El dato over time ================= */
+// Cuerpo: esperanza de vida real (ONU, WPP 2024). DANE no publica hoy la serie 1950–2050 en tabla.
+const UN_LE={1950:[48.3,11.1],1955:[51.9,11.5],1960:[56.6,12],1965:[59.2,12.3],1970:[61.5,12.8],1975:[64,13.7],1980:[66.7,14.7],1985:[65.4,14.1],1990:[68.7,15.3],1995:[69.8,15.3],2000:[70.9,15.8],2005:[73.2,16.3],2010:[74.9,17.1],2015:[76.1,17.5],2020:[74.8,16.5],2025:[78.1,18.6],2030:[79,19.1],2035:[79.9,19.5],2040:[80.8,20],2045:[81.6,20.4],2050:[82.4,20.9]};
+function lifeHistory(){
+  const e0=y=>UN_LE[y][0],e65=y=>UN_LE[y][1],r=v=>fmt(Math.round(v))+' años';
+  const C={t:'Años que vive en promedio quien nace en Colombia',f:e0,show:r,tick:v=>fmt(Math.round(v))};
+  return `<div class="panel" style="margin-top:18px"><div class="panel-head"><div><h3>Y así cambió en cien años</h3><div class="sub">Esperanza de vida al nacer · toda Colombia, cada cinco años</div></div><span class="src dane real"><i></i>ONU · WPP 2024</span></div>
+    <p class="hist-say">En 1950, un colombiano vivía en promedio <b>${r(e0(1950))}</b>. Hoy, <b>${r(e0(2025))}</b>. En 2050, <b>${r(e0(2050))}</b>. Y quien cumple 65 tiene por delante <b>${r(e65(2025))}</b> más, frente a ${r(e65(1950))} en 1950.</p>
+    ${centuryChart(C)}
+    <p class="read"><b>Cómo leerlo:</b> cada barra es cuántos años viviría, en promedio, alguien que nace ese año. Las bajadas de 1985 y 2020 están en los datos; la de 2020 es la pandemia de covid-19.</p>
+    <details class="cent-more"><summary>Ver los números y de dónde salen</summary>
+      <div class="scroll-x"><table class="cent-tab"><thead><tr><th>Año</th><th>Al nacer</th><th>A los 65</th></tr></thead><tbody>${HY.map(y=>`<tr${y===HNOW?' class="now"':''}><td>${y}${y>HNOW?' <small>proy.</small>':''}</td><td><b>${fmt(e0(y),1)}</b></td><td>${fmt(e65(y),1)}</td></tr>`).join('')}</tbody></table></div>
+      <p class="note">Fuente: Naciones Unidas, World Population Prospects 2024, variante media (indicadores LEx y LE65). El DANE publica la esperanza de vida en sus proyecciones, pero no la serie 1950–2050 en tabla; por eso usamos la de la ONU.</p>
+    </details></div>`;
+}
+// Las otras seis vidas: el porcentaje (u horas) de hoy, fijo, por la población que proyecta el DANE.
+const hrs=v=>v>=1e6?fmt(v/1e6,1)+' millones de horas':fmt(Math.round(v/1e3))+' mil horas';
+const SCEN={
+  bolsillo:{k:v=>(100-v)/100,what:'sin pensión ni cotización',say:(seg,a,b)=>`Si nada cambia, ${seg} sin pensión ni cotización pasarán de <b>${a}</b> hoy a <b>${b}</b> en 2050.`},
+  oficio:{k:v=>v/100,what:'que trabajan',say:(seg,a,b)=>`Si nada cambia, ${seg} que trabajan pasarán de <b>${a}</b> hoy a <b>${b}</b> en 2050.`},
+  vinculos:{k:v=>v,h:true,what:'horas de cuidado no pago a la semana',say:(seg,a,b)=>`Si nada cambia, ${seg} pasarán de dar <b>${a}</b> de cuidado no pago a la semana a <b>${b}</b> en 2050.`},
+  casa:{k:v=>v/100,what:'que viven solas',say:(seg,a,b)=>`Si nada cambia, ${seg} que viven solas pasarán de <b>${a}</b> hoy a <b>${b}</b> en 2050.`},
+  movimiento:{k:v=>(100-v)/100,what:'que no salen solas de su casa a diario',say:(seg,a,b)=>`Si nada cambia, ${seg} que no salen solas de su casa a diario pasarán de <b>${a}</b> hoy a <b>${b}</b> en 2050.`},
+  disfrute:{k:v=>v,h:true,what:'horas de ocio a la semana',say:(seg,a,b)=>`Si nada cambia, ${seg} pasarán de sumar <b>${a}</b> de ocio a la semana a <b>${b}</b> en 2050.`}
+};
+function scenario(V,L){
+  const S=SCEN[V.id];if(!S)return '';
+  const co=L.region===CO,ys=co?HY.filter(y=>y>=HNOW):[2025,2030,2035,2040],last=ys[ys.length-1],ai=L.age,rg=VRANGE[ai],sh=cellShare(L,ai);
+  const v=val(V.id,'dato',V.dato,ai,L),k=S.k(v),people=y=>(co?nat(y,...rg):pop(L.region,y,...rg))*sh,vals=ys.map(y=>people(y)*k);
+  const show=S.h?hrs:v=>mil(v)+(v>=1e6?' de personas':' personas'),tick=S.h?(v=>v>=1e6?fmt(v/1e6,1)+' M h':fmt(Math.round(v/1e3))+' mil h'):(v=>v>=1e6?fmt(v/1e6,1)+' M':mil(v));
+  const seg=segText(L),a=show(vals[0]),b=show(vals[vals.length-1]),x=vals[vals.length-1]/vals[0];
+  const say=S.say(seg,a,b).replace(' en 2050',' en '+last);
+  const C={t:(S.h?'Horas':'Personas')+' '+S.what,show,tick};
+  return `<div class="panel" style="margin-top:18px"><div class="panel-head"><div><h3>Lo que viene: ${HNOW}–${last}</h3><div class="sub">El porcentaje de hoy, fijo, por la población que proyecta el DANE</div></div><span class="src dane sim"><i></i>DANE × ${V.dato.src}</span></div>
+    <p class="hist-say">${say} ${x>=1.95?`Se multiplican por <b>${fmt(x,1)}</b>, solo porque habrá más personas de esa edad.`:x>=1.05?`Son <b>${fmt((x-1)*100)}% más</b>, solo porque habrá más personas de esa edad.`:x<=.95?`Son <b>${fmt((1-x)*100)}% menos</b>, solo porque habrá menos personas de esa edad.`:'Casi no cambia: el grupo tendrá un tamaño parecido.'}</p>
+    ${centuryChart(C,ys,vals)}
+    <p class="read"><b>Cómo leerlo:</b> no es un pronóstico de conducta. Dejamos quieto el dato de hoy y solo movemos cuánta gente de esa edad habrá, según el DANE. Si la barra crece, el reto crece aunque nadie cambie.</p>
+    <p class="note">Cálculo: ${S.h?'horas por persona':'porcentaje de hoy'} (${V.dato.src}, simulado) × personas del grupo del lente (DANE, dato real).${co?'':' Por región, el DANE proyecta hasta 2044; por eso este gráfico llega a 2040.'}</p></div>`;
 }
 
 function renderVida(V){
@@ -988,6 +1030,7 @@ function renderVida(V){
     <h2 class="h-l">${V.dato.say(dv,seg)}</h2>
     <div class="panel" style="margin-top:28px"><div class="panel-head"><div><h3>${V.dato.t}</h3><div class="sub">Por grupo de edad · resaltado: el grupo del lente</div></div><span class="src dane sim"><i></i>${V.dato.src}</span></div>
       ${barsChart(V,L)}</div>
+    ${V.id==='cuerpo'?lifeHistory():scenario(V,L)}
   </div></section>
 
   <section class="scene" data-scene><div class="wrap">
