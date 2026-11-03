@@ -186,26 +186,29 @@ svg .grid line{stroke:var(--line);stroke-width:1}
 .cmp-pre{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
 .cmp-pre button{border:1px solid var(--line-2);background:var(--surface);color:var(--fg);border-radius:99px;padding:7px 14px;font:600 13px var(--body,inherit);cursor:pointer}
 .cmp-pre button[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
-.cmp-ctl{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 24px;margin:16px 0 6px}
 .cmp-sl{display:grid;grid-template-columns:1fr auto;align-items:baseline;gap:2px 10px;min-width:0}
 .cmp-sl span{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
 .cmp-sl b{font:700 32px/1 var(--display);color:var(--glow)}
 .cmp-sl input{grid-column:1/-1;width:100%;accent-color:var(--brand)}
-.cmp-grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:24px;margin-top:10px;align-items:start}
-.cmp-row{display:grid;grid-template-columns:minmax(0,1fr) 92px 92px 84px;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
-.cmp-row.head{font-size:11px;font-weight:700;color:var(--muted);padding-top:0}
+.cmp-ctl{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:12px 28px;margin:16px 0 6px;align-items:end}
+.cmp-now{display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 18px;border:1px solid var(--glow);border-radius:12px}
+.cmp-now span{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.cmp-now b{font:700 32px/1 var(--display);color:var(--glow)}
+.cmp-row{display:grid;grid-template-columns:minmax(0,1fr) 84px 52px 84px 52px 84px;gap:8px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
+.cmp-row.head{font-size:11px;font-weight:700;color:var(--muted);padding-top:12px}
 .cmp-row.head span{text-align:right}
 .cmp-row .t{font-size:13.5px;color:var(--fg);line-height:1.3}
 .cmp-row .t small{display:inline-block;margin-left:6px;font-size:9.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:1px 6px;border-radius:4px;vertical-align:1px}
 .cmp-row small.ok{color:#fff;background:var(--brand)}
 .cmp-row small.fake{color:#012B2D;background:repeating-linear-gradient(135deg,#E3E1DE 0 4px,#C9C6BF 4px 8px)}
-.cmp-row b{text-align:right;font:700 17px var(--display);color:var(--fg)}
-.cmp-row em{text-align:right;font-style:normal;font-weight:700;font-size:13px;color:var(--glow)}
+.cmp-row b{text-align:right;font:700 16px var(--display);color:var(--fg)}
+.cmp-row .now{color:var(--glow)}
+.cmp-row em{text-align:center;font-style:normal;font-weight:700;font-size:11.5px;color:var(--glow);background:var(--surface-2);border-radius:99px;padding:2px 4px}
 .cmp-row em.dn{color:var(--fg-2)}
 .cmp-row.sim b{color:var(--fg-2)}
+.cmp-row.sim b.now{color:var(--glow)}
 rect.pick{stroke:var(--fg);stroke-width:2.5;opacity:1}
-@media (max-width:900px){.cmp-grid{grid-template-columns:minmax(0,1fr)}}
-@media (max-width:560px){.cmp-ctl{grid-template-columns:minmax(0,1fr)}.cmp-row{grid-template-columns:minmax(0,1fr) 64px 64px;}.cmp-row em{grid-column:2/-1}.cmp-row.head span:last-child{display:none}.cmp-row b{font-size:15px}}
+@media (max-width:640px){.cmp-ctl{grid-template-columns:minmax(0,1fr)}.cmp-now{flex-direction:row;justify-content:center;gap:10px}.cmp-row{grid-template-columns:repeat(5,minmax(0,auto));justify-content:space-between}.cmp-row .t{grid-column:1/-1}.cmp-row.head span:first-child{display:none}.cmp-row b{font-size:14px}}
 .cent-more{margin-top:14px;border-top:1px solid var(--line);padding-top:12px;font-size:13px;color:var(--fg-2)}
 .cent-more summary{cursor:pointer;font-weight:700;color:var(--brand)}
 .cent-more p{margin:10px 0 0}
@@ -767,7 +770,7 @@ function renderNation(){
       </div>
     </div>
     <p class="note">De 1950 a 2017 son retroproyecciones del DANE, solo para todo el país. En 1985 el DANE une dos series y las edades de 85 años o más saltan ese año.</p>
-    ${compareBlock({sub:'Elige dos años entre 1950 y 2050 y mira cómo cambió el país',note:'Todos los indicadores son reales: DANE, Proyecciones de Población (PPED), y ONU, World Population Prospects 2024 (esperanza de vida e hijos por mujer). Población en cabeceras: DANE.'})}
+    ${compareBlock({sub:'Hoy queda fijo en el centro. Elige un año entre 1950 y 2020, y otro entre 2030 y 2050',note:'Todos los indicadores son reales: DANE, Proyecciones de Población (PPED), y ONU, World Population Prospects 2024 (esperanza de vida e hijos por mujer). Población en cabeceras: DANE.'})}
   </div></section>
 
   <section class="beat" data-scene><div class="wrap">
@@ -978,8 +981,12 @@ function observations(V,S,L){
 
 /* ================= century: 1950–2050 by quinquennium (DANE national) ================= */
 const HY=Object.keys(DANE_NAT).map(Number).sort((a,b)=>a-b),HNOW=2025;
-const nat=(y,lo,hi)=>{const a=DANE_NAT[y].a;let s=0;for(let i=lo;i<=hi;i++)s+=a[i];return s};
-const natMedian=y=>{const a=DANE_NAT[y].a,t=nat(y,0,100);let c=0;for(let i=0;i<=100;i++){c+=a[i];if(c>=t/2)return i}};
+// Cualquier año: 1950–2044 sale de la serie anual por sexo; 2045 y 2050, de la serie quinquenal nacional.
+const natAges=y=>{const p=P[CO][y];return p?p[0].map((m,i)=>m+p[1][i]):DANE_NAT[y].a};
+const nat=(y,lo,hi)=>{const a=natAges(y);let s=0;for(let i=lo;i<=hi;i++)s+=a[i];return s};
+const natMedian=y=>{const a=natAges(y),t=nat(y,0,100);let c=0;for(let i=0;i<=100;i++){c+=a[i];if(c>=t/2)return i}};
+const q5=(f,y)=>{if(y%5===0)return f(y);const y0=y-y%5;return f(y0)+(f(y0+5)-f(y0))*(y-y0)/5}; // entre quinquenios, interpolación lineal
+const urbShare=y=>q5(z=>DANE_NAT[z].u/nat(z,0,100)*100,y);
 const f1=v=>v>=10?fmt(v):fmt(v,1);
 const of10=v=>Math.round(v/10)+' de cada 10',of100=v=>'1 de cada '+Math.round(100/v);
 const mil=v=>v>=1e6?fmt(v/1e6,1)+' millones':v>=1e5?fmt(Math.round(v/1e4)*10)+' mil':fmt(Math.max(1,Math.round(v/1e3)))+' mil';
@@ -1000,7 +1007,7 @@ const CENTURY={
     say:(a,b,c)=>`En 1950 había <b>${f1(a)}</b> niños por cada persona mayor de 65. Hoy hay <b>${f1(b)}</b>. En 2050 habrá <b>${c<1?'menos de uno':f1(c)}</b>.`,
     read:'Menores de 15 años frente a mayores de 65. Menos hijos y nietos quiere decir menos manos en la familia para cuidar a los mayores.',
     how:'Personas de 0 a 14 años ÷ personas de 65 años o más.',parts:[['0–14',0,14],['65+',65,100]]},
-  casa:{t:'Colombianos que viven en una cabecera municipal',f:y=>DANE_NAT[y].u/nat(y,0,100)*100,show:of10,
+  casa:{t:'Colombianos que viven en una cabecera municipal',f:urbShare,show:of10,
     say:(a,b,c)=>`En 1950, <b>${of10(a)}</b> colombianos vivían en un casco urbano. Hoy son <b>${of10(b)}</b>, y así seguirá hasta 2050.`,
     read:'El país pasó del campo a la ciudad en una sola vida. Quienes hoy tienen 70 años nacieron en un país rural y envejecen en uno urbano, en casas que no se pensaron para la vejez.',
     how:'Población en cabeceras municipales ÷ población total.',parts:null,pct:true},
@@ -1125,9 +1132,9 @@ function nationRows(){
     {t:'Menores de 15 años',f:y=>nat(y,0,14)/nat(y,0,100)*100,show:pc,src:'DANE',real:true},
     {t:'Personas de 65 años o más',f:y=>nat(y,65,100)/nat(y,0,100)*100,show:pc,src:'DANE',real:true},
     {t:'Personas en edad de trabajar por cada mayor de 65',f:y=>nat(y,15,64)/nat(y,65,100),show:f1,src:'DANE',real:true},
-    {t:'Viven en una cabecera municipal',f:y=>DANE_NAT[y].u/nat(y,0,100)*100,show:v=>fmt(Math.round(v))+'%',src:'DANE',real:true},
-    {t:'Años que vive en promedio quien nace',f:y=>UN_LE[y][0],show:v=>fmt(Math.round(v))+' años',src:'ONU',real:true},
-    {t:'Hijos por mujer',f:y=>UN_TFR[y],show:v=>fmt(v,1),src:'ONU',real:true}
+    {t:'Viven en una cabecera municipal',f:urbShare,show:v=>fmt(Math.round(v))+'%',src:'DANE',real:true},
+    {t:'Años que vive en promedio quien nace',f:y=>q5(z=>UN_LE[z][0],y),show:v=>fmt(Math.round(v))+' años',src:'ONU',real:true},
+    {t:'Hijos por mujer',f:y=>q5(z=>UN_TFR[z],y),show:v=>fmt(v,1),src:'ONU',real:true}
   ];
 }
 function compareRows(V){
@@ -1135,45 +1142,49 @@ function compareRows(V){
   return [
     {t:C.t,f:C.f,show:C.show,src:'DANE',real:true},
     {t:'Habitantes de Colombia',f:y=>nat(y,0,100),show:v=>fmt(v/1e6,1)+' M',src:'DANE',real:true},
-    {t:'Años que vive en promedio quien nace',f:y=>UN_LE[y][0],show:v=>fmt(Math.round(v))+' años',src:'ONU',real:true},
-    {t:'Hijos por mujer',f:y=>UN_TFR[y],show:v=>fmt(v,1),src:'ONU',real:true},
+    {t:'Años que vive en promedio quien nace',f:y=>q5(z=>UN_LE[z][0],y),show:v=>fmt(Math.round(v))+' años',src:'ONU',real:true},
+    {t:'Hijos por mujer',f:y=>q5(z=>UN_TFR[z],y),show:v=>fmt(v,1),src:'ONU',real:true},
     {t:H.t,f:y=>lerp(H.p,y),show:v=>(H.u==='%'?fmt(Math.round(v)):fmt(v,1))+H.u,src:'Simulado',real:false}
   ];
 }
-const PRE=[[1950,HNOW,'1950 vs hoy'],[HNOW,2050,'Hoy vs 2050'],[1950,2050,'1950 vs 2050']];
-function compareBlock({sub='Mueve los dos años y mira cómo cambia el país',note='Indicadores reales: DANE (población) y ONU, World Population Prospects 2024 (esperanza de vida e hijos por mujer). La fila marcada como simulada es inventada para la demo: no existe una fuente con esa historia desde 1950.'}={}){
-  const sl=(id,v,l)=>`<label class="cmp-sl" for="${id}"><span>${l}</span><b id="${id}-o" class="num">${v}</b><input id="${id}" type="range" min="1950" max="2050" step="5" value="${v}"></label>`;
-  return `<div class="panel cmp" id="cmp" style="margin-top:18px"><div class="panel-head"><div><h3>Compara dos años</h3><div class="sub">${sub}</div></div></div>
+const PRE=[[1950,2050,'1950 · hoy · 2050'],[1990,2040,'1990 · hoy · 2040'],[2010,2030,'2010 · hoy · 2030']];
+function compareBlock({sub='Hoy queda fijo en el centro. Mueve el año de antes y el de después',note='Indicadores reales: DANE (población) y ONU, World Population Prospects 2024 (esperanza de vida e hijos por mujer). La fila marcada como simulada es inventada para la demo: no existe una fuente con esa historia desde 1950.'}={}){
+  const sl=(id,v,l,mn,mx)=>`<label class="cmp-sl" for="${id}"><span>${l}</span><b id="${id}-o" class="num">${v}</b><input id="${id}" type="range" min="${mn}" max="${mx}" step="5" value="${v}"></label>`;
+  return `<div class="panel cmp" id="cmp" style="margin-top:18px"><div class="panel-head"><div><h3>Hoy, hacia atrás y hacia adelante</h3><div class="sub">${sub}</div></div></div>
     <div class="cmp-pre">${PRE.map(([a,b,l],i)=>`<button type="button" data-a="${a}" data-b="${b}"${i===0?' aria-pressed="true"':''}>${l}</button>`).join('')}</div>
-    <div class="cmp-ctl">${sl('cmp-a',1950,'Un año')}${sl('cmp-b',HNOW,'Otro año')}</div>
+    <div class="cmp-ctl">${sl('cmp-a',1950,'Antes',1950,2020)}<div class="cmp-now"><span>Hoy</span><b class="num">${NOW}</b></div>${sl('cmp-b',2050,'Después',2030,2050)}</div>
     <p class="hist-say" id="cmp-say" aria-live="polite"></p>
-    <div class="cmp-grid"><div id="cmp-pyr"></div><div id="cmp-tab"></div></div>
+    <div id="cmp-pyr"></div>
+    <div id="cmp-tab"></div>
     <p class="note">${note}</p>
   </div>`;
 }
-const chg=(a,b)=>{if(!a)return '—';const r=b/a;if(Math.abs(r-1)<.03)return 'Casi igual';return r>=1.95?'×'+fmt(r,1):(r>1?'+':'−')+fmt(Math.abs(r-1)*100)+'%'};
-function comparePyr(a,b){
+const chg=(a,b)=>{if(!a)return '—';const r=b/a;if(Math.abs(r-1)<.03)return '=';return r>=1.95?'×'+fmt(r,1):(r>1?'+':'−')+fmt(Math.abs(r-1)*100)+'%'};
+function comparePyr3(ys){
   const G=[];for(let i=0;i<80;i+=5)G.push([i,i+4,i+'–'+(i+4)]);G.push([80,100,'80+']);
-  const sh=y=>G.map(([lo,hi])=>nat(y,lo,hi)/nat(y,0,100)*100),A=sh(a),B=sh(b),mx=Math.max(...A,...B),w=420,bh=13,gp=3,top=24,mid=w/2,cw=26,X=v=>v/mx*(mid-cw-6),h=top+G.length*(bh+gp)+4;
-  let s=`<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="Población por edad, ${a} y ${b}">${HATCH}<text x="${mid-cw-6}" y="14" text-anchor="end" class="lbl" style="fill:var(--fg);font-weight:700">${a}</text><text x="${mid+cw+6}" y="14" class="lbl" style="fill:var(--fg);font-weight:700">${b}</text>`;
+  const sh=ys.map(y=>G.map(([lo,hi])=>nat(y,lo,hi)/nat(y,0,100)*100)),mx=Math.max(...sh.flat()),w=640,lw=44,cw=(w-lw)/3,bh=12,gp=3,top=26,h=top+G.length*(bh+gp)+4;
+  const fill=y=>y===NOW?'var(--glow)':y>NOW?'url(#hatch)':'var(--ref)';
+  let s=`<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="Población por edad en ${ys.join(', ')}">${HATCH}`;
+  ys.forEach((y,c)=>{const cx=lw+c*cw+cw/2;s+=`<text x="${cx}" y="14" text-anchor="middle" style="fill:${y===NOW?'var(--glow)':'var(--fg)'};font-weight:700;font-size:13px">${y===NOW?'Hoy · '+y:y}</text>`});
   G.slice().reverse().forEach((g,k)=>{const i=G.length-1-k,y=top+k*(bh+gp);
-    s+=`<rect x="${mid-cw-X(A[i])}" y="${y}" width="${X(A[i])}" height="${bh}" rx="2" fill="${a>HNOW?'url(#hatch)':'var(--ref)'}"${tipAttr(g[2]+' años · '+a,fmt(A[i],1)+'% de la población')}/>`;
-    s+=`<rect x="${mid+cw}" y="${y}" width="${X(B[i])}" height="${bh}" rx="2" fill="${b>HNOW?'url(#hatch)':'var(--dane)'}"${tipAttr(g[2]+' años · '+b,fmt(B[i],1)+'% de la población')}/>`;
-    s+=`<text x="${mid}" y="${y+bh-2}" text-anchor="middle" style="font-size:10px;fill:var(--muted)">${g[2]}</text>`});
-  return s+'</svg><p class="note" style="margin-top:6px">Cada barra es qué parte del país tenía esa edad. Arriba, los mayores; abajo, los niños.</p>';
+    s+=`<text x="${lw-6}" y="${y+bh-2}" text-anchor="end" style="font-size:10px;fill:var(--muted)">${g[2]}</text>`;
+    ys.forEach((yr,c)=>{const v=sh[c][i],bw=v/mx*(cw-16),cx=lw+c*cw+cw/2;
+      s+=`<rect x="${cx-bw/2}" y="${y}" width="${bw}" height="${bh}" rx="2" fill="${fill(yr)}"${tipAttr(g[2]+' años · '+yr,fmt(v,1)+'% de la población')}/>`})});
+  return s+'</svg><p class="note" style="margin-top:6px">La silueta del país en cada año: cada barra es qué parte de la población tenía esa edad. Arriba, los mayores; abajo, los niños.</p>';
 }
 function bindCompare(rows){
   const root=$id('cmp');if(!root)return;
   const ra=$id('cmp-a'),rb=$id('cmp-b'),sec=root.closest('section');
   const upd=()=>{
-    let a=+ra.value,b=+rb.value;$id('cmp-a-o').textContent=a;$id('cmp-b-o').textContent=b;
+    const a=+ra.value,b=+rb.value,n=NOW;$id('cmp-a-o').textContent=a;$id('cmp-b-o').textContent=b;
     root.querySelectorAll('.cmp-pre button').forEach(x=>x.setAttribute('aria-pressed',String(+x.dataset.a===a&&+x.dataset.b===b)));
     sec.querySelectorAll('rect[data-y]').forEach(r=>r.classList.toggle('pick',+r.dataset.y===a||+r.dataset.y===b));
-    if(a>b)[a,b]=[b,a];
-    const m=rows[0],va=m.f(a),vb=m.f(b);
-    $id('cmp-say').innerHTML=a===b?`Elige dos años distintos para compararlos.`:`${m.t}: <b>${m.show(va)}</b> en ${a} y <b>${m.show(vb)}</b> en ${b}${b>HNOW?' (proyección)':''}.`;
-    $id('cmp-pyr').innerHTML=comparePyr(a,b);
-    $id('cmp-tab').innerHTML=`<div class="cmp-row head"><span></span><span class="num">${a}</span><span class="num">${b}</span><span>Cambio</span></div>`+rows.map(r=>{const x=r.f(a),y=r.f(b);return `<div class="cmp-row${r.real?'':' sim'}"><span class="t">${r.t}<small class="${r.real?'ok':'fake'}">${r.src}</small></span><b class="num">${r.show(x)}</b><b class="num">${r.show(y)}</b><em${y<x?' class="dn"':''}>${a===b?'—':chg(x,y)}</em></div>`}).join('');
+    const m=rows[0];
+    $id('cmp-say').innerHTML=`${m.t}: <b>${m.show(m.f(a))}</b> en ${a}, <b>${m.show(m.f(n))}</b> hoy y <b>${m.show(m.f(b))}</b> en ${b}.`;
+    $id('cmp-pyr').innerHTML=comparePyr3([a,n,b]);
+    const c=(x,y)=>{const t=chg(x,y);return `<em class="${y<x?'dn':''}">${t}</em>`};
+    $id('cmp-tab').innerHTML=`<div class="cmp-row head"><span></span><span class="num">${a}</span><span></span><span class="num now">Hoy</span><span></span><span class="num">${b}</span></div>`+rows.map(r=>{const x=r.f(a),y=r.f(n),z=r.f(b);
+      return `<div class="cmp-row${r.real?'':' sim'}"><span class="t">${r.t}<small class="${r.real?'ok':'fake'}">${r.src}</small></span><b class="num">${r.show(x)}</b>${c(x,y)}<b class="num now">${r.show(y)}</b>${c(y,z)}<b class="num">${r.show(z)}</b></div>`}).join('');
   };
   ra.addEventListener('input',upd);rb.addEventListener('input',upd);
   root.querySelectorAll('.cmp-pre button').forEach(x=>x.addEventListener('click',()=>{ra.value=x.dataset.a;rb.value=x.dataset.b;upd()}));
